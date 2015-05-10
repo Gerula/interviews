@@ -2,8 +2,17 @@
 # without using any additional buffer. 
 # NOTE: One or two additional variables are fine. An extra copy of the array is not.
 
+$cache = []
+
 def alreadyAdded?(string,length,character)
-	(0..length-1).any? {|x| string[x] == character}
+	if $cache.include?(character)
+		return true
+	elsif (0..length-1).any? {|x| string[x] == character}
+		$cache.push(character)
+		return true
+	else
+		return false
+	end
 end
 
 def removeDupes(string)
@@ -11,6 +20,7 @@ def removeDupes(string)
 	write_point = 0
 	read_point = 0
 	count = 0
+	cache = []
 	while read_point < array.length
 		if alreadyAdded?(array, write_point, array[read_point])
 			read_point += 1
