@@ -7,9 +7,7 @@ start_idx = 0
 end_idx = string.length - 2
 
 while start_idx < end_idx
-	aux = string[start_idx]
-	string[start_idx] = string[end_idx]
-	string[end_idx] = aux
+	string[start_idx], string[end_idx] = string[end_idx], string[start_idx]
         start_idx += 1
 	end_idx -= 1	
 end
