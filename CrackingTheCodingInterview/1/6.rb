@@ -31,7 +31,25 @@ def rotate_array(a, n)
     end
 end
 
+class Array
+    def rotated(i, j)
+        self[j][self[j].size - i - 1]
+    end
+end
+
+def print_rotated(a, n)
+    (0..n-1).each { |i|
+        (0..n-1).each { |j|
+            print a.rotated(i,j), " "
+        }
+    puts
+    }
+    puts
+end
+
+puts a.rotated(1,1)
 print_array(a, n)
+print_rotated(a, n)
 rotate_array(a, n)
 print_array(a, n)
 
