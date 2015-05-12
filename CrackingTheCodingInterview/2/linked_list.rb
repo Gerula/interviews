@@ -1,28 +1,51 @@
-class Linked_list
+class Entry
     def initialize(val = nil, link = nil)
         @val = val
         @link = link
     end
+    
+    attr_accessor :val
+    attr_accessor :link
+end
+
+class Linked_list
+    def initialize(val)
+        @head = Entry.new(val)
+    end
 
     def fill_with_shit
         size = Random.rand(15)
-        head = self
+        head = @head
         1.upto(size).each {|i|
-            head.link = Linked_list.new(Random.rand(15))
+            head.link = Entry.new(Random.rand(10))
             head = head.link
         }
     end
 
     def print_list
-        head = self
+        head = @head
         while head
             print "#{head.val} "
             head = head.link
         end
+        
         puts
     end
 
-    attr_accessor :val
-    attr_accessor :link
+    def reverse
+        previous = nil
+        current = @head
+        next_node = nil
+        while current
+            next_node = current.link
+            current.link = previous
+            previous = current
+            current = next_node
+        end
+
+        @head = previous
+    end
+
+    attr_accessor :head
 end
 
