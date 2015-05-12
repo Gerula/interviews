@@ -24,6 +24,13 @@ class Linked_list
 
         return head
     end
+
+    def delete_nth(n)
+        nth_minus_1 = n_th(n - 1)
+        nth_minus_1.link = nth_minus_1.link.link
+    end
 end
 
 puts list.n_th(3).inspect
+list.delete_nth(2+3)
+list.print_list
