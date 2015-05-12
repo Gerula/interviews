@@ -46,6 +46,24 @@ class Linked_list
         @head = previous
     end
 
+    def make_cycle(n)
+        last = @head
+        while last.link
+            last = last.link
+        end
+        
+        cycle = @head
+        1.upto(n - 1).each {
+            if !cycle
+                raise("List is too short")
+            end
+
+            cycle = cycle.link
+        }
+        puts "Added cycle at #{n}th element with value #{cycle.val}"
+        last.link = cycle
+    end
+
     attr_accessor :head
 end
 
