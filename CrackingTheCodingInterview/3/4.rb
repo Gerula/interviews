@@ -45,41 +45,40 @@ class Hanoi
     end
 
     def solve_iteratively
-        if @disks % 2
+        if @disks % 2 == 0
             move(0, 1)
         else
             move(0, 2)
         end
 
-        while @stacks[2].size != @disks
+        while @stacks[2].size != @disks && @stacks[1].size != @disks
             (0..2).each { |x|
-                if @stacks[x].size == 0
-                    next
-                end
-
                 neighbors = [ (x + 1) % 3, (x - 1) % 3]
                 neighbors.each { |neighbor|
-                    if  ((@stacks[neighbor].size == 0)||(@stacks[x].peek % 2) != (@stacks[neighbor].peek % 2)) &&
-                        @moves.peek.from != neighbor &&
-                        @moves.peek.to != x
-                       
-                        move(x, neighbor)
-                        puts self.inspect 
-                        gets
+                    if @stacks[x].size == 0
                         next
                     end
+
+                    if  ((@stacks[neighbor].size == 0) || ((@stacks[x].peek % 2 + @stacks[neighbor].peek % 2) % 2 != 0) && (@stacks[x].peek < @stacks[neighbor].peek)) &&
+                        (@moves.peek.from != neighbor || @moves.peek.to != x)
+                       
+                        move(x, neighbor)
+                        next
+                    end
+                    gets
+                    puts self.inspect 
                 }
             }
-            gets
         end 
     end
 
     def move(from, to)
         @stacks[to].push(@stacks[from].pop)
+        puts "Pushing from #{from} to #{to}"
         @moves.push(OpenStruct.new(:from => from, :to => to))
     end
 end
 
-hanoi = Hanoi.new(10)
+hanoi = Hanoi.new(3)
 puts hanoi.inspect
 hanoi.solve_iteratively
