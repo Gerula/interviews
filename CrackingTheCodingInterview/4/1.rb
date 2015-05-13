@@ -37,12 +37,36 @@ def balanced?(root)
     return (height(root.left) == height(root.right)) && balanced?(root.right) && balanced?(root.left)
 end
 
+def smart_balanced(root)
+    if !root
+        return 1
+    end
+
+    if (smart_balanced(root.left) == -1)
+        return -1
+    end
+
+    if (smart_balanced(root.right) == -1)
+        return -1
+    end
+
+    left = height(root.left)
+    right = height(root.right)
+    
+    if (left != right)
+        return -1
+    end
+    
+    return 1
+end
+
 root = Tree.new(0)
 root.left = Tree.new(2)
 root.right = Tree.new(3)
 root.left.left = Tree.new(4)
 root.left.right = Tree.new(5)
 puts balanced?(root)
+puts smart_balanced(root) == 1
 puts height(root)
 
 
@@ -50,4 +74,5 @@ root = Tree.new(0)
 root.left = Tree.new(0)
 root.right = Tree.new(0)
 puts balanced?(root)
+puts smart_balanced(root) == 1
 puts height(root)
