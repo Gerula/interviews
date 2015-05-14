@@ -5,6 +5,7 @@
 #
 
 array = ["h", "i", "j", "k", "l", "m", "n", "n", "o", "p", "a", "a", "a", "b", "c", "d", "e"]
+arrayb = ["a", "b", "c", "d", "e", "f"]
 
 def find_turning_point(a, left, right)
     if (left >= right)
@@ -24,4 +25,27 @@ def find_turning_point(a, left, right)
     return 0
 end
 
+def find_turning_point_it(a)
+    left = 0
+    right = a.length - 1
+
+    while left < right
+        middle = left + (right - left) / 2
+        if (a[left] > a[middle])
+            right = middle - 1
+            next
+        end
+
+        if (a[middle] > a[left])
+            left = middle + 1
+            next
+        end
+    end
+
+    return left
+end
+
 puts array[find_turning_point(array, 0, array.length - 1)]
+puts arrayb[find_turning_point(arrayb, 0, arrayb.length - 1)]
+puts array[find_turning_point_it(array)]
+puts arrayb[find_turning_point_it(arrayb)]
