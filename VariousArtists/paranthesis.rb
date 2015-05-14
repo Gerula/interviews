@@ -3,14 +3,14 @@
 
 def find_paranthesis(string, index)
     array = string.split("")
-    stack = []
+    stack = 0
     (index + 1).upto(array.length - 1).each { |i|
         case array[i]
             when '('
-                stack.push(i)
+                stack += 1
             when ')'
-                if stack.any?
-                    stack.pop
+                if stack > 0
+                    stack -= 1
                 else
                     return i
                 end
