@@ -6,4 +6,18 @@ def fib(n)
     fib(n-1) + fib(n-2)
 end
 
-puts fib gets.chomp.to_i
+def fib_iterative(n)
+    prev = 1
+    prev_prev = 1
+    current = 0
+
+    (n-2).times {
+        current = prev + prev_prev
+        prev_prev = prev
+        prev = current
+    }
+
+    current
+end
+
+puts fib_iterative gets.chomp.to_i
