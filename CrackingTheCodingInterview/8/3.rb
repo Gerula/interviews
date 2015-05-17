@@ -15,4 +15,13 @@ def powerset_iterative(set)
     end
 end
 
-powerset_iterative(set)
+def powerset_recursive(set)
+    return if !set.any?
+    puts set.inspect
+    (0..set.size - 1).each do |i|
+        powerset_recursive(set - [set[i]])
+    end 
+end
+
+#powerset_iterative(set)
+powerset_recursive(set.split(""))
