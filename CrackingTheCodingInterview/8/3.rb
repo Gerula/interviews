@@ -23,5 +23,13 @@ def powerset_recursive(set)
     end 
 end
 
-#powerset_iterative(set)
-powerset_recursive(set.split(""))
+def powerset_map(set)
+  return [set] if set.empty?
+
+  p = set.pop
+  subset = powerset_map(set)  
+  subset | subset.map { |x| x | [p] }
+end
+
+#owerset_iterative(set)
+puts powerset_map(set.split("")).inspect
