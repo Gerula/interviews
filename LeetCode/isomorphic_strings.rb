@@ -1,8 +1,8 @@
 # Given two strings s and t, determine if they are isomorphic.
 #
-# Two strings are isomorphic if the characters in s can be replaced to get t.
+# two strings are isomorphic if the characters in s can be replaced to get t.
 
-def isomorphic?(s, t)
+Def isomorphic?(s, t)
     a_s = s.split("")
     a_t = t.split("")
     a_s.map{|x| a_s.index(x)} == a_t.map{|x| a_t.index(x)}
