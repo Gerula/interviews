@@ -4,7 +4,7 @@ class ListNode < Struct.new(:value, :next, :jump)
 end
 
 class List
-    include Enumerable
+    attr_accessor :head
 
     def initialize
         @head = nil
@@ -28,14 +28,16 @@ class List
     end
 
     def printout
+        puts "--- begin printout ---"
         it = @head
         while !it.nil?
-            print "#{it.value} - "
-            print "#{it.next.value} - " unless it.next.nil?
-            print "#{it.jump.value} - " unless it.jump.nil?
+            print "val:#{it.value} - "
+            print "next:#{it.next.value} - " unless it.next.nil?
+            print "jump:#{it.jump.value} - " unless it.jump.nil?
             it = it .next
             puts
         end
+        puts "--- end printout ---"
     end   
 
     def jump
@@ -45,7 +47,32 @@ class List
             it.jump = self[rand_jump]
             it = it.next
         end
-    end   
+    end 
+
+    def copy
+        it = @head
+        result = List.new
+        while !it.nil?
+            new_node = ListNode.new(it.value, it.next)
+            it.next = new_node
+            it = new_node.next
+        end
+
+        it = @head.next
+        while !it.next.nil?
+            it.jump = it.jump.next unless it.jump.nil?
+            it = it.next
+        end
+
+        it = @head
+        while !it.nil?
+            it.next = it.next.next
+            it = it.next
+        end
+
+        result.head = @head
+        result
+    end  
 end
 
 list = List.new
@@ -57,3 +84,4 @@ list << ListNode.new(5)
 list << ListNode.new(6)
 list.jump
 list.printout
+list.copy.printout
