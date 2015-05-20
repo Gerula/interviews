@@ -17,7 +17,7 @@ def reach?(a)
         step -= 1
         if (i + jump > max_reach)
             max_reach = i + jump
-            step = a[i]
+            step = jump
         end    
 
         return false if step == 0 && i<a.length-1
@@ -26,6 +26,6 @@ def reach?(a)
     return true
 end
 
-[[2,3,1,1,4],[3,2,1,0,4],[2,3,1,1,4],[2,4,2,1,0,4]].each{ |x|
+[[2,3,1,1,4],[3,2,1,0,4],[2,3,1,1,4],[2,4,2,1,0,4],[4,2,10,0,1]].each{ |x|
     puts "#{x} - #{reach?(x)}"
 }
