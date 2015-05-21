@@ -13,8 +13,7 @@ def print_combinations(keypad, keys, result)
     end
     
     keypad[keys.first].split("").each { |key|
-        print_combinations(keypad, keys[1..-1], result.push(key))
-        result.delete(key)
+        print_combinations(keypad, keys[1..-1], [result,key].flatten)
     }
 end
 
