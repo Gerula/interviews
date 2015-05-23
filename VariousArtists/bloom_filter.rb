@@ -1,21 +1,22 @@
+require 'Set'
+
 class Bloom
-    def initialize(hashes, size)
+    def initialize(hashes)
         @hashes = hashes
-        @data = Array.new(size)
+        @data = Set.new
     end
 
     def <<(value)
         @hashes.each{ |hash|
-            @data[hash.call(value) % @data.size] = 1
+            @data << hash.call(value)
         }
     end
 
     def include?(value)
         @hashes.map { |hash|
-            @data[hash.call(value) % @data.size]
-        }.reduce { |acc, value|
-            acc ||= 0
-            acc += value.nil? ? 0 : 1 
+           hash.call(value)
+        }.inject(0){ |acc, value|
+           acc += @data.include?(value)? 1 : 0
         } == @hashes.length
     end
 end
@@ -28,7 +29,7 @@ primes.each { |prime|
     }
 }
 
-bloom = Bloom.new(lambdas, 10)
+bloom = Bloom.new(lambdas)
 bloom << "Yarp"
 bloom << "http://isrubyfastyet.com"
 
