@@ -38,6 +38,25 @@ class Array
 
         return -1
     end
+
+    def get_pivot
+        left = 0
+        right = self.length - 1
+        while left <= right
+            mid = left + (right - left) / 2
+            if self[mid] > self[mid + 1]
+                return mid
+            end
+
+            if self[mid] > self[right]
+                left = mid + 1
+            else
+                right = mid - 1
+            end
+        end
+
+        return -1
+    end
 end
 
 a = Array(1..30)
@@ -47,3 +66,5 @@ puts a.divide_et_impera(5)
 puts a.divide_et_impera(20)
 puts a.divide_et_impera(11)
 puts a.divide_et_impera(10)
+
+puts "Pivot #{a.get_pivot}"
