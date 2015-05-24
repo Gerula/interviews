@@ -23,10 +23,24 @@ class Tree
     def initialize(root)
         @root = root
         @current = max
+        @traversal = Traversal.new(@root)
     end
 
     def inorder
         inorder_internal(@root)
+    end
+
+    def has_next?
+        !@traversal.ending?
+    end
+
+    def next
+        if has_next?
+            @traversal.step
+            return @traversal.current
+        end
+
+        return nil
     end
 
     def each
@@ -64,11 +78,43 @@ class Tree
     private :inorder_internal
 end
 
+class Traversal
+    attr_reader :current
+
+    def initialize(current)
+        @stack = []
+        @current = current
+    end
+
+    def ending?
+        !@stack.any? && current.nil?
+    end
+
+    def step
+        found = false
+        @current = @current.left
+        while !ending? && !found
+            if current.nil?
+                @current = @stack.pop
+                found = true
+            else
+                @stack.push(@current)
+                @current = @current.right
+            end
+        end
+    end 
+end
 
 tree = Tree.new(fill([1, 2, 3, 4, 5, 6, 7, 8], 0, 7))
 tree.inorder
 puts tree.max.value
 
+puts "--- Internal iterator ---"
 tree.each {|x|
     puts "#{x.value} - iterator"
 }
+
+puts "--- External iterator ---"
+while tree.has_next?
+    puts tree.next.value
+end
