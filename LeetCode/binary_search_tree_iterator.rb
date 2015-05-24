@@ -29,6 +29,21 @@ class Tree
         inorder_internal(@root)
     end
 
+    def each
+        current = @root
+        stack = []
+        while stack.any? || !current.nil?
+            if current.nil?
+                current = stack.pop
+                yield current
+                current = current.left
+            else
+                stack.push(current)
+                current = current.right
+            end
+        end
+    end
+
     def inorder_internal(root)
         unless root.nil?
             inorder_internal(root.left)
@@ -46,10 +61,6 @@ class Tree
         return it
     end
 
-    def reset
-        
-    end
-
     private :inorder_internal
 end
 
@@ -57,3 +68,7 @@ end
 tree = Tree.new(fill([1, 2, 3, 4, 5, 6, 7, 8], 0, 7))
 tree.inorder
 puts tree.max.value
+
+tree.each {|x|
+    puts "#{x.value} - iterator"
+}
