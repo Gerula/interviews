@@ -112,4 +112,19 @@ tree.swap_random
 puts tree.to_s
 tree.unswap_random
 puts tree.to_s
+
+class PassState < Struct.new(:index)
+end
+
+def inorder_s(root, val)
+    unless root.nil?
+        inorder_s(root.left, val)
+        val.index ||= 0
+        puts "#{root.value} - #{val.index}"
+        val.index += 1
+        inorder_s(root.right, val)
+    end
+end
+
+puts inorder_s(tree.root, PassState.new) 
 tree.morris
