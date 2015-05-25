@@ -35,6 +35,17 @@ class Tree
         end
     end
 
+    def preorder
+        current = @root
+        stack = []
+        while !current.nil? || stack.any?
+                current = stack.pop
+                yield current
+                stack.push(current.left) unless current.left.nil?
+                stack.push(current.right) unless current.right.nil?
+        end
+    end
+
     private :fill
 end
 
@@ -43,3 +54,9 @@ puts "--- Inorder ---"
 tree.inorder {|x|
     puts x.value
 }
+
+puts "--- Preorder ---"
+tree.preorder {|x|
+    puts x.value
+}
+
