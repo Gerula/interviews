@@ -80,6 +80,24 @@ class Tree
         end
     end
 
+    def morris
+        raise("not implemented")
+        print "Morris: "
+        current = @root
+        while !current.nil?
+            if current.left.nil?
+                print "#{current.value} "
+                current = current.right
+            else
+                pre = current.left
+                while !pre.right.nil?
+                    pre = pre.right
+                end
+#to_complete
+            end
+        end
+    end
+
     private :find_swap
     private :inorder
     private :get_random_node
@@ -94,3 +112,4 @@ tree.swap_random
 puts tree.to_s
 tree.unswap_random
 puts tree.to_s
+tree.morris
