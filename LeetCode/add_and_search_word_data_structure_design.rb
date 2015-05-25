@@ -40,14 +40,21 @@ class Record
     end
 
     def search(word)
-        current = @data
+        current = [@data]
         word.chars.select.with_index { |letter, i|
             letter = Letter.new(letter, i == word.chars.length - 1)
-            if current[letter].nil?
+            found = current.find{ |x| !x[letter].nil?}
+            if letter.value !='.' && found.nil?
                 return false
             end
-            
-            current = current[letter]
+             
+            if letter.value == '.'
+                current = current.inject([]){ |acc, x|
+                    acc | x.values
+                }
+            else
+                current = [found[letter]]
+            end
         }
 
        return true
@@ -61,6 +68,6 @@ record.addWord("baddie")
 record.addWord("mad")
 record.addWord("dad")
 puts record.inspect
-["bad", "bc", "bcd", "bady"].each { |x|
+["bad", "bc", "bcd", "bady", "b.d", "..d"].each { |x|
     puts "#{x} - #{record.search(x)}"
 }
