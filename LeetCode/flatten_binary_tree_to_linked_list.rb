@@ -27,6 +27,10 @@
 class TreeNode<Struct.new(:value, :left, :right)
 end
 
+def listify(root, next_next)
+    
+end
+
 tree = TreeNode.new(1,
                 TreeNode.new(2,
                          TreeNode.new(3, nil, nil),
