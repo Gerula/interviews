@@ -22,25 +22,6 @@ nodes.each { |x|
 
 require 'set'
 
-def bfs_string(x)
-    queue = [x]
-    visited = Set.new
-    visited.add(x)
-    result = ""
-    while queue.any?
-        current = queue.shift
-        result += "#{current.label} "
-        current.neighbors.each {|x|
-            unless visited.include?(x)
-                visited.add(x)
-                queue.push(x)
-            end
-        }
-    end
-
-    return result
-end
-
 def bfs(x, block)
     queue = [x]
     visited = Set.new
@@ -72,6 +53,10 @@ def clone(x)
 end
 
 puts nodes.inspect
-puts bfs_string(nodes[0])
-puts bfs_string(clone(nodes[0]))
+result = ""
+bfs(nodes[0], -> (x,y) { result+= "#{x.label} "})
+puts result
+result = ""
+bfs(clone(nodes[0]), -> (x,y) { result+= "#{x.label} "})
+puts result
 puts nodes.inspect
