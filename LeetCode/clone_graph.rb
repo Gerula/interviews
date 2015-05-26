@@ -2,8 +2,11 @@
 #
 
 class Node < Struct.new(:label, :neighbors)
+    attr_accessor :link
+
     def inspect
-        "#{label} #{neighbors.map{|x| x.label}}"
+        str_link = link.nil? ? "x" : link.label
+        "#{label} link:#{str_link} #{neighbors.map{|x| x.label}}"
     end
 end
 
@@ -38,5 +41,37 @@ def bfs_string(x)
     return result
 end
 
+def bfs(x, block)
+    queue = [x]
+    visited = Set.new
+    visited.add(x)
+    puts "--- Linking to new nodes ---"
+    while queue.any?
+        current = queue.shift
+        block.call(current, visited)
+        current.neighbors.each {|x|
+            if !visited.include?(x)
+                visited.add(x)
+                queue.push(x)
+            end
+        }
+    end
+end
+
+def clone(x)
+    result = x
+    bfs(x, -> (x, visited) { x.link = Node.new(x.label)})
+    bfs(x, -> (x, visited) { x.neighbors.each {|y|
+        if visited.include?(y)
+            y = y.link
+        end
+    }})
+    bfs(x, -> (x,visited) { x = x.link })
+
+    x
+end
+
 puts nodes.inspect
 puts bfs_string(nodes[0])
+puts bfs_string(clone(nodes[0]))
+puts nodes.inspect
