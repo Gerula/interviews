@@ -31,12 +31,18 @@ class String
 
         return result
     end
+    
+    def count_and_NINJA
+        gsub(/(.)\1*/) {|x| "#{x.length}#{x[0,1]}"}
+    end
 end
 
 puts ["1", "11", "21", "1211", "111221"].map{|x| { x => x.count_and_say }}.inspect
 
 s = "1"
-20.times {
+t = "1"
+10.times {
     s = s.count_and_say
-    puts s
+    t = t.count_and_NINJA
+    puts [s, t].inspect
 }
