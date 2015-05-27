@@ -31,7 +31,18 @@ def tsil(root)
     return prev
 end
 
+def tsil_bonus(root)
+    it = root
+    new_node = nil
+    while !it.nil?
+        new_node = Node.new(it.value, new_node)
+        it = it.linky
+    end
+    new_node
+end
+
+puts_list(root)
+puts_list(tsil_bonus(root))
 puts_list(root)
 root = tsil(root)
 puts_list(root)
-
