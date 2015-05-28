@@ -13,4 +13,15 @@ puts (0..(a.size-1)).inject(a[0]) {|max_prod, current|
     max_prod
 }
 
+max_local = a.first
+min_local = a.first
+max_global = a.first
 
+a[1..-1].each { |x|
+    max = max_local
+    max_local = [[max_local * x, x].max, min_local * x].max
+    min_local = [[max * x, x].min, min_local * x].min
+    max_global = [max_local, max_global].max 
+}
+
+puts max_global
