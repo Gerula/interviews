@@ -7,18 +7,21 @@
 
 class Array
     def permutations
-        permutations_rec(self, [])
+        permutations_rec(self.dup, 0, self.size - 1)
     end
 
-    def permutations_rec(array, perm)
-        if perm.size == self.size
-            puts perm.inspect
+    def permutations_rec(array, start, length) 
+        if start == length
+            puts array.inspect
             return
         end
 
-        array.each { |x|
-            permutations_rec(array - [x], perm + [x]) 
+        start.upto(length).each {|i|
+            array[i], array[start] = array[start], array[i]
+            permutations_rec(array, start + 1, length)
+            array[i], array[start] = array[start], array[i]
         }
+
     end
 
     private :permutations_rec
