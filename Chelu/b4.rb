@@ -69,6 +69,7 @@ class Tree
 
         return current
     end
+
     attr_accessor :root
 end
 
