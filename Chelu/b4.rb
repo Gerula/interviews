@@ -43,8 +43,36 @@ class Tree
     def next_node(node)
         puts inorder(node)
     end
+
+    def next_node_2(node)
+        puts node.value
+        if node.right
+            current = node.right
+            while current.left
+                current = current.left
+            end
+            return current
+        end
+
+        current = @root
+        next_node = @root
+        while current
+            if node.value < current.value
+                next_node = current
+                current = current.left
+            elsif node.value > current.value
+                current = current.right
+            else
+                return current
+            end
+        end
+
+        return current
+    end
+    attr_accessor :root
 end
 
 tree = Tree.new
 tree.inorder
 puts tree.next_node(1)
+puts tree.next_node_2(tree.root.left)
