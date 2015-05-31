@@ -13,12 +13,23 @@ class Array
 
         self
     end
+
+    def reverse_2
+        result = self.inject([]) {|acc, x|
+            if x != nil
+                acc.unshift(x)
+            end
+            acc
+        }
+        result << nil
+        result
+    end
 end
 
 [[1, 2, 3, nil],
  [1, 2, 3, 4, nil],
  [1,nil],
  [nil]].each { |x|
-    puts x.reverse_n!.inspect
+    puts x.reverse_2.inspect
 }
 
