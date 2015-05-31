@@ -61,6 +61,35 @@ class Tree
             end
         end
     end
+
+    def connect
+        slow = @root
+        fast = @root
+        while slow
+            if slow.left
+                fast.next = slow.left
+                fast = fast.next
+            end
+            if slow.right
+                fast.next = slow.right
+                fast = fast.next
+            end
+            slow = slow.next
+        end
+    end
+
+    def connect_rec(node)
+        return if node.nil?
+        if node.left
+            node.left.next = node.right
+        end
+        if node.right
+            node.right.next = node.next ? node.next.left : nil
+        end
+
+        connect_rec(node.left)
+        connect_rec(node.right)
+    end
 end
 
 tree = Tree.new
@@ -73,3 +102,18 @@ tree.inorder(->(x){
     print (x.next.nil? ? "x]" : "#{x.next.val}] ")
 })
 puts
+tree2 = Tree.new
+puts
+tree2.inorder(->(x){
+    print "[#{x.val} "
+    print (x.next.nil? ? "x]" : "#{x.next.val}] ")
+})
+puts
+tree2.connect
+puts
+tree2.inorder(->(x){
+    print "[#{x.val} "
+    print (x.next.nil? ? "x]" : "#{x.next.val}] ")
+})
+puts
+
