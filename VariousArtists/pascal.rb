@@ -3,13 +3,11 @@ def pascal(n)
         if acc.empty?
             [1]
         else
-            current = []
-            0.upto(i - 1).each { |j|
-                prev_correspondent = j == 0 ? 0 : acc[j - 1]
-                correspondent = j == i - 1 ? 0 : acc[j]
-                current[j] = prev_correspondent + correspondent
+            current = [1]
+            1.upto(i - 2).each { |j|
+                current[j] = acc[j - 1] + acc[j] 
             }
-            current
+            current << 1
         end
     }
 end
