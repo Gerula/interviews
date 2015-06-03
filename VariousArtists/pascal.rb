@@ -7,7 +7,7 @@ def pascal(n)
             1.upto(i - 2).each { |j|
                 current[j] = acc[j - 1] + acc[j] 
             }
-            current << 1
+            current + [1]
         end
     }
 end
