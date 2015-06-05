@@ -42,6 +42,27 @@ class Tree
                         from_list_rec(list, m + 1, r))
     end
 
+    class IteratorList < Struct.new(:node)
+    end
+
+    def from_list_ninja(list)
+        root = IteratorList.new(list.root)
+        @root = from_list_ninja_rec(root, 0, list.len - 1)
+    end
+
+    def from_list_ninja_rec(list_node, left, right)
+        return nil if left > right
+        mid = left + (right - left) / 2
+        left_child = from_list_ninja_rec(list_node, left, mid - 1)
+        tree_node = TreeNode.new
+        tree_node.left = left_child
+        tree_node.value = list_node.node.value
+        list_node.node = list_node.node.link
+        right_child = from_list_ninja_rec(list_node, mid + 1, right)
+        tree_node.right = right_child
+        return tree_node
+    end
+    
     def to_s
         it = @root
         stack = []
@@ -63,6 +84,7 @@ end
 
 class List
     attr_accessor :len
+    attr_accessor :root
 
     def initialize
         @root = nil
@@ -112,3 +134,10 @@ tree_2 = Tree.new
 }
 
 puts tree_2.to_s
+
+puts "Ninja tree"
+
+ninja = Tree.new
+ninja.from_list_ninja(list)
+puts ninja.to_s
+puts list.to_s
