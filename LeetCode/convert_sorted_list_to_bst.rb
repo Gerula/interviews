@@ -15,6 +15,21 @@ class Tree
         @root = nil
     end
 
+    def add(value)
+        @root = add_rec(@root, value)
+    end
+
+    def add_rec(current, value)
+        return TreeNode.new(value) if current.nil?
+        if current.value > value
+            current.left = add_rec(current.left, value)
+        else
+            current.right = add_rec(current.right, value)
+        end
+
+        return current
+    end
+
     def from_list(list)
         @root = from_list_rec(list, 0, list.len - 1)
     end    
@@ -90,3 +105,10 @@ list = List.new
 tree = Tree.new
 tree.from_list(list)
 puts tree.to_s
+
+tree_2 = Tree.new
+10.times {
+    tree_2.add(Random.rand(1..20))
+}
+
+puts tree_2.to_s
