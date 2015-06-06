@@ -46,6 +46,21 @@ class Tree
         result << root.value
         inorder_2(root.left, result)
     end
+
+    def mirror?
+        first = [@root]
+        second = [@root]
+        while first.any? && second.any?
+            stan = first.shift
+            bran = second.shift
+            return false if stan.value != bran.value
+            first.push(stan.left) unless stan.left.nil?
+            first.push(stan.right) unless stan.right.nil?
+            second.push(bran.right) unless bran.right.nil?
+            second.push(bran.left) unless bran.left.nil?
+        end
+        return first == second
+    end
 end
 
 tree = Tree.new
@@ -64,3 +79,5 @@ second = []
 tree.inorder_2(tree.root, second)
 puts first.inspect + " - " + second.inspect
 puts first == second
+puts "Mirror 2"
+puts tree.mirror?
