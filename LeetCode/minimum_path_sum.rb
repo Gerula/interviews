@@ -21,25 +21,20 @@ grid.each {|x|
  
 class Array
     def min_path
-        start = [0, 0]
-        sum = 0
-        while start != [self.size - 1, self[0].size - 1]
-            sum += self[start[0]][start[1]]
-            if start[0] + 1 > self.size - 1
-                start[1] += 1
-                next
+        (1..self.size-1).each do |i|
+            self[i][0] = self[i-1][0] + self[i][0]
+        end
+        (1..self[0].size-1).each do |j|
+            self[0][j] = self[0][j-1] + self[0][j]
+        end
+
+        (1..self.size-1).each do |i|
+            (1..self[0].size-1).each do |j|
+                self[i][j] = [self[i-1][j] + self[i][j], self[i][j-1] + self[i][j]].min
             end
-            if start[1] + 1 > self[0].size - 1
-                start[0] += 1
-                next
-            end
-            if self[start[0] + 1][ start[1]] > self[start[0]][start[1] + 1]
-                start[1] += 1
-            else
-                start[0] += 1
-            end
-        end 
-        sum
+        end
+
+        self[self.size - 1][self[0].size - 1]
     end
 end
 
