@@ -61,6 +61,18 @@ class Tree
         end
         return first == second
     end
+
+    def ninja_mirror?
+        is_mirror?(@root.left, @root.right)
+    end
+
+    def is_mirror?(left, right)
+        if left == right && left.nil?
+            return true
+        else
+            return left == right && is_mirror?(left.left, right.right) && is_mirror?(left.right, right.left)
+        end
+    end
 end
 
 tree = Tree.new
