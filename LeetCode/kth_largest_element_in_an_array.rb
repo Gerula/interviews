@@ -10,7 +10,6 @@ class Array
             read = left
             write = right
             mid = self[read + (write - read) / 2]
-
             while read < write
                 if self[read] >= mid
                     self[read], self[write] = self[write], self[read]
@@ -31,12 +30,11 @@ class Array
             end
         end
 
-        puts self.inspect
         return self[n]
     end
 end
 
-5.times {
+1.times {
    input = []
    Random.rand(5..15).times {
         input << Random.rand(1..30)
