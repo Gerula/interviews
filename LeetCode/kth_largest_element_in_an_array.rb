@@ -9,7 +9,7 @@ class Array
         while left < right
             read = left
             write = right
-            mid = self[read + (write - read) / 2]
+            mid = self[Random.rand(read..write)]
             while read < write
                 if self[read] >= mid
                     self[read], self[write] = self[write], self[read]
