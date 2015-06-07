@@ -21,7 +21,25 @@ class String
     end
 end
 
+class Fixnum
+    def column
+        x = self
+        result = ""
+        offset = "Z".ord - "A".ord + 1
+        first = "A".ord 
+        while x > 0
+            div, mod = x.divmod(offset)
+            x = div - ((mod == 0)? 1 : 0)
+            result = (mod == 0)? "Z" + result : (first + mod - 1).chr + result
+        end
+        result
+    end
+end
+
 ["A", "AA", "AB", "Z", "B", "AB"].each { |x|
     puts "#{x} - #{x.column}"
 }
 
+[27, 28, 26, 2, 4].each { |x|
+    puts "#{x} - #{x.column}"
+}
