@@ -10,21 +10,14 @@
 
 class Array
     def operators
-        ["*", "+", "/", "-"]
+        ["*", "/", "+", "-"]
     end
 
     def evaluate
         stack = []
         self.each { |token|
             if operators.include?(token)
-                b = stack.pop.to_i
-                a = stack.pop.to_i
-                case token
-                when "+" then stack.push(a + b)
-                when "-" then stack.push(a - b)
-                when "*" then stack.push(a * b)
-                when "/" then stack.push(a / b)
-                end
+                compute(stack, token)
             else
                 stack.push(token)
             end
@@ -32,8 +25,45 @@ class Array
 
         stack.pop
     end
+
+    def eval
+        operator_stack = []
+        operand_stack = []
+        
+        self.each { |token|
+            if operators.include?(token)
+                while operator_stack.any? && operators.index(operator_stack[-1]) <= operators.index(token)
+                    compute(operand_stack, operator_stack.pop)
+                end
+                operator_stack.push(token)     
+            else
+                operand_stack.push(token)
+            end      
+        }
+
+        while operator_stack.any?
+            compute(operand_stack, operator_stack.pop)
+        end
+
+        operand_stack.first
+    end
+
+    def compute(operands, operator)
+        b = operands.pop.to_i
+        a = operands.pop.to_i
+        case operator
+        when "+" then operands.push(a + b)
+        when "-" then operands.push(a - b)
+        when "*" then operands.push(a * b)
+        when "/" then operands.push(a / b)
+        end
+    end
 end
 
 [["2", "1", "+", "3", "*"], ["4", "13", "5", "/", "+"]].each { |s|
     puts s.evaluate
+}
+
+["2 * 3 + 4 * 10 + 2".split, "1 + 2 + 4 * 5".split].each { |s|
+    puts s.eval
 }
