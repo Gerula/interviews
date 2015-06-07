@@ -12,11 +12,19 @@ array = ["zero", "one", "two", "three", "four"]
 
 puts perm.inspect
 
-0.upto(perm.size - 1).each { |i|
-    while perm[i] != i && perm[i] < perm[perm[i]]
-        x = perm[i]
-        perm[i], perm[x] = perm[x], perm[i]
+(0..(perm.size - 1)).each { |i|
+    if perm[i] > 0 
+        a = i
+        temp = array[i]
+        begin
+            next_a = perm[a]
+            next_temp = array[next_a]
+            array[next_a] = temp
+            perm[a] = -1
+            a = next_a
+            temp = next_temp
+        end while a != i
     end
 }
 
-puts perm.inspect
+puts array.inspect
