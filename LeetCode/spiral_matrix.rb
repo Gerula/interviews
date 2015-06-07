@@ -30,5 +30,36 @@ def spiral(grid)
     }
 end
 
+def spiral_2(grid)
+    top = 0
+    left = 0
+    right = grid.size - 1
+    bottom = grid.size - 1
+    (grid.size-1 / 2).times{
+        left.upto(right).each { |i|
+            print "#{grid[top][i]} "
+        }
+        top += 1
+
+        top.upto(bottom).each { |i|
+            print "#{grid[i][right]} "
+        }
+        right -= 1
+
+        right.downto(left).each { |i|
+            print "#{grid[bottom][i]} "
+        }
+        bottom -= 1
+
+        bottom.downto(top).each { |i|
+            print "#{grid[i][left]} "
+        }
+        left += 1
+    }
+end
+
+spiral_2(grid)
+puts
 spiral(grid)
 puts
+
