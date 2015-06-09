@@ -9,11 +9,8 @@
 
 def kth_row(k)
     2.upto(k).inject([1, 1]) { |acc, i|
-        result = 0.upto(i - 2).map { |j|
-            acc[j] + acc[j + 1]
-        }
-        [1] + result + [1]
+        [1] + acc.each_cons(2).map { |a, b| a + b} + [1]
     } 
 end
 
-puts kth_row(10).inspect
+puts kth_row(3).inspect
