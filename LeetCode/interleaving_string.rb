@@ -21,9 +21,50 @@ class String
                s[0] == second[0] && inter_rec(s[1..-1], first, second[1..-1])
     end
 
+    def inter_dp(first, second)
+        match = Array.new(first.size + 1) { |x|
+            Array.new(second.size + 1) { |y|
+                false
+            }
+        }
+        0.upto(first.size).each { |i|
+            0.upto(second.size).each { |j|
+                if i == 0 && j == 0
+                    match[i][j] = true 
+                    next
+                end 
+                if i == 0 && second[j - 1] == self[j - 1]
+                    match[i][j] = match[i][j - 1]
+                    next
+                end
+                if j == 0 && first[i - 1] == self[j - 1]
+                    match[i][j] = match[i - 1][j]
+                    next
+                end
+                if first[i - 1] != self[i + j - 1] && second[i - 1] != self[i + j - 1]
+                    match[i][j] = match[i - 1][j] || match[i][j - 1]
+                    next
+                end
+                if first[i - 1] == self[i + j - 1] && second[i - 1] != self[i + j - 1]
+                    match[i][j] = match[i - 1][j]
+                    next
+                end
+                if first[i - 1] != self[i + j - 1] && second[i - 1] == self[i + j - 1]
+                    match[i][j] = match[i][j - 1]
+                    next
+                end
+            }
+        }
+
+        match[first.size][second.size]
+    end
+
     private :inter_rec
 end
 
 puts "aadbbcbcac".inter("aabcc", "dbbca")
 puts "aadbbbaccc".inter("aabcc", "dbbca")
+
+puts "aadbbcbcac".inter_dp("aabcc", "dbbca")
+puts "aadbbbaccc".inter_dp("aabcc", "dbbca")
 
