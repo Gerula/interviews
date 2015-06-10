@@ -7,12 +7,14 @@ class Array
     def missing
         c = self.dup
         i = 0
-        0.upto(c.size - 1).each { |i|
-            while c[i] != i + 1 && c[c[i] - 1]  && c[i] < c[c[i] - 1]
+        while i < c.size
+            if c[i] != i + 1 && c[c[i] - 1]  && c[i] < c[c[i] - 1]
                target = c[i] - 1
                c[i], c[target] = c[target], c[i]
+            else
+               i += 1
             end
-        }
+        end
 
         return c.each_with_index.map { |x, y| [x, y]}.find { |x, y| x != y + 1}[1] + 1
     end
