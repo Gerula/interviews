@@ -78,6 +78,27 @@ class Program {
                 Reverse(node.Right);
             }
         }
+
+        public Tree GetReverse()
+        {
+            Tree result = new Tree(0, 1);
+            result.Root = GetReverse(Root);
+            return result;
+        }
+
+        private TreeNode GetReverse(TreeNode root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            return new TreeNode {
+                Value = root.Value,
+                Left = GetReverse(root.Right), 
+                Right = GetReverse(root.Left)
+            };
+        }
     }
 
     public static void Main(String[] args) {
@@ -85,5 +106,7 @@ class Program {
         Console.WriteLine(tree);
         tree.Reverse();
         Console.WriteLine(tree);
+        Console.WriteLine(tree.GetReverse().ToString());
+        Console.WriteLine(tree.GetReverse().GetReverse().GetReverse());
     }
 }
