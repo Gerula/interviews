@@ -57,10 +57,33 @@ class Program {
 
             return result.ToString();
         }
+
+        public void Reverse()
+        {
+            Reverse(Root);
+        }
+
+        private void Reverse(TreeNode node)
+        {
+            TreeNode aux = node.Left;
+            node.Left = node.Right;
+            node.Right = aux;
+
+            if (node.Left != null)
+            {
+                Reverse(node.Left);
+            }
+            if (node.Right != null)
+            {
+                Reverse(node.Right);
+            }
+        }
     }
 
     public static void Main(String[] args) {
         Tree tree = new Tree(0, 10);
+        Console.WriteLine(tree);
+        tree.Reverse();
         Console.WriteLine(tree);
     }
 }
