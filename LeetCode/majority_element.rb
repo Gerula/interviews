@@ -5,21 +5,20 @@
 
 class Array
     def majority
-        element = self.first
-        majority = 1
-        self[1..-1].each do |x|
-            if element == x
-                majority += 1
+        element = nil
+        majority = 0
+        self.each do |x|
+            if majority == 0
+                element = x
+                majority = 1
             else
-                majority -= 1
-                if majority == 0
-                    element = x
-                    majority = 1
-                end
+                majority += element == x ? 1 : -1
             end
         end
-
-        element
+        
+        majority = self.inject(0){|acc, x| acc + (x == element ? 1 : 0)}
+        return element if majority > self.size / 2
+        return nil
     end
 end
 
