@@ -1,0 +1,34 @@
+; First week of active planned learnings 
+; to make benefit the great company of myself.
+; We will start gloriously with 
+; multi-threading and multi-threading accessories
+
+[Synchronization]
+ThreadFundamentalsC# = false
+ThreadFundamentalsRuby = false
+
+[ThreadSafeDataStructures]
+general = false
+lock-free = false
+
+[FundamentalProblems]
+DiningPhyilosophers = false
+ReadersWriters = false
+ProducersConsumers = false
+
+[Patterns]
+Reactor = false
+Scheduler = false
+GuardedSuspension = false
+DoubleCheckLock = false
+ThreadPool = false
+
+[Problems]
+ThreadSafeSingleton = false
+DetectDeadlock = false
+
+[Questions]
+ThreadVsProcess = false
+Concurrency\Parallelism\RaceCondition = false
+Deadlock\Livelock = false
+
