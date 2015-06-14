@@ -34,6 +34,25 @@ class Tree
         @root = nil
     end
 
+    def rightside
+        queue = [@root]
+        next_level = 0
+        current_level = 1
+        while queue.any?
+            current = queue.shift
+            current_level -= 1
+            size = queue.size
+            queue.push(current.left) unless current.left.nil?
+            queue.push(current.right) unless current.right.nil?
+            next_level += queue.size - size
+            if current_level == 0
+                print "#{current.value} "
+                current_level = next_level
+                next_level = 0
+            end
+        end
+    end
+
     def inorder
         stack = []
         current = @root
@@ -64,4 +83,4 @@ tree.root = Node.new(1,
                                       nil,
                                       nil)))
 tree.inorder
-puts tree.root
+puts tree.rightside
