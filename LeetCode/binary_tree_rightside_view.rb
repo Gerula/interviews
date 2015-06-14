@@ -34,6 +34,22 @@ class Tree
         @root = nil
     end
 
+    def r_rightside
+        @max_level = 0 
+        r_rightside_rec(@root, 1)
+        puts
+    end
+
+    def r_rightside_rec(node, level)
+        return if node.nil?
+        if @max_level < level
+            print "#{node.value} "
+            @max_level = level
+        end
+        r_rightside_rec(node.right, level + 1)
+        r_rightside_rec(node.left, level + 1)
+    end
+
     def rightside
         queue = [@root]
         next_level = 0
@@ -51,6 +67,8 @@ class Tree
                 next_level = 0
             end
         end
+
+        puts
     end
 
     def inorder
@@ -84,3 +102,4 @@ tree.root = Node.new(1,
                                       nil)))
 tree.inorder
 puts tree.rightside
+puts tree.r_rightside
