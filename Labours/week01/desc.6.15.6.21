@@ -18,13 +18,14 @@ ProducersConsumers = false
 
 [Patterns]
 Reactor = false
+Proactor = false
 Scheduler = false
 GuardedSuspension = false
 DoubleCheckLock = false
 ThreadPool = false
 
 [Problems]
-ThreadSafeSingleton = false
+ThreadSafeSingleton = true
 DetectDeadlock = false
 
 [Questions]
