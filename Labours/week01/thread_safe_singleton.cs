@@ -5,8 +5,7 @@ class Program {
 
     class Singleton {
         public string Message {get; private set;}
-        private static Object padLock = new Object();
-        private static Singleton instance = null;
+        private static Lazy<Singleton> Lazy = new Lazy<Singleton>(() => new Singleton());
 
         private Singleton() {
             Message = "Hello right back.";
@@ -14,16 +13,7 @@ class Program {
 
         public static Singleton Instance {
             get {
-                if (instance == null) {
-                    lock (padLock) {
-                        if (instance == null) {
-                            instance = new Singleton();
-                            return instance;
-                        }
-                    }
-                }
-
-                return instance;
+                return Lazy.Value;
             }
         }
     }
