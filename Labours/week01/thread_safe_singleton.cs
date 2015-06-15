@@ -5,7 +5,8 @@ class Program {
 
     class Singleton {
         public string Message {get; private set;}
-        private static Singleton instance = new Singleton();
+        private static Object padLock = new Object();
+        private static Singleton instance = null;
 
         private Singleton() {
             Message = "Hello right back.";
@@ -13,6 +14,15 @@ class Program {
 
         public static Singleton Instance {
             get {
+                if (instance == null) {
+                    lock (padLock) {
+                        if (instance == null) {
+                            instance = new Singleton();
+                            return instance;
+                        }
+                    }
+                }
+
                 return instance;
             }
         }
