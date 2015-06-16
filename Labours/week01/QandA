@@ -1,18 +1,43 @@
 What is a process?
-
+An instance of a program, a unit of execution from the Operating System's perspective. It is a memory location consisting of an image of the machine code, memory region, descriptors of resources, security attributes, processor context. It has at least one thread of execution, does not implicitly share memory with other processes (separate explicit mechanisms such as shared memory\pipes are needed) 
 What is a thread?
+A unit of execution from the processes perspective. Threads from the same process share the memory, code and the variable context (except for thread-local data)
 
 What is a fiber?
+Lightweight thread with the difference that it is scheduled cooperatively as opposed to preemptively (like threads). A fiber yields when it finished executing to make room for another fiber in the scheduler.
 
 What is parallelism?
+Processing done in parallel. At every moment T, if taskA is running and taskB is running then they are running in parallel. Practically this will happen if the execution units are scheduled independently on different processors/cores.
 
 What is concurrency?
+Processing which may or may not happen in parallel as tasks 'compete' for common resources.
 
 What is a race condition?
+A situation in which the output of executing concurrent operations has a dependency on the sequence or timing of uncontrollable events.
+Critical race - when the order of operations changes the eventual state of the state machine.
+Non-Critical race - when the order of operations does not affect the eventual state of the state machine.
 
 What's a deadlock?
+A situation in which the overall state of a group of concurrent execution units does not advance due to the fact that competing actions are waiting for each other to finish.
 
 What's a livelock?
+A situation in which the overall state of a group of concurrent execution units does not advance due to the fact that competing actions are waiting for each other to finish but the individual state of each unit does change in regards to other units.
 
 Mutex vs Semaphore?
+Both are synchronization primitives.
+Semaphore is a signaling mechanism. Mutex is a locking mechanism. From the practical point of view, a mutex can be regarded as a binary semaphore. In C# the mutex is reentrant, semaphore is not.
 
+Priority inversion?
+When the priority of a execution unit is practically decreased due to a lower priority unit which is directly or indirectly holding a resource needed by the higher priority unit.
+Example:
+A - priority 0
+B - priority 1
+C - priority 2
+
+C holds object X, needed by A.
+
+In a well designed system, C would release X. However, if B starts to run and preempts C as it has a higher priority, A is blocked by B.
+
+Solutions:
+- Priority inheritance: while task C is keeping object X, it will temporarely have the same priority as A.
+- Random boosting: tasks wich are ready and holding objects are being randomly boosted in priority (Windows)
