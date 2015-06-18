@@ -73,6 +73,22 @@ class Tree {
 
         return result.ToString();
     }
+
+    public static bool Equals(Tree first, Tree second) {
+        return Equals(first.Root, second.Root);
+    }
+
+    private static bool Equals(Node first, Node second) {
+        if (first == null && second == null) {
+            return true;
+        }
+        
+        if (first != null && second == null || first == null && second != null) {
+            return false;
+        }
+
+        return (first.Value == second.Value) && Equals(first.Left, second.Left) && Equals(first.Right, second.Right);
+    }
 }
 
 class Program {
@@ -84,7 +100,9 @@ class Program {
         Enumerable.Range(1, 5).ToList().ForEach(x => other.Add(x));
         Console.WriteLine(other);
         Console.WriteLine("Equals? {0}", tree.Equals(other));
+        Console.WriteLine("Equals rec? {0}", Tree.Equals(tree, other));
         other.Add(6);
         Console.WriteLine("Equals? {0}", tree.Equals(other));
+        Console.WriteLine("Equals rec? {0}", Tree.Equals(tree, other));
     }
 }
