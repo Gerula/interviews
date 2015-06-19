@@ -12,12 +12,8 @@ class Node {
 
 class Program{
     static bool IsMirror(Node left, Node right) {
-        if (left == null && right == null) {
-            return true;
-        }
-        
-        if (left == null && right != null || left != null && right == null) {
-            return false;
+        if (left == null || right == null) {
+            return left == null && right == null;
         }
 
         return ((left.Value == right.Value) && IsMirror(left.Right, right.Left) && IsMirror(left.Left, right.Right));
