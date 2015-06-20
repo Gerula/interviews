@@ -27,8 +27,22 @@
 class TreeNode<Struct.new(:value, :left, :right)
 end
 
-def listify(root, next_next)
-    
+def listify(current)
+    return if current.nil?
+    left = current.left
+    right = current.right
+    current.left = nil
+    current.right = nil
+    listify(left)
+    listify(right)
+    if left
+        current.right = left
+    end
+    it = current
+    while current.right
+        current = current.right
+    end
+    current.right = right
 end
 
 tree = TreeNode.new(1,
@@ -38,19 +52,15 @@ tree = TreeNode.new(1,
                 TreeNode.new(5,
                          nil,
                          TreeNode.new(6, nil, nil)))
-
-stack = []
-root = tree
-
-while stack.any? || !root.nil?
-    if root.nil?
-        root = stack.pop
-        puts root.value
-        root = root.right
-    else
-        stack.push(root)
-        root = root.left
+def display(tree)
+    it = tree
+    while it
+        print "#{it.value} "
+        it = it.right
     end
+    puts
 end
 
-
+display(tree)
+listify(tree)
+display(tree)
