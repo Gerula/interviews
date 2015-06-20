@@ -24,11 +24,14 @@
 #              6
 #
 
+require 'pry'
+
 class TreeNode<Struct.new(:value, :left, :right)
 end
 
 def listify(current)
     return if current.nil?
+    binding.pry
     left = current.left
     right = current.right
     current.left = nil
@@ -38,6 +41,7 @@ def listify(current)
     if left
         current.right = left
     end
+    binding.pry
     it = current
     while current.right
         current = current.right
