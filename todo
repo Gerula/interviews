@@ -1,9 +1,6 @@
 Todo:
     - do flatten binary tree to list on paper (do it also iteratively, don't be an asshole)
     - do the 0 mod n-sum subset problem on paper
-    - do max difference (robot battery stuff) on paper
-    - do integer sumation bitwise on paper
-    - learn the histogram algorithm (the one about the max rectangle)
     - learn Manacher's algorithm
     - do this in C# https://leetcode.com/problems/minimum-path-sum/
     - do maximum palindrome on paper
@@ -14,4 +11,7 @@ Todo:
 Done
     - do triangle in C# (6.13.2015)
     - do quickselect in C# (6.13.2015)
+    - do max difference (robot battery stuff) on paper
+    - do integer sumation bitwise on paper
+    - learn the histogram algorithm (the one about the max rectangle)
     
