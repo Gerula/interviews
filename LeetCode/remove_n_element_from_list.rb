@@ -16,18 +16,18 @@ def display(root)
 end
 
 def remove_k(root, k)
-    len = 0
-    it = root
-    while it
-        len += 1
-        it = it.link
-    end
-    it = root
-    (len - k - 1).times {
-        it = it.link
+    first = root
+    second = root
+    (k + 1).times { 
+        second = second.link
     }
 
-    it.link = it.link.link
+    while second
+        first = first.link
+        second = second.link
+    end
+
+    first.link = first.link.link
 end
 
 display(root)
