@@ -79,12 +79,8 @@ class Tree {
     }
 
     private static bool Equals(Node first, Node second) {
-        if (first == null && second == null) {
-            return true;
-        }
-        
-        if (first != null && second == null || first == null && second != null) {
-            return false;
+        if (first == null || second == null) {
+            return first == null && second == null;
         }
 
         return (first.Value == second.Value) && Equals(first.Left, second.Left) && Equals(first.Right, second.Right);
