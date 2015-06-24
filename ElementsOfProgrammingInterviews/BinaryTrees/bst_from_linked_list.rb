@@ -20,7 +20,6 @@ root = nil
     root = Node.new(i, nil, root)
 }
 
-
 def print_level(root)
     queue = [root]
     current_level = 1
@@ -50,7 +49,7 @@ def get_tree(list, left, right)
     it = list
     (mid - left).times { it = it.right }
     return nil if it.nil?
-    it.left = get_tree(list, left, mid - 1)t
+    it.left = get_tree(list, left, mid - 1)
     it.right = get_tree(it.right, mid + 1, right)
     return it
 end
@@ -70,17 +69,24 @@ puts "inorder"
 inorder(treeRoot)
 puts
 
-def get_tree_in(list, n)
-    return nil if n == 0
-    left = get_tree_in(list, n / 2)
-    node = Node.new(list.first.value)
-    list = [list.first.right]
-    right = get_tree_in(list, n / 2 - 1)
+def get_tree_in(list, left, right)
+    return nil if left >= right
+    mid = left + (right - left ) / 2
+    node = Node.new
+    node.left = get_tree_in(list, left, mid - 1)
+    node.value = list.first.value
+    list[0] = list.first.right
+    node.right = get_tree_in(list, mid + 1, right) 
     return node
 end
 
+root = nil
+10.downto(1).each { |i|
+    root = Node.new(i, nil, root)
+}
+
 puts "built O(N)"
-treeRoot2 = get_tree_in([root], root.length) 
+treeRoot2 = get_tree_in([root], 0, root.length) 
 print_level(treeRoot2)
 puts "inorder"
 inorder(treeRoot2)
