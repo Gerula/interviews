@@ -62,10 +62,42 @@ class Program {
         return root;
     }
 
+    static Node ToDoubleLinked(Node root) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.Left != null) {
+            Node left = ToDoubleLinked(root.Left);
+            while (left.Right != null) {
+                left = left.Right;
+            }
+
+            left.Right = root;
+            root.Left = left;
+        }
+
+        if (root.Right != null) {
+            Node right = ToDoubleLinked(root.Right);
+            while (right.Left != null) {
+                right = right.Left;
+            }
+
+            right.Left = root;
+            root.Right = right;
+        }
+
+        return root;
+    }
+
     static void Main() {
         Node root = Fill(1, 10);
         Console.WriteLine(String.Join(",", Inorder(root).Select(x => x.Value)));
-        root = ToSingleList(root);
+        root = ToDoubleLinked(root);
+        while (root.Left != null) {
+            root = root.Left;
+        }
+
         Node it = root;
         while (it != null) {
             Console.Write("{0} ", it.Value);
