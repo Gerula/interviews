@@ -38,8 +38,25 @@ def inorder_search(root, value, found)
     end
 end
 
+# O(log N)
+def stupid_search(root, value)
+    case
+    when root.nil? 
+        return root
+    when value > root.value 
+        return stupid_search(root.right, value)
+    when value < root.value 
+        return stupid_search(root.left, value)
+    else
+        node = stupid_search(root.left, value)
+        return node.nil?? root : node
+    end
+end
+
 [[108, :B], [285, :G], [143, :nil]].each { |x|
     found = [nil]
     inorder_search(node, x.first, found)
-    puts "#{x.inspect} - #{found.first.nil?? :nil : found.first.id}"
+    puts "inorder search #{x.inspect} - #{found.first.nil?? :nil : found.first.id}"
+    target = stupid_search(node, x.first)
+    puts "stupid search #{x.inspect} - #{target.nil?? :nil : target.id}"
 }
