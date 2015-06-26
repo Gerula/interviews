@@ -5,16 +5,13 @@ class Program {
     static void Main() {
         int size = 10;
         int[] buff = new int[size];
-        int produceCount = 0;
-        int consumeCount = 0;
+        int totalCount = 0;
         new Thread(() => {
                             while(true) {
-                                while (produceCount - consumeCount == size) {
+                                while (totalCount == size) {
                                     Thread.Yield();
                                 }
-                                buff[produceCount % size] = new Random().Next(1, 10);
-                                Console.WriteLine("Producing {0}", buff[produceCount % size]);
-                                Interlocked.Increment(ref produceCount);
+
                             }
                          }).Start();
 
