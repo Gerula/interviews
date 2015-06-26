@@ -16,17 +16,27 @@ class Node < Struct.new(:value, :left, :right, :left_count, :right_count)
 
     def inorder_rec(root, lambda)
         unless root.nil?
-            inorder_rec(root.left, lambda)
-            lambda.call(root)
             inorder_rec(root.right, lambda)
+            lambda.call(root)
+            inorder_rec(root.left, lambda)
         end
     end
 
-    def largest(k)
+    def size
+        self.left_count + self.right_count
     end
 end
 
 node = Node::Fill(1, 10)
-node.inorder( -> (x) { print "#{x.value} [#{x.left_count}-#{x.right_count}] " })
-puts
 
+k = 4
+result = []
+node.inorder( -> (x) { print "#{x.value} [#{x.left_count}-#{x.right_count}] " })
+node.inorder( -> (x) {
+                         if k > 0 
+                            result.unshift(x.value)
+                            k -= 1
+                         end
+                     })
+puts
+puts result.inspect
