@@ -53,6 +53,43 @@ class Node {
 
         return root;
     }
+
+    public static Node MergeSort(Node start) {
+        
+    }
+
+    private static void MergeSort(Node start, ref Node root) {
+        if (start == end) {
+            return;
+        }
+
+        Node begin = start;
+        Node end = start;
+        // slow and fast stuff
+        MergeSort(begin, ref root);
+        MergeSort(end, ref root);
+        root = Merge(begin, end);
+    }
+
+    private static Node Merge(Node start, Node mid) {
+        Node root = null;
+
+        if (start == null) {
+            return mid;
+        } else if (mid == null) {
+            return start;
+        }
+
+        if (start.Value <= mid.Value) {
+            root = start;
+            root.Link = Merge(start.Link, mid);
+        } else {
+            root = mid;
+            root.Link = Merge(start, mid.Link);
+        }
+
+        return root;
+    }
 }
 
 class Program {
