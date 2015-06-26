@@ -11,6 +11,7 @@ class Node < Struct.new(:value, :left, :right)
         right = search_rec(root.right, value)
         return left if left
         return right if right
+        return nil
     end
 end
 
