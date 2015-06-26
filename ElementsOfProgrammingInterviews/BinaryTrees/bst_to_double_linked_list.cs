@@ -90,13 +90,36 @@ class Program {
         return root;
     }
 
+    static Node ToDoubleLinkedBetter(Node root) {
+        Node prev = null;
+        LeftSide(root, ref prev);
+
+        Node right = null;
+        while (prev != null) {
+            Node left = prev.Left;
+            prev.Right = right;
+            right = prev;
+            prev = left;
+        }
+
+        return right;
+    }
+
+    static void LeftSide(Node root, ref Node previous) {
+        if (root == null) {
+            return;
+        }
+
+        LeftSide(root.Left, ref previous);
+        root.Left = previous;
+        previous = root;
+        LeftSide(root.Right, ref previous);
+    }
+
     static void Main() {
         Node root = Fill(1, 10);
         Console.WriteLine(String.Join(",", Inorder(root).Select(x => x.Value)));
-        root = ToDoubleLinked(root);
-        while (root.Left != null) {
-            root = root.Left;
-        }
+        root = ToDoubleLinkedBetter(root);
 
         Node it = root;
         while (it != null) {
