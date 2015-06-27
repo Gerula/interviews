@@ -29,12 +29,12 @@ class SlidingWindow {
 
         for (int i = Size; i < _data.Count; i++) {
             result.Add(_data[dequeue.First()]);
-            while(dequeue.Any() && dequeue.First() <= i - Size) {
+            while(dequeue.Any() && dequeue.First() <= i - Size - 1) {
                 dequeue.RemoveFirst();
             }
 
             while (dequeue.Any() && _data[dequeue.Last()] < _data[i]) {
-                dequeue.AddLast(i);
+                dequeue.RemoveFirst();
             }
 
             dequeue.AddLast(i);
