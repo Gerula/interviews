@@ -24,6 +24,12 @@ class String
 
         zig.map { |x| x.select{ |y| y != " "}.join("") }.join("")
     end
+
+    def zigggy(rows) 
+    end
 end
 
 puts "PAYPALISHIRING".zigzag(3)
+puts "PAYPALISHIRING".zigggy(3)
+puts "AB".zigzag(1)
+puts "AB".zigzag(1)

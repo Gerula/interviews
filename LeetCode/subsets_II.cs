@@ -18,7 +18,7 @@ class Program {
 
         for (int i=position; i < input.Count; i++)
         {
-            if (!result.Any() || result[result.Count - 1] <= input[i]) 
+            if (!result.Any() || result[result.Count - 1] <= input[i]) {
                 result.Add(input[i]);
                 Subsets(input, i + 1, result);
                 result.RemoveAt(result.Count - 1);
