@@ -4,15 +4,14 @@ class RollingHash {
     public long Data { get; private set; }
     public long Size { get; private set; }
     private const long alphabetSize = 255; 
-    private const long mod = 997;
 
     public void Append(char c) {
-        Data = Data * alphabetSize + c;
+        Data = (Data * alphabetSize + c);
         Size++;
     }
 
-    public void Skip() {
-        Data = Data % (long) Math.Pow(alphabetSize, Size - 1);
+    public void Skip(char c) {
+        Data = Data - (long) Math.Pow(alphabetSize, Size - 1) * c;
         Size--;
     }
 
@@ -31,7 +30,7 @@ class Program {
         RollingHash th = new RollingHash();
         for (int i = 0; i < t.Length; i++) {
             if (th.Size == s.Length) { 
-                th.Skip();
+                th.Skip(t[i - s.Length]);
             }
 
             th.Append(t[i]);
