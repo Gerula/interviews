@@ -7,15 +7,11 @@ class String
              }
         row = 0
         column = 0
-        up = true
+        up = false
         self.chars.each { |c|
             zig[row][column] = c
-            if row == 0
-                up = true
-            end
-
-            if (row == rows - 1)
-                up = false
+            if row == 0 || row == rows - 1
+                up = !up
             end
 
             if up 
