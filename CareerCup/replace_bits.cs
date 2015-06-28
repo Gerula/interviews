@@ -16,6 +16,8 @@ class Program {
             long mask = 1 << k;
             if ((x & 1) != 0) {
                 b |= mask;
+            } else if ((b >> k & 1) != 0) {
+                b ^= mask;
             }
         }
 
