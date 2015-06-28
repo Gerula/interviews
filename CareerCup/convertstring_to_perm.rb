@@ -13,6 +13,7 @@ class String
             while self[i] != target[j]
                 j += 1
             end
+            puts "#{self} #{j}"
             while j > i
                 self[j], self[j - 1] = self[j - 1], self[j]
                 result << self.dup
@@ -24,6 +25,6 @@ class String
     end
 end
 
-[["CAT", "TAC"]].each { |x|
+[["CAT", "TAC"], ["1234", "4321"]].each { |x|
     puts "#{x[0]} #{x[0].perms(x[1])}"
 }
