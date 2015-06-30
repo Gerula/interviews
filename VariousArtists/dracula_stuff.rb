@@ -1,21 +1,18 @@
 # Counting sort
 #
 
-a = 0.upto(15).map {|x| Random.rand(0..20) }
+a = 0.upto(15).map {|x| [Random.rand(0..20), Random.rand(0..4)] }
+
+counts = Array.new(a.map{ |x| x[0] }.max + 1, nil)
 puts a.inspect
 
-counts = Array.new(a.max + 1, 0)
 a.each { |x|
-    counts[x] += 1
+    counts[x[0]] ||= []
+    counts[x[0]].push(x)
 }
 
-t = counts.each_with_index.map { |x, i|
-    if x != 0
-        Array.new(x, i)
-    else
-        nil
-    end
-}.select { |x| x != nil }.flatten!
+puts counts.size
 
+t = counts.select{ |x| x }.inject([]) {|acc, x| acc + x }
 puts t.inspect
 
