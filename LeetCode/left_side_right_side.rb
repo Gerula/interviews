@@ -30,8 +30,33 @@ class Node < Struct.new(:value, :left, :right)
         input[1] = root if input[0] == 0
         Node::nth(root.right, input) unless root.right.nil?
     end
+
+    def left_side
+        left_rec(self, [0], 1)
+        puts
+    end
+
+    def left_rec(node, level, current_level) 
+        unless node.nil?
+            if level[0] < current_level
+                print "#{node.value} "
+                level[0] = current_level
+            end
+            
+            left_rec(node.left, level, current_level + 1)
+            left_rec(node.right, level, current_level + 1)
+        end
+    end
 end
 
 root = Node::fill(1, 10)
 root.display
-puts root.n_th(3)
+puts root.n_th(1)
+it = root
+while it
+    print "#{it.value} "
+    it = it.left
+end
+puts 
+
+root.left_side
