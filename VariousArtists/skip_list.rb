@@ -39,6 +39,20 @@ class SkipList
         }
     end
 
+    def find(value)
+        current = @head
+        (@levels - 1).downto(0).each { |i|
+            while current && current.right[i]
+                break if current.right[i].value > value
+                current = current.right[i]
+            end
+
+            return current if current.value == value
+        }
+
+        return nil
+    end
+
     def display 
         (@levels - 1).downto(0).each { |i|
             current = @head
@@ -57,3 +71,4 @@ list = SkipList.new
 }
 
 list.display
+puts list.find(2).value
