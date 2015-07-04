@@ -9,32 +9,41 @@
 #
 
 words = ["This", "is", "an", "example", "of", "text", "justification."]
+L = 16
+n = words.size
 
-def fully_justify(words, length)
-    result = []
-    it = 0
-    while it < words.length
-        greed = it
-        size = 0
-        partial = []
-        while greed < words.length && size + words[greed].length + 1 < length
-             size += words[greed].length + 1
-             partial << words[greed]
-             greed += 1
-        end
-
-        it = greed
-
-        offset = false
-        numspaces = (length < size)? 0 : length / size + length % size
-        equity = numspaces / size 
-        result.push( partial.reduce{ |acc, x|
-            numspaces = numspaces - equity 
-            acc<<" " * (numspaces + equity)<<x
-        })
-    end
-
-    return result
+def max_int 
+    return 2 ** (0.size * 8 - 2)
 end
 
-puts fully_justify(words, 16).inspect
+def cost(words, page_size, i, j)
+    width = (i == j) ? words[i].size : words[i..j].map{ |x| x.size + 1 }.reduce(:+) - 1
+    if width <= page_size
+        return (page_size - width) ** 3
+    else
+        return max_int 
+    end
+end
+
+penalty = []
+penalty[n] = 0
+parent = []
+parent[n] = nil
+
+(n - 1).downto(0).each { |i|
+    min = max_int 
+    (i + 1).upto(n).each { |j|
+        local_cost = penalty[j] + cost(words, L, i, j - 1) 
+        if min >= local_cost
+            min = local_cost
+            parent[j] = i
+        end
+    }
+    penalty[i] = min
+}
+
+next_word = parent[n]
+while next_word
+    puts words[next_word]
+    next_word = parent[next_word]
+end
