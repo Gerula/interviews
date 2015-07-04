@@ -8,15 +8,19 @@ root = Node.new(10,
                          Node.new(40),
                          Node.new(100)))
 
-def count(node, low, high)
-    return 0 if node.nil?
-    left = count(node.left, low, high)
-    right = count(node.right, low, high)
-    current = node.value.between?(low, high) && 
-              (left == 1 || node.left.nil?) && 
-              (right == 1 || node.right.nil?) ? 1 : 0
+def count(node, low, high, cunt)
+    return true if node.nil?
+    left = count(node.left, low, high, cunt)
+    right = count(node.right, low, high, cunt)
 
-    return current + left + right
+    if left && right && node.value.between?(low, high)
+        cunt[0] += 1
+        return true
+    end
+
+    return false
 end
 
-puts count(root, 1, 45)
+cunt = [0]
+count(root, 1, 45, cunt)
+puts cunt.inspect
