@@ -14,6 +14,10 @@ class Node < Struct.new(:value, :left, :right, :next)
     end
 
     def fix_next
+        if self.next
+            self.next.fix_next
+        end
+
         if self.left
             self.left.next = self.right
         end
@@ -25,10 +29,34 @@ class Node < Struct.new(:value, :left, :right, :next)
         self.left.fix_next unless self.left.nil?
         self.right.fix_next unless self.left.nil?
     end
+
+    def fix_next2
+        if self.left
+            self.left.next = self.right.nil? ? self.get_next : self.right
+        end
+
+        if self.right
+            self.right.next = self.get_next
+        end
+
+        self.left.fix_next2 unless self.left.nil?
+        self.right.fix_next2 unless self.left.nil?
+    end
+
+    def get_next
+        it = self.next
+        while it
+            return it.left if it.left
+            return it.right if it.right
+            it = it.next
+        end
+        
+        return nil
+    end
 end
 
-root = Node::fill(1, 15)
-root.fix_next
+root = Node::fill(1, 10)
+root.fix_next2
 root.inorder
 
 puts
