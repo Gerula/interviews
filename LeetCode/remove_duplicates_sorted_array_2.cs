@@ -5,19 +5,18 @@ using System.Collections.Generic;
 static class Program {
     static int RemoveDupes(this int[] a) {
         int write = 1;
-        int read = 0;
+        int read = 1;
         bool same = false;
         int count = 0;
         
-        for (int i = 1; i < a.Length; i++) {
-            read = i;
-            if (same && a[read] == a[write]) {
+        while (read < a.Length) {
+            if (same && (a[read] == a[read - 1])) {
                 count++;
-                continue;
+            } else {
+                same = a[read] == a[read - 1];
+                a[write++] = a[read];
             }
-
-            same = a[read] == a[write];
-            a[write++] = a[read];
+            read++;
         }
 
         return a.Length - count;
