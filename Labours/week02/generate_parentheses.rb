@@ -19,9 +19,13 @@ class Fixnum
             result.pop
         }
     end
+
+    def parentheses
+    
+    end
 end
 
 results = []
-3.generate_parentheses(0, 0, results, [])
+4.generate_parentheses(0, 0, results, [])
 puts results.map { |x| x.join("") }.inspect
 
