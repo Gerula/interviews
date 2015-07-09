@@ -1,12 +1,14 @@
-def combinations(n, result, k, step)
-    if result.size == k
-        puts result.inspect
-    end
+class Fixnum
+    def combinations(result, k, step)
+        if result.size == k
+            puts result.inspect
+        end
 
-    step.upto(n).each { |i|
-        combinations(n, result + [i], k, i + 1)
-    }
+        step.upto(self).each { |i|
+            self.combinations(result + [i], k, i + 1)
+        }
+    end
 end
 
-combinations(4, [], 2, 1)
+4.combinations([], 2, 1)
 
