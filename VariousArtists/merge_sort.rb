@@ -6,9 +6,7 @@ class Array
     def sort(array)
         return array if array.length <= 1
         mid = array.length / 2
-        left = sort(array[0...mid])
-        right = sort(array[mid..-1])
-        merge(left, right)
+        merge(sort(array[0...mid]), sort(array[mid..-1]))
     end
 
     def merge(first, second)
