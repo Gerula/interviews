@@ -34,8 +34,8 @@ class MinStack
         unless @size == 0
             result = @data[@size - 1][0]
             @data[@size - 1] = nil
-            @size -= 1
-            return result
+            @size -= 1;
+            return result;
         end
         return nil
     end
@@ -44,15 +44,13 @@ end
 stack = MinStack.new
 
 Random.rand(2..10).times {
-    stack.push(Random.rand(1..10))
-    puts "Top: #{stack.peek} min:#{stack.min}"
+    stack.push(Random.rand(1..10)); puts "Top: #{stack.peek} min:#{stack.min}"
 }
 
 puts "Deleting"
 
 while stack.peek
-    stack.pop
-    puts "Top: #{stack.peek} min:#{stack.min}"
+    stack.pop; puts "Top: #{stack.peek} min:#{stack.min}"
 end
 
 
