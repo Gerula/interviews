@@ -23,6 +23,21 @@ class Array
 
         result
     end
+
+    def merge
+        intervals = self.sort { |x| x[0] <=> x[1] }
+        result = [intervals[0]]
+        for i in 1..intervals.size - 1
+            if result[-1][1] > intervals[i][0]
+                result[-1][1] = intervals[i][1]
+            else
+                result << intervals[i]
+            end
+        end 
+
+        result
+    end
 end
 
 puts [[1,3],[2,6],[8,10],[15,18]].merge_discrete.inspect
+puts [[1,3],[2,6],[8,10],[15,18]].merge.inspect
