@@ -3,7 +3,7 @@ using System;
 class Program {
     static void Main() {
         int x = 2;
-        int n = 5;
+        int n =  35;
         int pow = n;
         int result = 1;
         while (n > 1) {
