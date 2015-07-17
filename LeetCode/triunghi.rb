@@ -1,17 +1,19 @@
 class Array
     def max_sum
-        self[1..-1].inject([self[0]]) { |acc, x|
-            sum = ([1000] + acc + [1000]).flatten
-            acc = x.each_with_index.map { |y, i|
-                [y + sum[i], y + sum[i + 1]].min
+        mins = self[-1]
+
+        (self.size - 2).downto(0).each{ |i|
+            0.upto(self[i].size - 1).each { |j|
+                mins[j] = self[i][j] + [mins[j], mins[j + 1]].min
             }
-            acc
-        }.min
+        }
+
+        mins[0]
     end
 end
 
 puts [   [2],
         [3, 4],
        [6, 5, 7],
-      [4, 1, 8, 3]
+       [4, 1, 8, 3]
 ].max_sum
