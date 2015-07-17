@@ -11,8 +11,7 @@
 #
 
 def find_repeated_dna_sequences(s)
-    result = []
-    s.chars.each_cons(10).map { |x| x.join("") }.inject({}) { |acc, sequence|
+    all = s.chars.each_cons(10).map { |x| x.join("") }.inject({}) { |acc, sequence|
         acc[sequence] ||= 0
         acc[sequence] += 1
         result << sequence if acc[sequence] > 1
