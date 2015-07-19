@@ -15,6 +15,13 @@
 # isMatch("ab", ".*") → true
 # isMatch("aab", "c*a*b") → true
 
+# 445 / 445 test cases passed.
+#   Status: Accepted
+#   Runtime: 140 ms
+#       
+#       Submitted: 0 minutes ago
+#
+
 def is_match(s, p)
     dp = Array.new(s.size + 1).map { |x|
         Array.new(p.size + 1).map { |y|
@@ -33,7 +40,7 @@ def is_match(s, p)
         end
     end
 
-    return dp[s.size - 1][p.size - 1]
+    return dp[s.size][p.size]
 end
 
  [{:s => "aa", :p => "a", :m => false},
