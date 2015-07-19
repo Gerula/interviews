@@ -16,11 +16,24 @@
 # isMatch("aab", "c*a*b") → true
 
 def is_match(s, p)
-    if s.empty? && p.empty?
-        return true
+    dp = Array.new(s.size + 1).map { |x|
+        Array.new(p.size + 1).map { |y|
+            false
+        }
+    }
+
+    dp[0][0] = true
+    for i in 0..s.size
+        for j in 1..p.size
+            if p[j - 1] != "*"
+                dp[i][j] = i > 0 && dp[i - 1][j - 1] && (s[i - 1] == p[j - 1] || p[j - 1] == ".")
+            else
+                dp[i][j] = dp[i][j - 2] || (i > 0 && dp[i-1][j] && (s[i-1] == p[j-2] || p[j-2] == '.'))
+            end
+        end
     end
 
-    
+    return dp[s.size - 1][p.size - 1]
 end
 
  [{:s => "aa", :p => "a", :m => false},
@@ -30,5 +43,5 @@ end
   {:s => "aa", :p => ".*", :m => true},
   {:s => "ab", :p => ".*", :m => true},
   {:s => "aab", :p => "c*a*b", :m => true}].each { |x|
-        puts "#{x.inspect} - #{is_match(x[:s], x[:p])}"
+        puts "#{x.inspect} - #{is_match(x[:s], x[:p])}" 
   }
