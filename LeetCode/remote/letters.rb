@@ -1,43 +1,47 @@
 # https://leetcode.com/submissions/detail/34036403/
 # 84 ms
 
+# https://leetcode.com/submissions/detail/34036943/
+# 68 ms
+
 # @param {String} digits
 # @return {String[]}
 def letter_combinations(digits)
     result = []
-    number_to_letters(digits, result, "")
+    number_to_letters(digits.chars, 0 , result, [])
     return result
 end
 
-def number_to_letters(digits, result, partial)
-    if digits.empty?
-        result << partial.dup unless partial.empty?
+def number_to_letters(digits, step, result, partial)
+    if step == digits.size
+        result << partial.join("") unless partial.empty?
         return
     end
     
-    digits(digits.chars.first).chars.each { |c|
-        number_to_letters(digits[1..-1], result, partial + c)
+    digits(digits[step]).each { |c|
+        partial[step] = c
+        number_to_letters(digits, step + 1, result, partial)
     }
 end
 
 def digits(number)
     case number
         when "2"
-        return "abc"
+        return ["a", "b", "c"]
         when "3"
-        return "def"
+        return ["d", "e", "f"]
         when "4"
-        return "ghi"
+        return ["g", "h", "i"]
         when "5"
-        return "jkl"
+        return ["j", "k", "l"]
         when "6"
-        return "mno"
+        return ["m", "n", "o"]
         when "7"
-        return "pqrs"
+        return ["p", "q", "r", "s"]
         when "8" 
-        return "tuv"
+        return ["t", "u", "v"]
         when "9"
-        return "wxyz"
+        return ["w", "x", "y", "z"]
     else
         return ""
     end
