@@ -4,18 +4,22 @@ extend Test::Unit::Assertions
 def bin_search(a, k)
     offset = 0
     length = a.size
-    while length > 0 && offset < a.size
+    c = 0
+    while length > 0
+        c += 1
         half = length / 2
         index = offset + half
-        puts "#{k} #{index}"
         case
         when a[index] == k
+            puts "#{a.size} #{c}"
             return index
         when a[index] < k
             offset = index 
         end 
         length = half
     end
+
+    puts "#{a.size} #{c}"
     return -1
 end
 
