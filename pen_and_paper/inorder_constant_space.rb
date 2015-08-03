@@ -43,6 +43,25 @@ class Node < Struct.new(:value, :left, :right, :parent)
 
         return result.map { |x| "[val: #{x.value} - #{x.parent ? x.parent.value : nil}] " }.join
     end
+
+    def print_borders
+        print "#{self.value} "
+        self.left.print_left(true)
+        self.right.print_right(true)
+        puts
+    end
+
+    def print_left(border)
+        print "#{self.value} " if border || self.left.nil? && self.right.nil?
+        self.left.print_left(border) if self.left
+        self.right.print_left(border && self.left.nil?) if self.right
+    end
+
+    def print_right(border)
+        self.left.print_left(border && self.right.nil?) if self.left
+        self.right.print_left(border) if self.right
+        print "#{self.value} " if border || self.left.nil? && self.right.nil?
+    end
 end
 
 def fill(low, high)
@@ -59,3 +78,4 @@ end
 node = fill(1, 10)
 puts node.inorder
 puts node.const_inorder
+node.print_borders
