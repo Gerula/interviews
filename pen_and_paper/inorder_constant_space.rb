@@ -46,21 +46,25 @@ class Node < Struct.new(:value, :left, :right, :parent)
 
     def print_borders
         print "#{self.value} "
-        self.left.print_left(true)
-        self.right.print_right(true)
+        level = [0]
+        self.left.print_left(level, 1)
+        level = [0]
+        self.right.print_right(level, 1)
         puts
     end
 
-    def print_left(border)
-        print "#{self.value} " if border || self.left.nil? && self.right.nil?
-        self.left.print_left(border) if self.left
-        self.right.print_left(border && self.left.nil?) if self.right
+    def print_left(level_curr, level)
+        print "#{self.value} " if level_curr[0] < level || self.left.nil? && self.right.nil?
+        level_curr[0] = level if level_curr[0] < level
+        self.left.print_left(level_curr, level + 1) if self.left
+        self.right.print_left(level_curr, level + 1) if self.right
     end
 
-    def print_right(border)
-        self.left.print_left(border && self.right.nil?) if self.left
-        self.right.print_left(border) if self.right
-        print "#{self.value} " if border || self.left.nil? && self.right.nil?
+    def print_right(level_curr, level)
+        self.left.print_left(level_curr, level + 1) if self.left
+        self.right.print_left(level_curr, level + 1) if self.right
+        print "#{self.value} " if level_curr[0] < level || self.left.nil? && self.right.nil?
+        level_curr[0] = level if level_curr[0] < level
     end
 end
 
