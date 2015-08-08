@@ -18,11 +18,22 @@ class Array
     end
 
     def up_down
+        0.upto(self.size - 2).each { |i|
+            if i % 2 == 0 && self[i] > self[i + 1]
+                self[i], self[i + 1] = self[i + 1], self[i]
+            end
+
+            if i % 2 == 1  && self[i] < self[i + 1]
+                self[i], self[i + 1] = self[i + 1], self[i]
+            end
+        }
+
         return self
     end
 end
 
-a = generate
-b = [3, 5, 0, 6, 2, 4, 1, 5]
-puts "#{a.inspect} #{a.up_down?}"
-puts "#{b.inspect} #{b.up_down?}"
+Random.rand(5..15).times {
+    a = generate
+    puts "#{a.up_down.inspect} #{a.up_down?}"
+    assert(a.up_down?)
+}
