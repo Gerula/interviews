@@ -34,6 +34,7 @@ end
 
 Random.rand(5..15).times {
     a = generate
+    puts a.inspect
     puts "#{a.up_down.inspect} #{a.up_down?}"
     assert(a.up_down?)
 }
