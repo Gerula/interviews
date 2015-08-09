@@ -8,7 +8,6 @@ class Deque
     def initialize(flag)
         @data = []
         @flag = flag
-        @size = 0
     end
 
     def compare(x, y)
@@ -16,25 +15,25 @@ class Deque
     end
 
     def enqueue(value)
-        while @data.any? && compare(@data.last, value) == value
+        count = 0
+        while @data.any? && compare(@data.last[0], value) == value
+            count += @data.last[1] + 1
             @data.pop
         end
 
-        @size += 1
-        @data.push(value)
+        @data.push([value, count])
     end
 
-    def dequeue(value)
-        @size -= 1
-        @data.shift if @data.first == value
+    def dequeue
+        if @data.first[1] > 0
+            @data.first[1] -= 1
+        end
+
+        @data.shift 
     end
 
     def head
-        return @data.first
-    end
-
-    def size
-        return @size
+        return @data.first[0] unless @data.first.nil?
     end
 end
 
@@ -43,14 +42,14 @@ def contains_nearby_almost_duplicate(nums, k, t)
     dequeue_min = Deque.new(false)
     return false if k == 0
     nums.each_with_index { |x, i|
-        dequeue_max.dequeue(nums[i - k]) if dequeue_max.size > k
-        dequeue_min.dequeue(nums[i - k]) if dequeue_min.size > k
-
-        puts dequeue_max.inspect
+        dequeue_max.dequeue if i > k
+        dequeue_min.dequeue if i > k 
         puts dequeue_min.inspect
-
-        return true if !dequeue_max.head.nil? && dequeue_max.head - x <= t || 
-                       !dequeue_min.head.nil? && x - dequeue_min.head <= t
+        puts dequeue_max.inspect
+        return true if !dequeue_max.head.nil? && dequeue_max.head == x ||
+                       !dequeue_min.head.nil? && dequeue_min.head == x
+        return true if !dequeue_max.head.nil? && x < dequeue_max.head && dequeue_max.head - x <= t || 
+                       !dequeue_min.head.nil? && x > dequeue_min.head && x - dequeue_min.head <= t
         dequeue_max.enqueue(x)
         dequeue_min.enqueue(x)
     }
