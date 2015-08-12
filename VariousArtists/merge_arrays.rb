@@ -6,27 +6,22 @@ class Array
         new_size = self.size + other.size - 1
         first = self.size - 1
         second = other.size - 1
-        while first >= 0 && second >= 0
-           if self[first] > other[second]
+        while new_size >= 0
+            if first >= 0 && second >= 0
+                if self[first] > other[second]
+                    self[new_size] = self[first]
+                    first -= 1
+                else
+                    self[new_size] = other[second]
+                    second -= 1
+                end
+            elsif first >= 0
                 self[new_size] = self[first]
                 first -= 1
-           else
+            else
                 self[new_size] = other[second]
                 second -= 1
-           end
-
-           new_size -= 1
-        end
-
-        while first >= 0
-            self[new_size] = self[first]
-            first -= 1
-            new_size -= 1
-        end
-
-        while second >= 0
-            self[new_size] = other[second]
-            second -= 1
+            end
             new_size -= 1
         end
 
