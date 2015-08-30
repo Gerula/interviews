@@ -16,7 +16,7 @@ using System.Linq;
 //      Submitted: 0 minutes ago
 //
 
-class Program {
+static class Program {
     public static IList<IList<int>> CombinationSum3(int k, int n) {
          IList<IList<int>> result = new List<IList<int>>();
          Combinations(0, k, 1, n, result, new List<int>());
@@ -38,11 +38,15 @@ class Program {
         }
     }
 
+    private static String GetSome(this IList<IList<int>> list) {
+        return String.Join("; ", list.Select(x => String.Join(", ", x)));
+    }
+
     public static void Main() {
-        Console.WriteLine(String.Join("; ", CombinationSum3(3, 9).Select(x => String.Join(", ", x))));
-        Console.WriteLine(String.Join("; ", CombinationSum3(0, 9).Select(x => String.Join(", ", x))));
-        Console.WriteLine(String.Join("; ", CombinationSum3(0, 0).Select(x => String.Join(", ", x))));
-        Console.WriteLine(String.Join("; ", CombinationSum3(1, 1).Select(x => String.Join(", ", x))));
-        Console.WriteLine(String.Join("; ", CombinationSum3(3, 15).Select(x => String.Join(", ", x))));
+        Console.WriteLine(CombinationSum3(3, 9).GetSome());
+        Console.WriteLine(CombinationSum3(0, 9).GetSome());
+        Console.WriteLine(CombinationSum3(0, 0).GetSome());
+        Console.WriteLine(CombinationSum3(1, 1).GetSome());
+        Console.WriteLine(CombinationSum3(3, 15).GetSome());
     }
 }
