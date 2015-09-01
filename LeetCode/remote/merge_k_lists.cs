@@ -12,6 +12,19 @@ public class ListNode {
 }
 
 class Program {
+    // https://leetcode.com/submissions/detail/38308373/
+    //
+    //
+    // Submission Details
+    // 130 / 130 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 692 ms
+    //      
+    //      Submitted: 0 minutes ago
+    //
+    //
+    //      We need to make this faster!
+    //
     public static ListNode MergeKLists(ListNode[] lists) {
         return lists.ToList().Aggregate((ListNode) null, (a, b) => {
                     return Merge2Lists(a, b);
