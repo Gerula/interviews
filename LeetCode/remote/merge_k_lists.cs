@@ -34,6 +34,7 @@ class MinHeap {
     public ListNode Remove() {
         ListNode result = storage[0];
         storage[0] = storage[Size - 1];
+        storage[Size - 1] = null;
         Size--;
         HeapifyDown();
         return result;
@@ -42,14 +43,22 @@ class MinHeap {
     private void HeapifyUp() {
         int target = Size - 1;
         int parent = Parent(target);
-        while (target > 0 && storage[parent].val > storage[target].val) {
-            ListNode c = storage[parent];
-            storage[parent] = storage[target];
-            storage[target] = c;
+        while (target > 0)  {
+            if (storage[parent].val > storage[target].val) {
+                Swap(ref storage[parent], ref storage[target]);
+            }
+            
             target = parent;
+            parent = Parent(target);
         }
 
         return;
+    }
+
+    private static void Swap(ref ListNode a, ref ListNode b) {
+        ListNode c = a;
+        a = b;
+        b = c;
     }
 
     private void HeapifyDown() {
@@ -58,11 +67,11 @@ class MinHeap {
             int min = target;
             int left = Left(target);
             int right = Right(target);
-            if (left < Size && storage[target].val > storage[left].val) {
+            if (left < Size && storage[left].val < storage[target].val) {
                 min = left;
             }
 
-            if (right < Size && storage[target].val > storage[right].val) {
+            if (right < Size && storage[right].val < storage[target].val) {
                 min = right;
             }
             
@@ -70,13 +79,9 @@ class MinHeap {
                 return;
             }
 
-            ListNode c = storage[min];
-            storage[min] = storage[target];
-            storage[target] = c;
+            Swap(ref storage[min], ref storage[target]);
             target = min;
         }
-
-        return;
     }
 
     private static int Parent(int child) {
@@ -113,10 +118,11 @@ class Program {
         while (heap.Size != 0) {
             tail.next = heap.Remove();
             tail = tail.next;
-
+            Console.WriteLine("1 {0}", heap);
             if (tail.next != null) {
                 heap.Add(tail.next);
             }
+            Console.WriteLine("2 {0}", heap);
         }
 
         return result.next;
