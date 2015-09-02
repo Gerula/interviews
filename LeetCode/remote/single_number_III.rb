@@ -8,6 +8,13 @@
 require 'test/unit'
 extend Test::Unit::Assertions
 
+# https://leetcode.com/submissions/detail/38510320/
+# 30 / 30 test cases passed.
+#   Status: Accepted
+#   Runtime: 88 ms
+#       
+#       Submitted: 0 minutes ago
+#
 def single_number(nums)
     nums.inject({}) { |acc, x|
         if acc[x]
@@ -20,4 +27,20 @@ def single_number(nums)
     }.keys
 end
 
+def single_number_2(nums)
+    a_xor_b = nums.reduce(:^)
+    last_bit = (a_xor_b & (a_xor_b - 1)) ^ a_xor_b
+    a = b = 0
+    nums.each { |x|
+        if x & last_bit != 0
+            a = a ^ x
+        else
+            b = b ^ x
+        end
+    }
+
+    [a, b]
+end
+
 assert_equal([3, 5], single_number([1, 2, 1, 3, 2, 5]))
+assert_equal([3, 5], single_number_2([1, 2, 1, 3, 2, 5]))
