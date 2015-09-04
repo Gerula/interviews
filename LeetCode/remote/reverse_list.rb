@@ -34,6 +34,23 @@ def reverse_list(head)
     return prev
 end
 
+# https://leetcode.com/submissions/detail/38709409/
+#
+# Submission Details
+# 27 / 27 test cases passed.
+#   Status: Accepted
+#   Runtime: 80 ms
+#       
+#       Submitted: 0 minutes ago
+#
+def reverse(head)
+    return head if head.nil? || head.next.nil?
+    next_node = reverse(head.next)
+    head.next.next = head
+    head.next = nil
+    return next_node
+end
+
 head = nil
 5.downto(0).each { |i|
     prev = head
@@ -42,5 +59,7 @@ head = nil
 }
 
 puts head.to_s
-puts reverse_list(head)
-puts reverse(head)
+head = reverse_list(head)
+puts head.to_s
+head = reverse(head)
+puts head.to_s
