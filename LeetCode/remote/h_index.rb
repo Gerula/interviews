@@ -12,11 +12,13 @@ extend Test::Unit::Assertions
 
 def h_index(citations)
     citations.sort!
+    size = citations.size
     citations.each_with_index { |x, i|
-        return x if x > i
+        return size - i if x >= size - i
     }
 
-    return -1
+    return 0
 end
 
 assert_equal(3, h_index([3, 0, 6, 1, 5]))
+
