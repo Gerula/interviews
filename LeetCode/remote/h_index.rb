@@ -21,4 +21,5 @@ def h_index(citations)
 end
 
 assert_equal(3, h_index([3, 0, 6, 1, 5]))
+assert_equal(1, h_index([1, 1, 1, 1, 1, 1, 1, 1]))
 
