@@ -7,7 +7,7 @@ def lcs_size(a, b)
     return [lcs_size(a[0...-1], b), lcs_size(a, b[0...-1])].max
 end
 
-def lcs_size_2(a, b)
+def lcs(a, b)
     dp = Array.new(a.size + 1) {
         Array.new(b.size + 1) {
             0
@@ -26,10 +26,28 @@ def lcs_size_2(a, b)
         end
     end
     
-    return dp[a.size][b.size]
+    i, j = a.size, b.size
+    size = dp[i][j]
+    result = Array.new(size)
+    while i > 0 && j > 0
+        if a[i - 1] == b[j - 1]
+            result[size - 1] = a[i - 1]
+            size -= 1
+            i -= 1
+            j -= 1
+        else
+            if dp[i - 1][j] > dp[i][j - 1]
+                i -= 1
+            else
+                j -= 1
+            end
+        end
+    end
+
+    return result.join
 end
 
 assert_equal("ADH".size, lcs_size("ABCDGH", "AEDFHR"))
 assert_equal("GTAB".size, lcs_size("AGGTAB", "GXTXAYB"))
-assert_equal("ADH".size, lcs_size_2("ABCDGH", "AEDFHR"))
-assert_equal("GTAB".size, lcs_size_2("AGGTAB", "GXTXAYB"))
+assert_equal("ADH", lcs("ABCDGH", "AEDFHR"))
+assert_equal("GTAB", lcs("AGGTAB", "GXTXAYB"))
