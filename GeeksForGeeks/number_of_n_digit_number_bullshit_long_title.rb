@@ -20,6 +20,33 @@ class Fixnum
         (10 ** (self - 1)...10**self).count{ |x| x.off_by_one? }
     end
 
+    def long_ass_backtrack
+        count = [0]
+        back_track([], self, 0, 0, count)
+        return count.first
+    end
+
+    def back_track(number, digits_max, odd_sum, even_sum, count) 
+        if (number.size == digits_max)
+            if even_sum == odd_sum + 1
+                count[0] += 1
+            end
+            return
+        end
+
+        (0...10).each { |i|
+            unless i == 0 && number.empty?
+                number.push(i)
+                back_track(number,
+                           digits_max,
+                           number.size % 2 == 0 ? odd_sum + i : odd_sum,
+                           number.size % 2 == 0 ? even_sum : even_sum + i,
+                           count)
+                number.pop
+            end
+        }
+    end
+
     def off_by_one?
         number = self
         first = 0
@@ -42,5 +69,7 @@ class Fixnum
     end
 end
 
+assert_equal(54, 3.long_ass_backtrack)
+assert_equal(9, 2.long_ass_backtrack)
 assert_equal(54, 3.long_ass_problem)
 assert_equal(9, 2.long_ass_problem)
