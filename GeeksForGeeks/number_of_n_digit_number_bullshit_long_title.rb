@@ -13,6 +13,7 @@
 # Explanation: 100, 111, 122, ......, 980
 
 require 'test/unit'
+require 'benchmark'
 extend Test::Unit::Assertions
 
 class Fixnum
@@ -69,7 +70,18 @@ class Fixnum
     end
 end
 
-assert_equal(54, 3.long_ass_backtrack)
-assert_equal(9, 2.long_ass_backtrack)
-assert_equal(54, 3.long_ass_problem)
-assert_equal(9, 2.long_ass_problem)
+puts "Backtrack"
+puts Benchmark.measure {
+    assert_equal(54, 3.long_ass_backtrack)
+    assert_equal(9, 2.long_ass_backtrack)
+    assert_equal(4620, 5.long_ass_backtrack)
+    assert_equal(411048, 7.long_ass_backtrack)
+}
+
+puts "Naive"
+puts Benchmark.measure {
+    assert_equal(54, 3.long_ass_problem)
+    assert_equal(9, 2.long_ass_problem)
+    assert_equal(4620, 5.long_ass_problem)
+    assert_equal(411048, 7.long_ass_problem)
+}
