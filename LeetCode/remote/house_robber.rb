@@ -7,14 +7,20 @@ require 'test/unit'
 extend Test::Unit::Assertions
 
 def rob(nums)
-    pre = current = 0
+    last = now = 0
+    pre = {}
     nums.each { |x|
-        temp = [pre + x, current].max
-        pre = current
-        current = temp
+        if last + x >= now 
+            max = last + x
+        else
+            max = now
+        end
+        last = now
+        now = max
     }
 
-    return current
+    puts result.inspect
+    return now
 end
 
 assert_equal(25, rob([1, 2, 3, 4, 5, 6, 7, 8, 9]))
