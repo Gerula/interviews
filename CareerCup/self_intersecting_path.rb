@@ -7,9 +7,12 @@ extend Test::Unit::Assertions
 
 class Array
     def cross?
-        # Quit bitching
-        
+        for i in 3...self.size
+            prev = i > 4 ? self[i - 4] : 0
+            return true if self[i] + prev >= self[i - 2] && self[i - 1] <= self[i - 3]
+        end
 
+        return false
     end
 end
 
@@ -26,23 +29,24 @@ class TestData < Struct.new(:array, :result, :instructions)
 
         self.instructions = []
 
-        self.result = true
+        self.result = false
         directions = [[-1, 0], [0, -1], [1, 0], [0, 1]].cycle
-        self.array[position.first][position.last] = 1
+        self.array[position.first][position.last] = 5
         Random.rand(3..10).times {
             direction = directions.next
             max_offset = case direction
-                            when [-1, 0] then position[0] - 1
-                            when [0, -1] then position[1] - 1
+                            when [-1, 0] then position[0]
+                            when [0, -1] then position[1]
                             when [1, 0] then lines - position[0]
                             when [0, 1] then columns - position[1]
                         end
-            offset = Random.rand(0..max_offset)
+            offset = Random.rand(1...max_offset)
             self.instructions << offset
             offset.times {
                 position[0], position[1] = position[0] + direction[0], position[1] + direction[1]
                 self.array[position.first][position.last] += 1
-                self.result &= self.array[position.first][position.last] == 1
+                self.result = self.array[position.first][position.last] != 1
+                return if self.result
             }
         }
     end
@@ -54,7 +58,8 @@ class TestData < Struct.new(:array, :result, :instructions)
     end
 end
 
-5.times {
+Random.rand(5..20).times {
     testdata = TestData.new
     puts testdata
+    assert_equal(testdata.result, testdata.instructions.cross?)
 }
