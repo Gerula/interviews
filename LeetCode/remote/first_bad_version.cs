@@ -1,13 +1,25 @@
 using System;
 using System.Collections.Generic;
 
+// https://leetcode.com/submissions/detail/39112846/
+//
+// Submission Details
+// 21 / 21 test cases passed.
+//  Status: Accepted
+//  Runtime: 72 ms
+//
 class Program {
     private int count = 0;
+    private readonly int badVersion;
     private Dictionary<int, bool> cache = new Dictionary<int, bool>();
+
+    public Program(int badVer) {
+        badVersion = badVer;
+    }
 
     private bool IsBadVersion(int version) {
         count++;
-        if (version > 5) {
+        if (version >= badVersion) {
             return true;
         }
 
@@ -23,14 +35,18 @@ class Program {
     }
 
     public int FirstBadVersion(int n) {
-        int low = 0;
+        int low = 1;
         int high = n;
+        if (low == 1 && CachedBadVersion(low)) {
+            return 1;
+        }
+
         while (low < high) {
             int mid = low + (high - low) / 2;
             if (!CachedBadVersion(mid) &&
                 mid < n &&
                 CachedBadVersion(mid + 1)) {
-                return mid;
+                return mid + 1;
             }
             
             if (CachedBadVersion(mid)) {
@@ -48,8 +64,11 @@ class Program {
     }
 
     static void Main() {
-        Program p = new Program();
-        Console.WriteLine(p.FirstBadVersion(100));
-        Console.WriteLine(p.GetCount());
+        Program p = new Program(5);
+        Console.WriteLine("{0} - {1}", p.FirstBadVersion(101), p.GetCount());
+        p = new Program(1);
+        Console.WriteLine("{0} - {1}", p.FirstBadVersion(1), p.GetCount());
+        p = new Program(10);
+        Console.WriteLine("{0} - {1}", p.FirstBadVersion(9), p.GetCount());
     }
 }
