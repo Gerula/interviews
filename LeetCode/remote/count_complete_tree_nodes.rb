@@ -11,22 +11,20 @@ class TreeNode
     end
 end
 
+# 
+# Submission Details
+# 18 / 18 test cases passed.
+#   Status: Accepted
+#   Runtime: 368 ms
+#       
+#       Submitted: 0 minutes ago
+#
 def count_nodes(root)
+    return 0 if root.nil?
     left = measure(root, :left)
     right = measure(root, :right)
     return 2 ** left - 1 if left == right
-    max = left
-    diff = 0
-    current = root
-    while current
-        diff += 1
-        current = current.left
-        left -= 1
-        right = measure(current, :right)
-        return 2 ** max - 1 - diff if left == right
-    end
-
-    return -1
+    return 1 + count_nodes(root.left) + count_nodes(root.right)
 end
 
 def measure(root, direction)
