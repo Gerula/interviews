@@ -2,18 +2,17 @@
 #
 
 class String
+    def xor(other)
+        self != other ? "x" : " "
+    end
+
     def rule_90(steps)
         result = [self.chars.map { |x| x == "1" ? "x" : " "}.join]
         steps.times { 
-            last = result.last
-            current = last.chars.each_cons(3).inject("") { |acc, x|
-                        acc += x[0] != x[2] ? "x" : " "
-                        acc
+            result << (" " + result.last + " ").chars.each_cons(3).inject("") { |acc, x|
+                        acc += x[0].xor(x[2])
                       }
-            current = (last[1] == "x" ? "x" : " ") + current
-            current += last[last.size - 2] == "x" ? "x" : " "
-            result << current
-            break if current.chars.all?{ |x| x == " "}
+            break if result.last.chars.all?{ |x| x == " "}
         }
 
         return result.join("\n")
