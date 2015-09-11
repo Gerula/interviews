@@ -12,6 +12,31 @@ class Node < Struct.new(:value, :left, :right)
     end
 end
 
+class Inorder
+    attr_accessor :node
+
+    def initialize(node)
+        @node = node
+        @stack = []
+    end
+
+    def next
+        return nil if @node.nil? && @stack.empty?
+        result = nil
+
+        while @node
+            @stack.push(@node)
+            @node = @node.left
+        end
+
+        @node = @stack.pop
+        result = @node
+        @node = @node.right
+
+        return result
+    end
+end
+
 tree_1 = Node.new(5,
                   Node.new(1,
                            Node.new(0),
@@ -51,4 +76,27 @@ def common_nodes(tree_1, tree_2)
     return result
 end
 
+def common_nodes_2(tree_1, tree_2)
+    iterator_1 = Inorder.new(tree_1)
+    iterator_2 = Inorder.new(tree_2)
+    result = []
+    node_1 = iterator_1.next
+    node_2 = iterator_2.next
+    while node_1 && node_2
+        if node_1.value == node_2.value
+            result << node_1.value
+            node_1 = iterator_1.next
+            node_2 = iterator_2.next
+        elsif node_1.value < node_2.value
+            node_1 = iterator_1.next
+        else
+            node_2 = iterator_2.next
+        end
+    end
+
+    return result
+end
+
 assert_equal([4, 7, 9, 10], common_nodes(tree_1, tree_2))
+assert_equal([4, 7, 9, 10], common_nodes_2(tree_1, tree_2))
+
