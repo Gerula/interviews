@@ -11,29 +11,18 @@ extend Test::Unit::Assertions
 class String
     def dostuff
         accounting = {}
-        self.chars.each_with_index { |c, i|
-            accounting[c] ||= []
-            accounting[c] << i
-        }
-
-        result = ""
-        self.chars.each { |c|
-            next if accounting[c].nil?
-            if accounting[c].size == 1
-                accounting[c] = nil
-                result += c
-                next
-            end
-
-            "a".upto(c).select{ |x| !accounting[x].nil? && x != c }.each { |k|
-                if accounting[c].first < accounting[k].first
-                    accounting[c].shift
-                    break
+        (self.size - 1).downto(0).each { |i|
+            if accounting[self[i]].nil?
+                accounting[self[i]] = i
+            else
+                if self[i] < self[i + 1] && accounting[self[i + 1]] == i + 1
+                    accounting[self[i]] = i
                 end
-            }
+            end
         }
-
-        result
+        
+        accounting = accounting.invert
+        0.upto(self.size - 1).select{ |i| accounting[i] }.map { |x| self[x] }.join
     end
 end
 
