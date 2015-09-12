@@ -16,25 +16,27 @@ class Node {
     }
 
     public Node Partition(int value) {
-        Node less = null, lastLess = null;
-        Node equal = null, lastEqual = null;
-        Node more = null, lastMore = null;
-        
+        Node leftReference = new Node { Value = -1 };
+        Node rightReference = new Node { Value = -1 };
+        Node left = leftReference;
+        Node right = rightReference;
+
         Node iterator = this;
         while (iterator != null) {
-            Node next = iterator.Link;
-            if (iterator.Value == value) {
-                AdvanceIterator(ref equal, ref lastEqual, ref iterator, next);
-            } else if (iterator.Value < value) {
-                AdvanceIterator(ref less, ref lastLess, ref iterator, next);
+            if (iterator.Value < value) {
+                left.Link = iterator;
+                left = iterator;
             } else {
-                AdvanceIterator(ref more, ref lastMore, ref iterator, next);
+                right.Link = iterator;
+                right = iterator;
             }
+
+            iterator = iterator.Link;
         }
 
-        less.Link = lastEqual;
-        equal.Link = lastMore;
-        return lastLess;
+        right.Link = null;
+        left.Link = rightReference.Link;
+        return leftReference.Link;
     }
 }
 
