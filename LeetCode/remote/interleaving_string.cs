@@ -2,7 +2,21 @@ using System;
 
 class Program {
     public static bool IsInterleave(String s1, String s2, String s3) {
-        return Interleave(s1, 0, s2, 0, s3, 0);
+        int n = s1.Length;
+        bool[,] dp = new bool[n + 1, n + 1];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i, 0] = true;
+            dp[0, i] = true;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                dp[i, j] = (s1[i - 1] == s3[i + j - 1] || s2[j - 1] == s3[i + j - 1]) && (dp[i - 1, j] || dp[i, j - 1]);
+            }
+        }
+
+        return dp[n, n];
     }
 
     public static bool Interleave(String s1, int i1, String s2, int i2, String s3, int i3) {
