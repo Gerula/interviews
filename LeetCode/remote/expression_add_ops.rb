@@ -9,41 +9,42 @@ extend Test::Unit::Assertions
 def add_operators(num, target)
     result = []
     return result if num.size < 2
-    build_expression(num.chars, 1, target, num.chars.first.to_i, num.chars.first, result)
+    build_expression(num.chars, 1, target, num.chars.first, result)
     return result
 end
 
-def build_expression(num, index, target, partial, expression, result) 
+def evaluate(string)
+    if string.size == 1
+        return string.to_i
+    else
+        return operator(string[0], string[1], evaluate(string[2..-1]))
+    end
+end
+
+def operator(left ,op, right)
+    case op
+        when "*"
+            return left.to_i * right.to_i
+        when "+"
+            return left.to_i + right.to_i
+        when "-"
+            return left.to_i - right.to_i
+    end
+end
+
+def build_expression(num, index, target, expression, result) 
     if index == num.size
-        result << expression if partial == target
+        result << expression if evaluate(expression) == target
         return
     end
 
     current = num[index].to_i
     ["+", "-", "*"].each { |op|
-        case op
-        when "*" 
-                build_expression(num, 
-                                index + 1, 
-                                target, 
-                                partial * current,
-                                "#{expression}*#{current}",
-                                result)
-        when "+" 
-                build_expression(num, 
-                                 index + 1, 
-                                 target, 
-                                 partial + current,
-                                 "#{expression}+#{current}",
-                                 result)
-        when "-" 
-                build_expression(num, 
-                                 index + 1, 
-                                 target, 
-                                 partial - current,
-                                 "#{expression}-#{current}",
-                                 result)
-        end
+            build_expression(num, 
+                            index + 1, 
+                            target, 
+                            "#{expression}#{op}#{current}",
+                            result)
     }
 end
 
