@@ -9,13 +9,18 @@ extend Test::Unit::Assertions
 
 class Array
     def max_rotation
-        (1..self.size).each.map { |i|
-            sum = self.each_with_index.inject(0) { |acc, x|
-                acc += x[0] * x[1]
-            }
-            self.push(self.shift)
-            sum
-        }.max
+        sum = self.reduce(:+)
+        product = self.each_with_index.inject(0) { |acc, x|
+            acc += x[0] * x[1]
+        }
+
+        max = product
+        for i in 1...self.size
+            product += sum - self.size * self[self.size - i]
+            max = [max, product].max
+        end
+
+        max
     end
 end
 
