@@ -4,20 +4,33 @@
 #
 #  For example, given nums = [0, 1, 0, 3, 12], after calling your function, nums should be [1, 3, 12, 0, 0]. 
 #
+# 
+# Submission Details
+# 21 / 21 test cases passed.
+#   Status: Accepted
+#   Runtime: 96 ms
+#       
+#       Submitted: 0 minutes ago
+#
 
 require 'test/unit'
 extend Test::Unit::Assertions
 
 def move_zeroes(nums)
-    read = 0
-    write = nums.size - 1
-    while read < write
-        if nums[read] == 0
-            nums[read], nums[write] = nums[write], nums[read]
-            write -= 1
+    zeroes = 0
+    write = 0
+    
+    for i in 0...nums.size
+        if nums[i] != 0
+            nums[write] = nums[i]
+            write += 1
         else
-            read += 1
+            zeroes += 1
         end
+    end
+
+    for i in (nums.size - zeroes)...nums.size
+        nums[i] = 0
     end
 end
 
