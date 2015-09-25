@@ -38,7 +38,7 @@ class Program {
     }
 
     static void Main() {
-        int[] array = new []{2, 3, -2, 4};
+        int[] array = new []{-1, -1, 2, 3, -2, -3};
         Console.WriteLine(MaxProduct(array));
     }
 }
