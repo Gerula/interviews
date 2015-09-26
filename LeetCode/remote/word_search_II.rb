@@ -13,9 +13,9 @@ extend Test::Unit::Assertions
 
 def find_words(board, words)
     trie = words.inject({}){ |acc_trie, word|
-        word.char.each_with_index.inject(acc_trie) { |acc, x|
-            acc[x[0]] ||= {}
-            acc[x[0]]
+        word.chars.each_with_index.inject(acc_trie) { |acc, x|
+            acc[x[0]] = {:link => {}, :is_word => x[1] == word.size - 1}
+            acc[x[0]][:link]
         }
 
         acc_trie
@@ -32,6 +32,7 @@ def find_words(board, words)
 end
 
 def search(i, j, board, trie, partial, result)
+    
 end
 
 assert_equal(["eat","oath"],
