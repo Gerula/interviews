@@ -24,7 +24,7 @@ def find_words(board, words)
     result = []
     for i in 0...board.size
         for j in 0...board[0].size
-            search(i, j, board, trie, [], result)
+            search(i, j, board, trie, "", result)
         end
     end
 
@@ -32,10 +32,17 @@ def find_words(board, words)
 end
 
 def search(i, j, board, trie, partial, result)
-    
+    return if !i.between?(0, board.size - 1) || !j.between?(0, board[0].size - 1)
+    current = board[i][j]
+    return if trie[current].nil?
+    result << partial + current if trie[current][:is_word]
+    search(i + 1, j, board, trie[current][:link], partial + current, result)
+    search(i, j + 1, board, trie[current][:link], partial + current, result)
+    search(i - 1, j, board, trie[current][:link], partial + current, result)
+    search(i, j - 1, board, trie[current][:link], partial + current, result)
 end
 
-assert_equal(["eat","oath"],
+assert_equal(["eat","oath"].sort,
              find_words(
              [
               ['o','a','a','n'],
@@ -43,6 +50,6 @@ assert_equal(["eat","oath"],
               ['i','h','k','r'],
               ['i','f','l','v']
              ],
-            ["oath","pea","eat","rain"]))
+            ["oath","pea","eat","rain"]).sort)
 
 
