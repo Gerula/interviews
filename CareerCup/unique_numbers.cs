@@ -11,49 +11,64 @@ using System.Linq;
 static class Program 
 {
 
+    static void ProcessRange(List<int> result,
+                             int[] array,
+                             int offset,
+                             Func<int, int, bool> mismatch,
+                             Func<int, int, bool> indexMismatch,
+                             Func<int, int> selector)
+    {
+        for (int i = 0; i < array.Length;)
+        {
+            if (mismatch(array[i], i))
+            {
+                var aux = array[array[i] - offset];
+                array[array[i] - offset] = array[i];
+                array[i] = aux;
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        result.AddRange(array.Select( (v, i) =>
+                                      new { val = v, index = i }).
+                              Where(x => indexMismatch(x.val, x.index)).
+                              Select(y => selector(y.index)));
+    }
+
     static int[] FindMissing(this int[] array)
     {
         var result = new List<int>();
         var n = array.Length;
 
-        for (int i = 0; i < n;)
-        {
-            if (array[i] < n && array[i] != i) 
-            {
-                var aux = array[array[i]];
-                array[array[i]] = array[i];
-                array[i] = aux;
-            }
-            else
-            {
-                i++;
-            }
-        }
+        ProcessRange(result,
+                     array,
+                     0,
+                     (element, index) => {
+                        return element < n && element != index;
+                     },
+                     (element, index) => {
+                        return element != index;
+                     },
+                     (element) => {
+                        return element;
+                     });
 
-        result.AddRange(array.Select( (v, i) =>
-                                      new { val = v, index = i }).
-                              Where(x => x.val != x.index).
-                              Select(y => y.index));
+        ProcessRange(result,
+                     array,
+                     n,
+                     (element, index) => {
+                        return element >= n && element != index + n;
+                     },
+                     (element, index) => {
+                        return element != index + n;
+                     },
+                     (element) => {
+                        return element + n;
+                     });
                                     
-        for (int i = 0; i < n;)
-        {
-            if (array[i] >=n && array[i] != i + n) 
-            {
-                var aux = array[array[i] - n];
-                array[array[i] - n] = array[i];
-                array[i] = aux;
-            }
-            else
-            {
-                i++;
-            }
-        }
-
-        result.AddRange(array.Select( (v, i) =>
-                                      new { val = v, index = i }).
-                              Where(x => x.val != x.index + n).
-                              Select(y => y.index + n));
-
         return result.ToArray();
     }
 
