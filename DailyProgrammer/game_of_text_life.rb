@@ -23,13 +23,12 @@ class Board
             transformed[i].push("")
         end
 
-        transformed.push("")
-        puts @storage.inspect
+        transformed.push(Array.new(transformed[0].size) { "" })
 
         for i in 0...transformed.size
             for j in 0...transformed[0].size
                 cell_neighbors = neighbors(i, j)
-                if transformed[i][j].nil? || transformed[i][j] == ""
+                if transformed[i][j] == ""
                     transformed[i][j] = cell_neighbors.size == 3 ?
                                         cell_neighbors[Random.rand(cell_neighbors.size)] : ""
                 else
@@ -59,7 +58,7 @@ class Board
         return result
     end
 
-    def to_s
+    def print
         @storage.each { |x|
             puts x.join("")
         }
@@ -71,8 +70,8 @@ board = Board.new(["The basic idea is this: the game takes place on",
                    "The game evolves in generations,",
                    "where old cells die out or are born again according to very simple rules."])
 100.times {
-    sleep(0.5)
     system "clear" or system "cls"
-    puts board
+    board.print
+    sleep(0.5)
     board.next
 }
