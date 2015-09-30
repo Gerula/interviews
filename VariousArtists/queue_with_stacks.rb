@@ -16,16 +16,18 @@ class Queue
 
     def dequeue
         return nil if @storage.empty?
-        while @storage.any?
-            @maneuver.push(@storage.pop)
-        end
-
+        Queue::evacuate(@storage, @maneuver)
         result = @maneuver.pop
-        while @maneuver.any?
-            @storage.push(@maneuver.pop)
-        end
-
+        Queue::evacuate(@maneuver, @storage)
         return result
+    end
+
+    class << self
+        def evacuate(source, target)
+            while source.any?
+                target.push(source.pop)
+            end
+        end
     end
 end
 
