@@ -18,24 +18,23 @@ class Board
     end
 
     def next
-        transformed = @storage.dup
-        for i in 0...transformed.size
-            transformed[i].push("")
-        end
+        @storage.map!{ |x| x.push("") }
+        @storage.push(Array.new(@storage.first.size) { "" } )
 
-        transformed.push(Array.new(transformed[0].size) { "" })
+        transformed = @storage.dup
 
         for i in 0...transformed.size
             for j in 0...transformed[0].size
                 cell_neighbors = neighbors(i, j)
-                if transformed[i][j] == ""
-                    transformed[i][j] = cell_neighbors.size == 3 ?
-                                        cell_neighbors[Random.rand(cell_neighbors.size)] : ""
-                else
-                    transformed[i][j] = cell_neighbors.size == 2 ||
-                                        cell_neighbors.size == 3 ?
-                                        transformed[i][j] : ""
-                end
+                current = transformed[i][j]
+                transformed[i][j] = current == "" ?
+                                    
+                                    (cell_neighbors.size == 3 ?
+                                    cell_neighbors[Random.rand(cell_neighbors.size)] : "") :
+
+                                    (cell_neighbors.size == 2 ||
+                                     cell_neighbors.size == 3 ?
+                                     transformed[i][j] : "")
             end
         end
 
@@ -44,8 +43,8 @@ class Board
 
     def neighbors(i, j)
         offsets = [[-1, -1], [-1, 0], [-1, 1],
-                   [0, -1],           [0, 1],
-                   [1, -1], [1, 0], [1, 1]]
+                   [ 0, -1],          [ 0, 1],
+                   [ 1, -1], [ 1, 0], [ 1, 1]]
 
         result = []
         offsets.each { |x| 
