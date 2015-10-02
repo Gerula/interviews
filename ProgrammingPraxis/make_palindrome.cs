@@ -81,13 +81,40 @@ static class Program
         String result = new String(ordered.Where((x, i) => i % 2 == 1).ToArray()) + 
                         new String(ordered.Where((x, i) => i % 2 == 0).Reverse().ToArray());
 
-        Console.WriteLine(result);
         if (result.IsPalindrome()) 
         {
             return result;
         }
 
         return null;
+    }
+
+    static String GeneratePalindromeIdiot(this String s)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        
+        List<char> odd = new List<char>();
+        foreach (var c in s)
+        {
+            if (odd.Contains(c))
+            {
+                stringBuilder.Append(c);
+                odd.Remove(c);
+            } 
+            else
+            {
+                odd.Add(c);
+            }
+        }
+
+        if (odd.Count > 1 || stringBuilder.Length != s.Length / 2)
+        {
+            return null;
+        }
+
+        return stringBuilder.ToString() +
+               String.Join(String.Empty, odd) +
+               new String(stringBuilder.ToString().Reverse().ToArray());
     }
 
     static void SwapChars(ref char a, ref char b)
@@ -107,13 +134,16 @@ static class Program
             String s = GenerateString();
             String t = s.GeneratePalindrome();
             String p = s.GeneratePalindromeInPlace();
-            Console.WriteLine("{0} {1} \n palindrome {2} {3} \n palindrome_2 {4} {5} \n", 
+            String q = s.GeneratePalindromeIdiot();
+            Console.WriteLine("{0} {1} \n palindrome {2} {3} \n palindrome_2 {4} {5} \n palindrome_3 {6} {7} \n", 
                               s, 
                               s.IsPalindrome(),
                               t,
                               t.IsPalindrome(),
                               p,
-                              p.IsPalindrome());
+                              p.IsPalindrome(),
+                              q,
+                              q.IsPalindrome());
         }
     }
 }
