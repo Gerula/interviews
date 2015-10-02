@@ -13,7 +13,7 @@ static class Program
     static String GenerateString()
     {
         return new String(Enumerable.Repeat(0, random.Next(10, 30)).
-                                        Select(x => (char)random.Next(65, 75)).
+                                        Select(x => (char)random.Next(65, 70)).
                                             ToArray());
     }
 
@@ -21,7 +21,7 @@ static class Program
     {
         if (String.IsNullOrEmpty(s))
         {
-            return true;
+            return false;
         }
 
         return !s.Select((u, i) => new {
@@ -70,9 +70,29 @@ static class Program
                        }).ToString();
     }
 
-    static String GeneratePalindromeConstantSpace(this String s)
+    static String GeneratePalindromeInPlace(this String s)
     {
-        return s;
+        var ordered = s.OrderBy(x => x).
+                        GroupBy(y => y).
+                        OrderBy(b => b.Count() % 2).
+                        Reverse().
+                        Select(b => Enumerable.Repeat(b.Key, b.Count())).
+                        SelectMany(i => i);
+        String result = new String(ordered.Where((x, i) => i % 2 == 1).ToArray()) + 
+                        new String(ordered.Where((x, i) => i % 2 == 0).Reverse().ToArray());
+
+        Console.WriteLine(result);
+        if (result.IsPalindrome()) 
+        {
+            return result;
+        }
+
+        return null;
+    }
+
+    static void SwapChars(ref char a, ref char b)
+    {
+        char c = a; a = b; b = c;
     }
 
     static String GetStringRepeated(char c, int times)
@@ -86,8 +106,8 @@ static class Program
         {
             String s = GenerateString();
             String t = s.GeneratePalindrome();
-            String p = s.GeneratePalindromeConstantSpace();
-            Console.WriteLine("{0} {1} palindrome {2} {3} palindrome_2 {4} {5}", 
+            String p = s.GeneratePalindromeInPlace();
+            Console.WriteLine("{0} {1} \n palindrome {2} {3} \n palindrome_2 {4} {5} \n", 
                               s, 
                               s.IsPalindrome(),
                               t,
