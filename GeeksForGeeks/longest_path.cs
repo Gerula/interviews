@@ -17,7 +17,8 @@ class Program
         {
             for (int j = 0; j < m.GetLength(1); j++)
             {
-                List<int> localResult = GetMaxPath(m, i, j);
+                List<int> localResult = new List<int>();
+                LongestPath(m, 0, i, j, localResult);
                 if (localResult.Count > result.Count)
                 {
                     result = localResult;
@@ -26,6 +27,24 @@ class Program
         }
 
         return result;
+    }
+
+    static void LongestPath(int[,] m, int prev, int i, int j, List<int> result)
+    {
+        if (result.Any() &&
+                (i < 0 || i == m.GetLength(0) ||
+                 j < 0 || j == m.GetLength(1) ||
+                 m[i, j] != prev + 1))
+        {
+            return;
+        }
+        
+        int current = m[i, j];
+        result.Add(current);
+        LongestPath(m, current, i + 1, j, result);
+        LongestPath(m, current, i - 1, j, result);
+        LongestPath(m, current, i, j + 1, result);
+        LongestPath(m, current, i, j - 1, result);
     }
 
     static List<int> GetMaxPath(int[,] m, int i, int j)
