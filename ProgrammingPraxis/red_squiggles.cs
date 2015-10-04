@@ -43,6 +43,24 @@ class Trie
         }
     }
 
+    public int ContainsCount(String s)
+    {
+        Node current = Root;
+        int result = 0;
+        foreach (var c in s)
+        {
+            if (!current.Next.ContainsKey(c))
+            {
+                return result;
+            }
+
+            result++;
+            current = current.Next[c];
+        }
+
+        return s.Length;
+    }
+
     public override String ToString()
     {
         return Root.ToString();
@@ -51,18 +69,37 @@ class Trie
 
 class Program
 {
-    static void Main()
+    static IEnumerable<String> ReadLinesFromFile(String pathToFile)
     {
-        Trie trie = new Trie();
-        using (StreamReader reader = new StreamReader("/usr/share/dict/words"))
+        using (StreamReader reader = new StreamReader(pathToFile))
         {
             String line;
             while ((line = reader.ReadLine()) != null)
             {
-                trie.Add(line);
+                yield return line;
             }
         }
+    }
 
-        Console.WriteLine(trie);
+    static void Main()
+    {
+        Trie trie = new Trie();
+        foreach(var line in ReadLinesFromFile("/usr/share/dict/words"))
+        {
+            trie.Add(line);
+        }
+
+        foreach(var line in ReadLinesFromFile("red_squiggles.in"))
+        {
+            int position = trie.ContainsCount(line);
+            if (position != line.Length)
+            {
+                Console.WriteLine(line.Insert(position - 1, "<"));
+            }
+            else
+            {
+                Console.WriteLine(line);
+            }
+        }
     }
 }
