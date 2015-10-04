@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 class Trie
 {
@@ -61,6 +62,41 @@ class Trie
         return s.Length;
     }
 
+    public List<String> GetSuggestions(String s)
+    {
+        Node current = Root;
+        StringBuilder sb = new StringBuilder();
+        foreach (var c in s)
+        {
+            if (!current.Next.ContainsKey(c))
+            {
+                break;
+            }
+
+            sb.Append(c);
+            current = current.Next[c];
+        }
+
+        List<String> result = new List<String>();
+        GenerateSuggestions(current, sb, result);
+        return result;
+    }
+
+    private void GenerateSuggestions(Node current, StringBuilder sb, List<string> result)
+    {
+        if (current.IsWord)
+        {
+            result.Add(sb.ToString());
+        }
+
+        foreach (var c in current.Next.Keys)
+        {
+            sb.Append(c);
+            GenerateSuggestions(current.Next[c], sb, result);
+            sb.Length--;
+        }
+    }
+
     public override String ToString()
     {
         return Root.ToString();
@@ -95,6 +131,7 @@ class Program
             if (position != line.Length)
             {
                 Console.WriteLine(line.Insert(position - 1, "<"));
+                Console.WriteLine("[Suggestions: {0}]", String.Join(", ", trie.GetSuggestions(line)));
             }
             else
             {
