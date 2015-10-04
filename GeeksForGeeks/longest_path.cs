@@ -12,10 +12,15 @@ class Program
 {
     static List<int> LongestPath(int[,] m)
     {
-        List<int> result = new List<int>();
-        for (int i = 0; i < m.GetLength(0); i++)
+        int [,] dp = new int[m.GetLength(0), m.GetLength(1)];
+
+        for (int i = 0; i < m.GetLength(0); i++) { dp[i, 0] = 1; }
+        for (int j = 0; j < m.GetLength(0); j++) { dp[0, j] = 1; }
+
+        var max = Tuple.Create(0, 0);
+        for (int i = 1; i < m.GetLength(0); i++)
         {
-            for (int j = 0; j < m.GetLength(1); j++)
+            for (int j = 1; j < m.GetLength(1); j++)
             {
                 List<int> localResult = new List<int>();
                 LongestPath(m, 0, i, j, localResult);
