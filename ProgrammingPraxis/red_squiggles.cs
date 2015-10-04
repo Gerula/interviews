@@ -46,40 +46,22 @@ class Trie
 
     public int ContainsCount(String s)
     {
-        Node current = Root;
-        int result = 0;
-        foreach (var c in s)
-        {
-            if (!current.Next.ContainsKey(c))
-            {
-                return result;
-            }
-
-            result++;
-            current = current.Next[c];
-        }
-
-        return s.Length;
+        return Enumerate(s).Count();
     }
 
     public List<String> GetSuggestions(String s)
     {
-        Node current = Root;
         StringBuilder sb = new StringBuilder();
-        foreach (var c in s)
-        {
-            if (!current.Next.ContainsKey(c))
-            {
-                break;
-            }
-
-            sb.Append(c);
-            current = current.Next[c];
-        }
-
+        var triePath = Enumerate(s);
+        sb.Append(s.Substring(0, triePath.Count()));
         List<String> result = new List<String>();
-        GenerateSuggestions(current, sb, result);
+        GenerateSuggestions(triePath.Last(), sb, result);
         return result;
+    }
+
+    public override String ToString()
+    {
+        return Root.ToString();
     }
 
     private void GenerateSuggestions(Node current, StringBuilder sb, List<string> result)
@@ -97,9 +79,17 @@ class Trie
         }
     }
 
-    public override String ToString()
+    private IEnumerable<Node> Enumerate(String s)
     {
-        return Root.ToString();
+        Node current = Root;
+        foreach (char c in s)
+        {
+            if (current.Next.ContainsKey(c))
+            {
+                yield return current;
+                current = current.Next[c];
+            }
+        }
     }
 }
 
