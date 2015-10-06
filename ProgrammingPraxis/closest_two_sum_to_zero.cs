@@ -12,24 +12,23 @@ static class Program
 {
     static Tuple<int, int> TwoSumClosest(this int[] array)
     {
-        int diff = int.MaxValue;
-        int first = 0;
-        int second = 0;
-        for (int i = 0; i < array.Length - 1; i++)
+        var sorted = array.
+                        Select((item, index) => 
+                        Tuple.Create(item, index)).
+                        OrderBy(x => Math.Abs(x.Item1)).
+                        ToArray().
+                        Reverse();
+
+        var sortedPairs = sorted.Zip(sorted.Skip(1), (first, second) => Tuple.Create(first, second));
+        var minSumPair = sortedPairs.FirstOrDefault(x => array[x.Item1.Item2] * array[x.Item2.Item2] < 0);
+        if (minSumPair == null)
         {
-            for (int j = i + 1; j < array.Length; j++)
-            {
-                int localDiff = Math.Abs(array[i] + array[j]);
-                if (localDiff < diff)
-                {
-                    diff = localDiff;
-                    first = i;
-                    second = j;
-                }
-            }
+            return Tuple.Create(array[sortedPairs.First().Item1.Item2],
+                                array[sortedPairs.First().Item2.Item2]);
         }
 
-        return Tuple.Create(array[first], array[second]);
+        return Tuple.Create(array[minSumPair.Item1.Item2],
+                            array[minSumPair.Item2.Item2]);
     }
 
     static void Main()
