@@ -29,24 +29,64 @@ class Program
         return pattern.Select(x => pattern.IndexOf(x)).SequenceEqual(words.Select(y => Array.IndexOf(words, y))); 
     }
 
+    // 23 / 23 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 128 ms <-- Yeah faster my ass.
+    //      
+    //      Submitted: 0 minutes ago
+    //
+    public static bool WordPatternFast(string pattern, string str) 
+    {
+        var hash = new Dictionary<char, String>();
+        var seen = new HashSet<String>();
+        var words = str.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries);
+        if (pattern.Length != words.Length)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < pattern.Length; i++)
+        {
+            if (hash.ContainsKey(pattern[i]))
+            {
+                if (hash[pattern[i]] != words[i])
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (seen.Contains(words[i]))
+                {
+                    return false;
+                }
+                
+                seen.Add(words[i]);
+                hash[pattern[i]] = words[i];
+            }
+        }
+
+        return true;
+    }
+
     static void Main()
     {
-        if (!WordPattern("abba", "dog cat cat dog"))
+        if (!WordPatternFast("abba", "dog cat cat dog"))
         {
             throw new Exception("U r dumb!");
         }
 
-        if (WordPattern("abba", "dog cat cat fish"))
+        if (WordPatternFast("abba", "dog cat cat fish"))
         {
             throw new Exception("U r dumb!");
         }
         
-        if (WordPattern("aaaa", "dog cat cat dog"))
+        if (WordPatternFast("aaaa", "dog cat cat dog"))
         {
             throw new Exception("U r dumb!");
         }
         
-        if (WordPattern("abba", "dog dog dog dog"))
+        if (WordPatternFast("abba", "dog dog dog dog"))
         {
             throw new Exception("U r dumb!");
         }
