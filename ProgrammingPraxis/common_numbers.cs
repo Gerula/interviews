@@ -31,6 +31,41 @@ static class Program
                                ToList();
     }
 
+    static List<int> CommonElementsBetter(this List<int[]> lists)
+    {
+        var listOfLists = lists.Select(x => new List<int>(x));
+        return listOfLists.Aggregate(listOfLists.First(), (agg, x) =>
+                                                         {
+                                                                List<int> temp = new List<int>();
+                                                                InCommonWith(agg, x, temp);
+                                                                return temp;
+                                                         });
+    }
+
+    static void InCommonWith(IEnumerable<int> first, IEnumerable<int> second, List<int> result)
+    {
+        if (!first.Any() || !second.Any())
+        {
+            return;
+        }
+
+        if (first.First() == second.First())
+        {
+            result.Add(first.First());
+            InCommonWith(first.Skip(1), second.Skip(1), result);
+            return;
+        }
+
+        if (first.First() < second.First())
+        {
+            InCommonWith(first.Skip(1), second, result);
+        }
+        else
+        {
+            InCommonWith(first, second.Skip(1), result);
+        }
+    }
+
     static void Main()
     {
         Console.WriteLine(String.Join(",",
@@ -41,5 +76,14 @@ static class Program
                             new int[] {2, 3, 4},
                             new int[] {1, 2, 3, 4, 5, 6}
                           }.CommonElements()));
+
+        Console.WriteLine(String.Join(",",
+                          new List<int[]> {
+                            new int[] {1, 2, 3, 4, 5, 6},
+                            new int[] {1, 2, 3, 4, 5, 6},
+                            new int[] {1, 2, 3},
+                            new int[] {2, 3, 4},
+                            new int[] {1, 2, 3, 4, 5, 6}
+                          }.CommonElementsBetter()));
     }
 }
