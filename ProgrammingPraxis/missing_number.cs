@@ -38,9 +38,15 @@ static class Program
                First();
     }
 
+    static int MissingNumberBetter(this String s)
+    {
+
+    }
+
     static void Main()
     {
         String s = "596597598600601602";
         Console.WriteLine(s.MissingNumber());
+        Console.WriteLine(s.MissingNumberBetter());
     }
 }
