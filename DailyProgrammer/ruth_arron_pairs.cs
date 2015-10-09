@@ -15,42 +15,26 @@ using System.Linq;
 
 static class Program
 {
+    static IEnumerable<int> Factors(this int x)
+    {
+        int limit = x;
+        for (int i = 2; i <= limit; i++)
+        {
+            if (x % i == 0)
+            {
+                while (x % i == 0)
+                {
+                    x /= i;
+                }
+
+                yield return i;
+            }
+        }
+    }
+
     static bool PairWith(this int a, int b)
     {
-        int firstSum = 0, secondSum = 0;
-        if (b - a != 1)
-        {
-            return false;
-        }
-
-        int n = a;
-        for (int i = 2; i <= n; i++)
-        {
-            if (a % i == 0)
-            {
-                firstSum += i;
-                while (a % i == 0)
-                {
-                    a /= i;
-                }
-            }
-            
-            if (b % i == 0)
-            {
-                secondSum += i;
-                while (b % i == 0)
-                {
-                    b /= i;
-                }
-            }
-        }
-
-        if (secondSum == 0)
-        {
-            secondSum += b;
-        }
-
-        return firstSum == secondSum;
+        return a.Factors().Sum() == b.Factors().Sum();
     }
 
     static void Main()
