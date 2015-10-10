@@ -23,16 +23,7 @@ static class Program
             }
         }
 
-        var result = new StringBuilder();
-        for (int i = 0; i < s.Length; i++)
-        {
-            if (hash[s[i]] == i)
-            {
-                result.Append(s[i]);
-            }
-        }
-
-        return result.ToString();
+        return String.Join(String.Empty, s.Where((x, i) => hash[x] == i));
     }
 
     static String DeDup(this String s)
