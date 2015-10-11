@@ -5,6 +5,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 class Node
 {
@@ -27,14 +28,52 @@ class Node
 
 static class Program 
 {
-    static Node Deserialize(this int[] a)
+    static Node Deserialize(this List<int?> a)
     {
-        throw new NotImplementedException();
+        Stack<Node> stack = new Stack<Node>();
+        var reversed = new List<int?>(a);
+        reversed.Reverse();
+        foreach (var node in reversed)
+        {
+            if (!node.HasValue)
+            {
+                stack.Push(null);
+            }
+            else
+            {
+                stack.Push(new Node {
+                        Value = node.Value,
+                        Left = stack.Pop(),
+                        Right = stack.Pop()
+                      });
+            }
+        }
+
+        return stack.Pop();
     }
 
-    static int[] Serialize(this Node node)
+    static List<int?> Serialize(this Node node)
     {
-        throw new NotImplementedException();
+        List<int?> result = new List<int?>();
+        Stack<Node> stack = new Stack<Node>();
+        stack.Push(node);
+
+        while (stack.Count != 0)
+        {
+            Node current = stack.Pop();
+            if (current == null)
+            {
+                result.Add(null);
+            }
+            else
+            {
+                result.Add(current.Value);
+                stack.Push(current.Right);
+                stack.Push(current.Left);
+            }
+        }
+
+        return result;
     }
 
     static void Main()
