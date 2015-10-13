@@ -54,17 +54,25 @@ static class Program
         StringBuilder result = new StringBuilder();
         while (result.Length < s.Length)
         {
-            foreach (var bucket in buckets.Keys)
+            var blackList = new HashSet<char>();
+            for (var bucket = maxOccurences; bucket > 0; bucket--)
             {
                 if (buckets[bucket].Any())
                 {
+                    if (blackList.Contains(buckets[bucket].Peek()))
+                    {
+                        continue;
+                    }
+
                     char current = buckets[bucket].Dequeue();
+
                     if (result.Length > 0 && result[result.Length - 1] == current)
                     {
-                        return String.Format("Can't do it, buddy. {0} is the culprit", current);;
+                        return String.Format("Can't do it, buddy. '{0}' is the culprit. Did {1} so far. Sorry..", current, result);
                     }
 
                     result.Append(current);
+                    blackList.Add(current);
                     
                     if (bucket == 1)
                     {
@@ -85,7 +93,7 @@ static class Program
                 String.Empty, 
                 Enumerable.
                     Repeat(0, random.Next(20, 30)).
-                    Select(x => (char)random.Next('a', 'z')));
+                    Select(x => (char)random.Next('a', 'g')));
     }
 
     static void Main()
