@@ -14,12 +14,78 @@ static class Program
 
     static String Rearrange(this String s)
     {
-        return null;
+        int maxOccurences = 0;
+        var buckets = s.Aggregate(
+                            new Dictionary<char, int>(),
+                            (acc, x) => {
+                                if (!acc.ContainsKey(x))
+                                {
+                                    acc[x] = 0;
+                                }
+
+                                acc[x]++;
+                                return acc;
+                            }).Aggregate(
+                                new Dictionary<int, Queue<char>>(),
+                                (acc_2, y) => {
+                                    int count = y.Value;
+                                    char character = y.Key;
+                                    if (!acc_2.ContainsKey(count))
+                                    {
+                                        acc_2[count] = new Queue<char>();
+                                    }
+
+                                    acc_2[count].Enqueue(character);
+                                    maxOccurences = Math.Max(maxOccurences, count);
+                                    return acc_2;
+                                });
+
+        Enumerable.
+            Range(1, maxOccurences).
+            ToList().
+            ForEach(x => 
+                    {
+                        if (!buckets.ContainsKey(x))
+                        {
+                            buckets[x] = new Queue<char>();
+                        }
+                    });
+
+        StringBuilder result = new StringBuilder();
+        while (result.Length < s.Length)
+        {
+            foreach (var bucket in buckets.Keys)
+            {
+                if (buckets[bucket].Any())
+                {
+                    char current = buckets[bucket].Dequeue();
+                    if (result.Length > 0 && result[result.Length - 1] == current)
+                    {
+                        return String.Format("Can't do it, buddy. {0} is the culprit", current);;
+                    }
+
+                    result.Append(current);
+                    
+                    if (bucket == 1)
+                    {
+                        continue;
+                    }
+
+                    buckets[bucket - 1].Enqueue(current);
+                }
+            }
+        }
+
+        return result.ToString();
     }
 
     static String GenerateString()
     {
-        return String.Join(String.Empty, Enumerable.Repeat(0, random.Next(20, 30)).Select(x => (char)random.Next('a', 'z')));
+        return String.Join(
+                String.Empty, 
+                Enumerable.
+                    Repeat(0, random.Next(20, 30)).
+                    Select(x => (char)random.Next('a', 'z')));
     }
 
     static void Main()
@@ -28,7 +94,7 @@ static class Program
         {
             String s = GenerateString();
             String p = s.Rearrange();
-            Console.WriteLine("{0} = {1}", s, p == null? "Not possible" : p);
+            Console.WriteLine("{0} = {1}", s, p);
         }
     }
 }
