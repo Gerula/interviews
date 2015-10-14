@@ -30,9 +30,17 @@ static class Program
     static uint Rob(this Account a)
     {
         uint amount = 0;
-        while (a.Withdraw(1) != 0)
+        uint canary = uint.MaxValue; 
+        while (canary != 0)
         {
-            amount++;
+            if (a.Withdraw(canary) != 0)
+            {
+                amount += canary;
+            }
+            else
+            {
+                canary /= 2;
+            }
         }
 
         return amount;
@@ -44,7 +52,7 @@ static class Program
         {
             if (new Account(i).Rob() != i)
             {
-                throw new Exception("You're not good enough!");
+                throw new Exception(String.Format("You're not good enough! Here: {0}", i));
             }
         }
 
