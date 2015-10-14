@@ -29,7 +29,13 @@ static class Program
 {
     static uint Rob(this Account a)
     {
-        return 0;
+        uint amount = 0;
+        while (a.Withdraw(1) != 0)
+        {
+            amount++;
+        }
+
+        return amount;
     }
 
     static void Main()
