@@ -37,7 +37,20 @@ class WordProcessor
 
     public String Prefix(String word)
     {
-        return word;
+        var count = 0;
+        var current = Root;
+        foreach (char c in word)
+        {
+            if (current.Stamp == 1)
+            {
+                break;
+            }
+
+            count++;
+            current = current.Next[c];
+        }
+
+        return word.Substring(0, count);
     }
 }
 
