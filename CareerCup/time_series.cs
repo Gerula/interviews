@@ -69,7 +69,23 @@ class Visits
             return null;
         }
 
-        return history.Last(x => x.Key <= time).Value;
+        int low = 0;
+        int high = history.Count - 1;
+        while (low < high)
+        {
+            int mid = low + (high - low) / 2;
+            int element = history.ElementAt(mid).Key;
+            if (element <= time)
+            {
+                high = mid;
+            }
+            else
+            {
+                low = mid;
+            }
+        }
+        
+        return history.ElementAt(low).Value;
     }
 }
 
@@ -100,7 +116,7 @@ class Program {
                 place = x.Item3
         }).ToList().ForEach(y => {
                 String actualPlace = tour.Get(y.person, y.time);
-                if (y.place == actualPlace)
+                if (y.place != actualPlace)
                 {
                     throw new Exception(String.Format(
                                 "You're not good enough haha! Expected {0} at {1} - {2}, was {3}",
