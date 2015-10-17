@@ -60,6 +60,39 @@ class Node
         node.Next = Tree(mid + 1, high, ref list);
         return node;
     }
+
+    private static void Levels(
+            Node current, 
+            int currentLevel, 
+            Dictionary<int, List<int>> levels)
+    {
+        if (!levels.ContainsKey(currentLevel))
+        {
+            levels[currentLevel] = new List<int>();
+        }
+
+        levels[currentLevel].Add(current.Value);
+
+        if (current.Previous != null)
+        {
+            Levels(current.Previous, currentLevel + 1, levels);
+        }
+
+        if (current.Next != null)
+        {
+            Levels(current.Next, currentLevel + 1, levels);
+        }
+    }
+
+    public String Levels()
+    {
+        var levels = new Dictionary<int, List<int>>();
+        Levels(this, 0, levels);
+        return String.Join(
+                Environment.NewLine,
+                levels.Select(x => String.Join(", ", x.Value)));
+                
+    }
 }
 
 class Program 
@@ -85,6 +118,11 @@ class Program
         root.Previous = null;
         Console.WriteLine(root.ListToString());
         Console.WriteLine(root.Length);
+        Node tree = root.Tree();
         Console.WriteLine(root.Tree());
+        Console.WriteLine(tree.Levels());
+        tree = Node.Inplace(root);
+        Console.WriteLine(root.Tree());
+        Console.WriteLine(tree.Levels());
     }
 }
