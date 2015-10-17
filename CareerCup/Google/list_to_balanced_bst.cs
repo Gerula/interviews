@@ -61,6 +61,43 @@ class Node
         return node;
     }
 
+    public static Node Inplace(Node node)
+    {
+        if (node == null)     
+        {
+            return null;
+        }
+    
+        Node current = node.Middle;
+        if (current == node)
+        {
+            current.Previous = null;
+            current.Next = null;
+            return current;
+        }
+
+        current.Previous.Next = null;
+        current.Previous = Inplace(node);
+        current.Next = Inplace(current.Next);
+        return current;
+    }
+
+    public Node Middle
+    {
+        get
+        {
+            Node slow = this;
+            Node fast = this;
+            while (fast != null && fast.Next != null)
+            {
+                slow = slow.Next;
+                fast = fast.Next.Next;
+            }
+
+            return slow;
+        }
+    }
+
     private static void Levels(
             Node current, 
             int currentLevel, 
@@ -122,7 +159,7 @@ class Program
         Console.WriteLine(root.Tree());
         Console.WriteLine(tree.Levels());
         tree = Node.Inplace(root);
-        Console.WriteLine(root.Tree());
+        Console.WriteLine(tree);
         Console.WriteLine(tree.Levels());
     }
 }
