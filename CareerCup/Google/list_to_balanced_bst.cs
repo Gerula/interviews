@@ -128,7 +128,6 @@ class Node
         return String.Join(
                 Environment.NewLine,
                 levels.Select(x => String.Join(", ", x.Value)));
-                
     }
 }
 
