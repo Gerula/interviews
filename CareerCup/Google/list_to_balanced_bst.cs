@@ -13,6 +13,15 @@ class Node
     public Node Previous { get; set; }
     public Node Next { get; set; }
 
+    public uint Length { 
+        get
+        {
+            uint i = 0;
+            for (Node current = this; current != null; current = current.Next, i++) { }
+            return i;
+        }
+    }
+
     public override String ToString()
     {
         return String.Format("{0} {1}{2}",
@@ -26,6 +35,30 @@ class Node
         return String.Format("{0} {1}",
                              Value,
                              Next == null? String.Empty : Next.ListToString());
+    }
+
+    public Node Tree()
+    {
+        Node thisNode = this;
+        return Tree(0, (int)Length - 1, ref thisNode);
+    }
+
+    private static Node Tree(int low, int high, ref Node list)
+    {
+        if (low > high)
+        {
+            return null;
+        }
+
+        int mid = low + (high - low) / 2;
+        Node node = new Node();
+        node.Previous = Tree(low, mid - 1, ref list);
+
+        node.Value = list.Value;
+        list = list.Next;
+
+        node.Next = Tree(mid + 1, high, ref list);
+        return node;
     }
 }
 
@@ -51,5 +84,7 @@ class Program
         Node root = moq.Next;
         root.Previous = null;
         Console.WriteLine(root.ListToString());
+        Console.WriteLine(root.Length);
+        Console.WriteLine(root.Tree());
     }
 }
