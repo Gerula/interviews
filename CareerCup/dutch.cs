@@ -15,32 +15,48 @@ static class Problem
     static int[] Generate()
     {
         return Enumerable.
-                Range(1, rand.Next(10, 30)).
+                Range(1, rand.Next(10, 200)).
                 Select(x => rand.Next(1, 100) % 3).
                 ToArray();
     }
 
     static String Str(this int[] a)
     {
-        return String.Join(String.Empty, a);
+        return String.Join(String.Empty, a.Select(x => {
+                        switch (x) 
+                        {
+                            case 0: return "-"; break;
+                            case 1: return "="; break;
+                            case 2: return "≡"; break;
+                        }
+
+                        return " ";
+                    }));
     }
 
     static int[] FlagSort(this int[] a)
     {
+        var b = (int[])a.Clone();
         int zero = 0;
         int one = 0;
-        int two = a.Length;
+        int two = b.Length;
         while (one < two)
         {
-            switch (a[one])
+            switch (b[one])
             {
-                case 0: Swap(ref a[zero++], ref a[one++]); break;
+                case 0: Swap(ref b[zero++], ref b[one++]); break;
                 case 1: one++; break;
-                case 2: Swap(ref a[one], ref a[--two]); break;
+                case 2: Swap(ref b[one], ref b[--two]); break;
             }
         }
 
-        return a;
+        return b;
+    }
+
+    static int[] FlagSort2(this int[] a)
+    {
+        var b = (int[])a.Clone();
+        return b;
     }
 
     static void Swap(ref int a, ref int b)
@@ -56,10 +72,11 @@ static class Problem
         {
             var a = Generate();
             Console.WriteLine(
-                    "{0}{1}{2}{1}",
+                    "{0}{1}{2}{1}{3}{1}",
                     a.Str(),
                     Environment.NewLine,
-                    a.FlagSort().Str());
+                    a.FlagSort().Str(),
+                    a.FlagSort2().Str());
         }
     }
 }
