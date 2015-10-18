@@ -31,6 +31,45 @@ static class Program
                 ToList()[k];
     }
 
+    static int kth_inplace(this Tuple<int, int>[] intervals, int k)
+    {
+        var prev = intervals[0];
+        int start = prev.Item1;
+        int count = prev.Item2 - prev.Item1 + 1;
+        int maxRight = prev.Item2;
+        int maxLeft = prev.Item1;
+        if (k <= count) 
+        {
+            return start + (count - k) + 1;
+        }
+
+        foreach (var interval in intervals.Skip(1))
+        {
+            if (interval.Item2 > maxRight)
+            {
+                maxRight = interval.Item2; 
+                if (interval.Item1 > maxRight)
+                {
+                    maxLeft = interval.Item2;
+                    k -= count;
+                    count = interval.Item2 - interval.Item1 + 1;
+                    start = interval.Item1;
+                }
+                else
+                {
+                    count += interval.Item2 + 1 - maxLeft;
+                }
+            }
+
+            if (k <= count) 
+            {
+                return start + (count - k) + 1;
+            }
+        }
+
+        return 0;
+    }
+
     static void Main()
     {
         var input = new [] {
@@ -39,9 +78,13 @@ static class Program
             Tuple.Create(7, 20)
         };
 
-        for (int i = 3; i < 10; i++)
+        for (int i = 3; i <= 10; i++)
         {
-           Console.WriteLine("{0} -> {1}", i, input.kth(i));
+           Console.WriteLine(
+                   "{0} -> {1} -> {2}",
+                   i,
+                   input.kth(i),
+                   input.kth_inplace(i));
         }
     }
 }
