@@ -77,6 +77,24 @@ static class Problem
         return b;
     }
 
+    static int[] FlagSort3(this int[] a)
+    {
+        return a.
+               Aggregate(
+                    new SortedDictionary<int, int>(),
+                    (acc, x) => {
+                        if (!acc.ContainsKey(x))
+                        {
+                            acc[x] = 0;
+                        }
+
+                        acc[x]++;
+                        return acc;
+                    }).
+               SelectMany(x => Enumerable.Repeat(x.Key, x.Value)).
+               ToArray();
+    }
+
     static void Swap(ref int a, ref int b)
     {
         int c = a;
@@ -90,11 +108,12 @@ static class Problem
         {
             var a = Generate();
             Console.WriteLine(
-                    "{0}{1}{2}{1}{3}{1}",
+                    "{0}{1}{2}{1}{3}{1}{4}{1}",
                     a.Str(),
                     Environment.NewLine,
                     a.FlagSort().Str(),
-                    a.FlagSort2().Str());
+                    a.FlagSort2().Str(),
+                    a.FlagSort3().Str());
         }
     }
 }
