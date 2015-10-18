@@ -31,10 +31,14 @@ class Queue
     end
 end
 
-queue = Queue.new
-1.upto(10).each { |x| queue.enqueue(x) }
-1.upto(10).each { |x|
-    assert_equal(x, queue.dequeue)
-}
+def test(queue)
+    1.upto(10).each { |x| queue.enqueue(x) }
+    1.upto(10).each { |x|
+        assert_equal(x, queue.dequeue)
+    }
 
-assert_equal(nil, queue.dequeue)
+    assert_equal(nil, queue.dequeue)
+end
+
+queue = Queue.new
+test(queue)
