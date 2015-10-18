@@ -56,6 +56,24 @@ static class Problem
     static int[] FlagSort2(this int[] a)
     {
         var b = (int[])a.Clone();
+        int zero = 0;
+        int one = 0;
+        int twos = 0;
+        for (int i = 0; i < b.Length; i++)
+        {
+            switch (b[i])
+            {
+                case 0: Swap(ref b[zero++], ref b[one++]); break; 
+                case 1: one++; break; 
+                case 2: b[i] = 1; one++; twos++; break;
+            }
+        }
+
+        for (int i = b.Length - twos; i < b.Length; i++)
+        {
+            b[i] = 2;
+        }
+
         return b;
     }
 
