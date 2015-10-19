@@ -28,17 +28,11 @@ def generate(n)
     
     result = ""
     random = Random.new
-    (n / mapping.size).times {
-        mapping.size.times {
-            result += mapping[random.rand(0..100) % 7]
-        }
+    (n / mapping.size + n % mapping.size).times {
+        result += 1.upto(mapping.size).map { |x| mapping[random.rand(0..100) % 7] }.join[0, [mapping.size, n - result.size].min]
     }
 
-    (n % mapping.size).times {
-        result += mapping[random.rand(0..100) % 7]
-    }
-
-    puts result
+    puts "#{result} #{result.size}"
     result
 end
 
