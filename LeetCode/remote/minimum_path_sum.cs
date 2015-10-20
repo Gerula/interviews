@@ -4,6 +4,16 @@
 //
 // Note: You can only move either down or right at any point in time.
 //
+// 61 / 61 test cases passed.
+//  Status: Accepted
+//  Runtime: 164 ms
+//      
+//      Submitted: 0 minutes ago
+//
+//      https://leetcode.com/submissions/detail/43211435/
+//
+//      You are here!
+//      Your runtime beats 98.00% of csharp submissions. <- It's not actually THAT fast. It's basically a boilerplate solution but nobody's working at this hour.
 
 using System;
 
