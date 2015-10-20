@@ -14,6 +14,7 @@
 //
 
 using System;
+using System.Linq;
 
 public class Heap {
     private Func<double, double, bool> Comparer { get; set; }
@@ -48,9 +49,42 @@ public class Heap {
         }
     }
 
+    public double Extract()
+    {
+        double result = storage[0];
+        storage[0] = storage[Size - 1];
+        Size--;
+        int idx = 0;
+        while (idx < Size)
+        {
+            int gt = idx;
+            gt = (!Comparer(storage[idx], storage[Left(idx)]) && Left(idx) < Size) ? Left(idx) : gt;
+            gt = (!Comparer(storage[idx], storage[Right(idx)]) && Right(idx) < Size) ? Right(idx) : gt;
+            if (gt == idx)
+            {
+                break;
+            }
+
+            Swap(ref storage[idx], ref storage[gt]);
+            idx = gt;
+        }
+
+        return result;
+    }
+
     private int Parent(int x)
     {
         return (x - 1) / 2;
+    }
+
+    private int Left(int x)
+    {
+        return x * 2 + 1;
+    }
+
+    private int Right(int x)
+    {
+        return x * 2 + 2;
     }
 
     private void Swap(ref double a, ref double b)
@@ -59,20 +93,39 @@ public class Heap {
         a = b;
         b = c;
     }
+
+    public override String ToString()
+    {
+        return String.Format("Sz: {0}, {1}", Size, String.Join(", ", storage.Where(x => x != 0)));
+    }
 }
 
 public class MedianFinder {
-    Heap maxHeap = new Heap((x, y) => x >= y);
+    Heap maxHeap = new Heap((x, y) => x > y);
     Heap minHeap = new Heap((x, y) => x < y);
 
     public void AddNum(double num) {
-        if (minHeap.Size <= maxHeap.Size)
-        {
-            minHeap.Add(num);
-        }
-        else 
+        if (maxHeap.Size == 0)
         {
             maxHeap.Add(num);
+            return;
+        }
+
+        if (minHeap.Size == 0)
+        {
+            minHeap.Add(num);
+            return;
+        }
+
+        maxHeap.Add(num);
+        if (minHeap.Head < maxHeap.Head || minHeap.Size < maxHeap.Size + 1)
+        {
+            minHeap.Add(maxHeap.Extract());
+        }
+
+        if (maxHeap.Size < minHeap.Size)
+        {
+            maxHeap.Add(minHeap.Extract());
         }
     }
 
@@ -83,7 +136,7 @@ public class MedianFinder {
         }
         else
         {
-            return maxHeap.Head;
+            return ((minHeap.Size > maxHeap.Size)? minHeap : maxHeap).Head;
         }
     }
 }
@@ -102,6 +155,20 @@ class Program
         mf.AddNum(2);
         mf.AddNum(3);
         mf.AddNum(4);
+        Console.WriteLine(mf.FindMedian());
+        mf = new MedianFinder();
+        mf.AddNum(1);
+        Console.WriteLine(mf.FindMedian());
+        mf = new MedianFinder();
+        mf.AddNum(-1);
+        Console.WriteLine(mf.FindMedian());
+        mf.AddNum(-2);
+        Console.WriteLine(mf.FindMedian());
+        mf.AddNum(-3);
+        Console.WriteLine(mf.FindMedian());
+        mf.AddNum(-4);
+        Console.WriteLine(mf.FindMedian());
+        mf.AddNum(-5);
         Console.WriteLine(mf.FindMedian());
     }
 }
