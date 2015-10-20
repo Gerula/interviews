@@ -62,12 +62,29 @@ public class Heap {
 }
 
 public class MedianFinder {
+    Heap maxHeap = new Heap((x, y) => x >= y);
+    Heap minHeap = new Heap((x, y) => x < y);
+
     public void AddNum(double num) {
-            
+        if (minHeap.Size <= maxHeap.Size)
+        {
+            minHeap.Add(num);
+        }
+        else 
+        {
+            maxHeap.Add(num);
+        }
     }
 
     public double FindMedian() {
-        return 0;    
+        if (maxHeap.Size == minHeap.Size)
+        {
+            return (maxHeap.Head + minHeap.Head) / 2;
+        }
+        else
+        {
+            return maxHeap.Head;
+        }
     }
 }
 
@@ -81,15 +98,10 @@ class Program
         Console.WriteLine(mf.FindMedian());
         mf.AddNum(3);
         Console.WriteLine(mf.FindMedian());
-        Heap maxHeap = new Heap((x, y) => x >= y);
-        Heap minHeap = new Heap((x, y) => x < y);
-        for (int i = 0; i < 5; i++)
-        {
-            maxHeap.Add((double)i);
-            minHeap.Add((double)i);
-        }
-
-        Console.WriteLine(maxHeap.Head);
-        Console.WriteLine(minHeap.Head);
+        mf = new MedianFinder();
+        mf.AddNum(2);
+        mf.AddNum(3);
+        mf.AddNum(4);
+        Console.WriteLine(mf.FindMedian());
     }
 }
