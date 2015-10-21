@@ -35,37 +35,26 @@ static class Program
         }
     }
 
-    static String FingerPrint(this String word)
+    static bool BuiltWith(this String word, String letters)
     {
-        return String.Join(String.Empty, word.Distinct().OrderBy(x => x));
+        return !word.Any(x => !letters.Contains(x));
     }
 
     static void Main()
     {
         var allWords = ReadWords().
                         OrderBy(y => y.Length).
-                        Reverse().
-                        Select(x => 
-                                new 
-                                { 
-                                    Word = x, 
-                                    FingerPrint = x.FingerPrint() 
-                                });
-
-        Console.WriteLine(String.Join(Environment.NewLine, allWords.Select(x => String.Format("{0} - {1}", x.Word, x.FingerPrint))));
+                        Reverse();
 
         new [] {
             "abcd",
             "qwer",
             "hjklo"
         }.ToList().ForEach(x => {
-            String fingerPrint = x.FingerPrint();
-            Console.WriteLine(fingerPrint);
             Console.WriteLine("{0} - {1}", 
                               x,
                               allWords.
-                                  First(word => fingerPrint.IndexOf(word.FingerPrint) >= 0).
-                                  Word);
+                                First(word => word.BuiltWith(x)));
         });
     }
 }
