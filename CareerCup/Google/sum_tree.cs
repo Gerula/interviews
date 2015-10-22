@@ -14,7 +14,7 @@ class Node
     public Node Left { get; set; }
     public Node Right { get; set; }
 
-    public IEnumerable<Node> Inorder(bool isReversed)
+    public IEnumerable<Node> Inorder(bool isReversed = false)
     {
         Node first = isReversed ? this.Right : this.Left;
         Node second = isReversed ? this.Left : this.Right;
@@ -48,7 +48,34 @@ static class Program
 {
     static Tuple<int, int> GetSum(this Node tree, int sum)
     {
-        return Tuple.Create(0, 0);
+        var ascending = tree.Inorder().GetEnumerator();
+        var descending = tree.Inorder(isReversed: true).GetEnumerator();
+        ascending.MoveNext();
+        descending.MoveNext();
+        var small = ascending.Current;
+        var large = descending.Current;
+
+        while (small != large)
+        {
+            int currentSum = small.Value + large.Value;
+            if (currentSum == sum)
+            {
+                return Tuple.Create(small.Value, large.Value);
+            }
+
+            if (currentSum < sum)
+            {
+                ascending.MoveNext();
+                small = ascending.Current;
+            }
+            else
+            {
+                descending.MoveNext();
+                large = descending.Current;
+            }
+        }
+
+        return null;
     }
 
     static void Main()
@@ -81,7 +108,7 @@ static class Program
         Console.WriteLine(String.Join(
                                         Environment.NewLine, 
                                         Enumerable.
-                                            Range(1, 10).
+                                            Range(1, 16).
                                             Select(x => String.Format("{0} - {1}", x, tree.GetSum(x)))));
                                                 
     }
