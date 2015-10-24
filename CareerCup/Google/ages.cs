@@ -39,10 +39,62 @@ static class Program
                            });
     }
 
+    static int HowMany(this int age, int[] everyone)
+    {
+        return everyone.GetPosition(age, false) - 
+               everyone.GetPosition(age, true);
+    }
+
+    static int GetPosition(this int[] a, int target, bool left)
+    {
+        int low = 0;
+        int high = a.Length;
+
+        while (low < high)
+        {
+            int mid = low + (high - low) / 2;
+            if (a[mid] == target)
+            {
+                if (left)
+                {
+                    high = mid;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+            else if (a[mid] < target)
+            {
+                high = mid;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+
+        Console.WriteLine("{0} - {1}", target, low);
+        return low;
+    }
+
     static void Main()
     {
         var input = GenerateAges();
-        Console.WriteLine(String.Join(", ", input));
-        Console.WriteLine(String.Join(Environment.NewLine, input.Occurences().Select(x => String.Format("{0} - {1}", x.Key, x.Value))));
+        foreach (var occurence in input.Occurences())
+        {
+            var age = occurence.Key;
+            var howMany = age.HowMany(input);
+            if (howMany != occurence.Value)
+            {
+                throw new Exception(String.Format(
+                            "You're not good enough! Expected {0} for age {1} and got {2}",
+                            occurence.Value,
+                            occurence.Key,
+                            howMany));
+            }
+        }
+
+        Console.WriteLine("All appears to be well");
     }
 }
