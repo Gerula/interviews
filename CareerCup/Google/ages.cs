@@ -64,7 +64,7 @@ static class Program
                     low = mid + 1;
                 }
             }
-            else if (a[mid] < target)
+            else if (target < a[mid])
             {
                 high = mid;
             }
@@ -74,7 +74,6 @@ static class Program
             }
         }
 
-        Console.WriteLine("{0} - {1}", target, low);
         return low;
     }
 
