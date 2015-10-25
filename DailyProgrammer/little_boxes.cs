@@ -3,12 +3,20 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
 static class Program
 {
+    enum State 
+    {
+        Undecided,
+        Open,
+        Closed
+    }
+
     static char Char(this int level)
     {
         switch (level)
@@ -23,32 +31,47 @@ static class Program
 
     static void Print(String path)
     {
+        List<State> stateCache = null;
         using (StreamReader reader = new StreamReader(path))
         {
             String line;
             while ((line = reader.ReadLine()) != null)
             {
-                Console.WriteLine(line.Process());
+                Console.WriteLine(line.Process(ref stateCache));
             }
         }
 
         Console.WriteLine();
     }
 
-    static String Process(this String line)
+    static String Process(this String line, ref List<State> stateCache)
     {
+        if (stateCache == null)
+        {
+            stateCache = Enumerable.Repeat(State.Undecided, line.Length).ToList();
+        }
+
         StringBuilder sb = new StringBuilder();
         int level = -1;
-        int borderCount = line.Count(x => x == '|');
-        int borderLimit = borderCount / 2;
-        foreach(char c in line)
+        for (int i = 0; i < line.Length; i++)
         {
+            char c = line[i];
             if (c != ' ')
             {
                 sb.Append(c);
+                if (c == '+' && i > 1 && line[i - 1] == '-')
+                {
+                    stateCache[i] = State.Closed;
+                }
+
+                if (c == '+' && i < line.Length - 1 && line[i + 1] == '-')
+                {
+                    stateCache[i] = State.Open;
+                }
+
                 if (c == '|') 
                 {
-                    level += (borderCount-- > borderLimit) ? 1 : -1;
+                    level += stateCache[i] == State.Open ? 1 : -1;
                 }
             }
             else
