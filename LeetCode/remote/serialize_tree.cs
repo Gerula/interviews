@@ -36,15 +36,27 @@ public class Codec {
 
     // Encodes a tree to a single string.
     public string serialize(TreeNode root) {
-         if (root == null)
-         {
-             return "NULL";
-         }
+        List<String> result = new List<String>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.Push(root);
+        while (stack.Count != 0)
+        {
+            TreeNode current = stack.Pop();
+            if (current == null)
+            {
+                result.Add("NULL");
+                continue;
+            }
+            else
+            {
+                result.Add(current.val.ToString());
+            }
+            
+            stack.Push(current.right);
+            stack.Push(current.left);
+        }
 
-         return String.Format("{0} {1} {2}",
-                 root.val,
-                 serialize(root.left),
-                 serialize(root.right));
+        return String.Join(" ", result);
     }
 
     // Decodes your encoded data to tree.
