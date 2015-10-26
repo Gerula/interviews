@@ -7,6 +7,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 public class TreeNode {
      public int val;
@@ -26,12 +27,37 @@ public class Codec {
 
     // Encodes a tree to a single string.
     public string serialize(TreeNode root) {
-        return "";        
+         if (root == null)
+         {
+             return "NULL";
+         }
+
+         return String.Format("{0} {1} {2}",
+                 root.val,
+                 root.left.ToString(),
+                 root.right.ToString());
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(string data) {
-        return new TreeNode(0);
+        var nodes = data.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries);
+        var stack = new Stack<TreeNode>();
+        for (int i = nodes.Length - 1; i >= 0; i--)
+        {
+            if (nodes[i] == "NULL")
+            {
+                stack.Push(null);
+            }
+            else
+            {
+                stack.Push(new TreeNode(int.Parse(nodes[i])) {
+                                    left = stack.Pop(),
+                                    right = stack.Pop()
+                                });
+            }
+        }
+
+        return stack.Pop();
     }
 }
 
@@ -69,7 +95,7 @@ class Program
         Codec codec = new Codec();
         if (!TreeEqual(root, codec.deserialize(codec.serialize(root)))) 
         {
-            throw new Exception("Yousuck!");
+            throw new Exception("Yousuck!" + codec.serialize(root));
         }
 
         Console.WriteLine("All appears to be well");
