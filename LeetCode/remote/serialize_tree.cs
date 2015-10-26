@@ -5,6 +5,15 @@
 // Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
 //
 //
+// 
+// Submission Details
+// 47 / 47 test cases passed.
+//  Status: Accepted
+//  Runtime: 232 ms
+//      
+//      Submitted: 0 minutes ago
+//
+//      https://leetcode.com/submissions/detail/44159195/
 
 using System;
 using System.Collections.Generic;
@@ -34,8 +43,8 @@ public class Codec {
 
          return String.Format("{0} {1} {2}",
                  root.val,
-                 root.left.ToString(),
-                 root.right.ToString());
+                 serialize(root.left),
+                 serialize(root.right));
     }
 
     // Decodes your encoded data to tree.
