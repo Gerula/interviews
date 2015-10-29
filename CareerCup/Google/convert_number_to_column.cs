@@ -26,17 +26,8 @@ static class Program
         String result = String.Empty;
         while (i > 0)
         {
-            if ((i & 1) == 0)
-            {
-                result += "B";
-                i -= 1;
-            }
-            else
-            {
-                result += "A";
-            }
-
-            i >>= 1;
+            result += Math.Max(i - 2, i) % 2 == 1 ? 'A' : 'B';
+            i -= 2;
         }
         
         return result;
