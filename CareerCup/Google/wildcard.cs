@@ -26,16 +26,14 @@ static class Program
             return result;
         }
 
-        var newResult = new List<String>();
-        foreach (var localResult in result)
-        {
-            foreach (var forwardResult in s.Substring(1).Regenerate())
-            {
-                newResult.Add(localResult + forwardResult);
-            }
-        }
-
-        return newResult;
+        return result.
+                SelectMany(x => s.Substring(1).
+                                  Regenerate().
+                                  Select(y => String.Format(
+                                                        "{0}{1}",
+                                                        x,
+                                                        y))).
+                ToList();
     }
 
     static void Main()
