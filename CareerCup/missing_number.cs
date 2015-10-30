@@ -24,6 +24,19 @@ static class Program
                 ToArray();
     }
 
+    // Fascinating!
+    //
+    //      0 1 2 3 4 5
+    //      2 1 4 6 5 0
+    //
+    //      6 ^ 0 ^ 2 ^ 1 ^ 1 ^ 2 ^ 4 ^ 3 ^ 6 ^ 4 ^ 5 ^ 5 ^ 0
+    //      6 ^ 2 ^ 1 ^ 1 ^ 2 ^ 4 ^ 3 ^ 6 ^ 4 ^ 5 ^ 5
+    //      6 ^ 2 ^ 1 ^ 1 ^ 2 ^ 4 ^ 3 ^ 6 ^ 4
+    //      2 ^ 1 ^ 1 ^ 2 ^ 4 ^ 3 ^ 4
+    //      2 ^ 1 ^ 1 ^ 2 ^ 3
+    //      1 ^ 1 ^ 3
+    //      3 - Genius
+    //
     static int Missing(this int[] a)
     {
         return a.
