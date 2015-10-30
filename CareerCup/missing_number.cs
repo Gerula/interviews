@@ -20,6 +20,7 @@ static class Program
                 Range(0, missing).
                 Concat(Enumerable.
                         Range(missing + 1, n - missing)).
+                OrderBy(x => random.Next()).
                 ToArray();
     }
 
@@ -27,7 +28,7 @@ static class Program
     {
         return a.
                 Select((item, index) => new { item, index } ).
-                Aggregate(a.Last(), (acc, x) => {
+                Aggregate(a.Max(), (acc, x) => {
                     return acc ^ x.item ^ x.index;
                 });
     }
@@ -37,9 +38,10 @@ static class Program
         for (int i = 0; i < 10; i++)
         {
             var input = 30.Generate();
-            Console.WriteLine("{0} - {1}",
+            Console.WriteLine("{0} - {1} - {2}",
                               String.Join(", ", input),
-                              input.Missing());
+                              input.Missing(),
+                              input.Contains(input.Missing()) ? "Still there" : "Not there");
         }
     }
 }
