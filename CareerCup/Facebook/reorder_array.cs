@@ -43,6 +43,13 @@ static class Program
             throw new Exception(String.Format("You're not good enough {0}", String.Join(", ", new [] { 'c', 'd', 'e', 'f', 'g' }.Permute(new [] { 3, 0, 4, 1, 2 }))));
         }
 
+        if (!new [] { 'c', 'd', 'e', 'f', 'g' }.
+                Permute_2(new [] { 3, 0, 4, 1, 2 }).
+                SequenceEqual(new [] { 'd' , 'f', 'g', 'c', 'e' }))
+        {
+            throw new Exception(String.Format("You're not good enough {0}", String.Join(", ", new [] { 'c', 'd', 'e', 'f', 'g' }.Permute(new [] { 3, 0, 4, 1, 2 }))));
+        }
+
         Console.WriteLine("All appears to be well");
     }
 }
