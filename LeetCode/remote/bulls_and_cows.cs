@@ -26,6 +26,13 @@ using System.Linq;
 
 static class Program
 {
+    public static string GetHint3(this string secret, string guess)
+    {
+        var bullshits = Enumerable.Range(0, guess.Length).Aggregate(0, (acc, x) => { return acc + (secret[x] == guess[x] ? 1 : 0); });
+        var cowshits = Enumerable.Range(0, 10).Select(x => Math.Min(guess.Count(z => int.Parse(z.ToString()) == x), secret.Count(z => int.Parse(z.ToString()) == x))).Sum() - bullshits;
+        return String.Format("{0}A{1}B", bullshits, cowshits);
+    }
+
     public static string GetHint(this string secret, string guess) {
         var bullshits = secret.
                         Zip(guess, (x, y) => x == y).
@@ -85,17 +92,22 @@ static class Program
     {
         Console.WriteLine("1807".GetHint("7810"));
         Console.WriteLine("1807".GetHint2("7810"));
+        Console.WriteLine("1807".GetHint3("7810"));
         Console.WriteLine();
         Console.WriteLine("1".GetHint("0"));
         Console.WriteLine("1".GetHint2("0"));
+        Console.WriteLine("1".GetHint3("0"));
         Console.WriteLine();
         Console.WriteLine("11".GetHint("10"));
         Console.WriteLine("11".GetHint2("10"));
+        Console.WriteLine("11".GetHint3("10"));
         Console.WriteLine();
         Console.WriteLine("12".GetHint("23"));
         Console.WriteLine("12".GetHint2("23"));
+        Console.WriteLine("12".GetHint3("23"));
         Console.WriteLine();
         Console.WriteLine("1234".GetHint("0111"));
         Console.WriteLine("1234".GetHint2("0111"));
+        Console.WriteLine("1234".GetHint3("0111"));
     }
 }
