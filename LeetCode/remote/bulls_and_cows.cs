@@ -58,12 +58,44 @@ static class Program
         return String.Format("{0}A{1}B", bullshits, cowshits);
     }
 
+    public static string GetHint2(this String secret, String guess)
+    {
+        var occurences = Enumerable.Repeat(0, 10).ToArray();
+        var bullshits = 0;
+        var cowshits = 0;
+        for (int i = 0; i < secret.Length; i++)
+        {
+            var first = int.Parse(secret[i].ToString());
+            var second = int.Parse(guess[i].ToString());
+            if (first == second)
+            {
+                bullshits++;
+            }
+            else
+            {
+                cowshits += (occurences[first]++ < 0) ? 1 : 0;
+                cowshits += (occurences[second]-- > 0) ? 1 : 0;
+            }
+        }
+
+        return String.Format("{0}A{1}B", bullshits, cowshits);
+    }
+
     static void Main()
     {
         Console.WriteLine("1807".GetHint("7810"));
+        Console.WriteLine("1807".GetHint2("7810"));
+        Console.WriteLine();
         Console.WriteLine("1".GetHint("0"));
+        Console.WriteLine("1".GetHint2("0"));
+        Console.WriteLine();
         Console.WriteLine("11".GetHint("10"));
+        Console.WriteLine("11".GetHint2("10"));
+        Console.WriteLine();
         Console.WriteLine("12".GetHint("23"));
+        Console.WriteLine("12".GetHint2("23"));
+        Console.WriteLine();
         Console.WriteLine("1234".GetHint("0111"));
+        Console.WriteLine("1234".GetHint2("0111"));
     }
 }
