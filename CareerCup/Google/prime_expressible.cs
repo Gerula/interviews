@@ -19,27 +19,21 @@ static class Program
     static int[] NthExpressibleNumber(this int[] a, int n)
     {
         var result = new int[n];
+        var indexes = Enumerable.
+                        Repeat(0, a.Length).ToArray();
+        
         result[0] = 1;
-        Array.Copy(a, 0, result, 1, a.Length);
-        int prev = 1;
-        for (int i = a.Length + 1; i < n; i++)
+        for (int i = 1; i < n; i++)
         {
-            int min = int.MaxValue;
-            for (int j = prev; j < i; j++)
-            {
-                foreach (int x in a)
-                {
-                    if (x * result[j] < min)
-                    {
-                        min = x * result[j];
-                        prev = j + 1;
-                    }
-                }
-            }
-
-            result[i] = min;
+            result[i] = indexes.Select((x, index) => result[x] * a[index]).Min();
+            indexes.
+            Select((val, index) => 
+            new { val, index}).
+            Where(x => result[x.val] * a[x.index] == result[i]).
+            ToList().
+            ForEach(y => indexes[y.index] ++);
         }
-
+        
         return result;
     }
 
