@@ -21,14 +21,23 @@ static class Program
         var result = new int[n];
         result[0] = 1;
         Array.Copy(a, 0, result, 1, a.Length);
+        int prev = 1;
         for (int i = a.Length + 1; i < n; i++)
         {
-            result[i] = result.
-                            Skip(i - a.Length).
-                            Take(a.Length).
-                            SelectMany(x => 
-                                       a.Select(y => y * x)).
-                            Min();
+            int min = int.MaxValue;
+            for (int j = prev; j < i; j++)
+            {
+                foreach (int x in a)
+                {
+                    if (x * result[j] < min)
+                    {
+                        min = x * result[j];
+                        prev = j + 1;
+                    }
+                }
+            }
+
+            result[i] = min;
         }
 
         return result;
