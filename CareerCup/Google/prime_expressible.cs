@@ -20,9 +20,15 @@ static class Program
     {
         var result = new int[n];
         result[0] = 1;
-        for (int i = 1; i < n; i++)
+        Array.Copy(a, 0, result, 1, a.Length);
+        for (int i = a.Length + 1; i < n; i++)
         {
-            result[i] = a.Select(x => result[i - 1] * x).Min();
+            result[i] = result.
+                            Skip(i - a.Length).
+                            Take(a.Length).
+                            SelectMany(x => 
+                                       a.Select(y => y * x)).
+                            Min();
         }
 
         return result;
