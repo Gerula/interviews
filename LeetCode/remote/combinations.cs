@@ -52,8 +52,25 @@ static class Program
         }
     }
 
+    static IEnumerable<IEnumerable<int>> Combinations(this IEnumerable<int> numbers, int k)
+    {
+        if (k == 0)
+        {
+            return new [] { new int[0] };
+        }
+
+        return numbers.
+                SelectMany((element, index) =>
+                           numbers.
+                            Skip(index + 1).
+                            Combinations(k - 1).
+                            Select(c => new [] { element }.Concat(c)));
+    }
+
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, Combine(4, 2).Select(x => String.Join(", ", x))));
+        Console.WriteLine();
+        Console.WriteLine(String.Join(Environment.NewLine, Enumerable.Range(1, 4).Combinations(2).Select(x => String.Join(", ", x))));
     }
 }
