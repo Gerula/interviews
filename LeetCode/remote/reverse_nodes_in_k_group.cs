@@ -15,6 +15,14 @@
 //
 //  For k = 3, you should return: 3->2->1->4->5 
 //
+// 
+// Submission Details
+// 81 / 81 test cases passed.
+//  Status: Accepted
+//  Runtime: 172 ms
+//      
+//      Submitted: 0 minutes ago
+//      
 
 using System;
 using System.Linq;
@@ -33,7 +41,6 @@ public class ListNode {
 public class Solution {
     public static ListNode ReverseKGroup(ListNode head, int k) {
         var iterator = head;
-        head = null;
         ListNode last = null;
         while (iterator != null)
         {
