@@ -15,11 +15,12 @@ using System.Linq;
 
 static class Program 
 {
+    static Dictionary<ulong, Dictionary<int, List<int>>> memory = new Dictionary<ulong, Dictionary<int, List<int>>>();
+
     static List<Tuple<ulong, int>> Threes(this ulong n)
     {
         var result = new List<int>();
         var partial = new List<int>();
-        var memory = new Dictionary<ulong, 
         GetSum(n, 0, partial, result);
         return result.Select(x => {
                     var item = Tuple.Create(n, x);
@@ -29,7 +30,10 @@ static class Program
                 }).ToList();
     }
 
-    static void GetSum(ulong n, ulong sum, List<int> partial, List<int> result)
+    static void GetSum(ulong n,
+                       int sum,
+                       List<int> partial,
+                       List<int> result)
     {
         var remainder = n % 3;
         if (result.Count > 0)
@@ -37,11 +41,29 @@ static class Program
             return;
         }
 
-        if (n < 2)
+        if (n == 1)
         {
-            if (sum == 0 && n == 1) // Yay! solution
+            if (sum == 0)
             {
                 result.AddRange(new List<int>(partial));
+                return;
+            }
+
+            return;
+        }
+
+        if (n < 2)
+        {
+
+            return;
+        }
+
+        if (memory.ContainsKey(n) 
+        {
+            if (memory[n].ContainsKey(-sum))
+            {
+                partial.AddRange(memory[n][-sum]);
+                GetSum(1, 0, partial, result);
             }
 
             return;
