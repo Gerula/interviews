@@ -15,13 +15,12 @@ using System.Linq;
 
 static class Program 
 {
-    static Dictionary<ulong, Dictionary<int, List<int>>> memory = new Dictionary<ulong, Dictionary<int, List<int>>>();
-
     static List<Tuple<ulong, int>> Threes(this ulong n)
     {
         var result = new List<int>();
         var partial = new List<int>();
-        GetSum(n, 0, partial, result);
+        var memory = new Dictionary<ulong, HashSet<int>>();
+        GetSum(n, 0, partial, result, memory);
         return result.Select(x => {
                     var item = Tuple.Create(n, x);
                     n += (ulong)x;
@@ -33,8 +32,21 @@ static class Program
     static void GetSum(ulong n,
                        int sum,
                        List<int> partial,
-                       List<int> result)
+                       List<int> result,
+                       Dictionary<ulong, HashSet<int>> memory)
     {
+        if (memory.ContainsKey(n) && memory[n].Contains(sum))
+        {
+            return;
+        }
+
+        if (!memory.ContainsKey(n))
+        {
+            memory[n] = new HashSet<int>();
+        }
+
+        memory[n].Add(sum);
+
         var remainder = n % 3;
         if (result.Count > 0)
         {
@@ -58,39 +70,28 @@ static class Program
             return;
         }
 
-        if (memory.ContainsKey(n) 
-        {
-            if (memory[n].ContainsKey(-sum))
-            {
-                partial.AddRange(memory[n][-sum]);
-                GetSum(1, 0, partial, result);
-            }
-
-            return;
-        }
-
         switch (remainder) {
             case 0: {
                         partial.Add(0);
-                        GetSum(n / 3, sum, partial, result); 
+                        GetSum(n / 3, sum, partial, result, memory); 
                         partial.RemoveAt(partial.Count - 1);
                         break;
                     }
             case 1: {
                         partial.Add(-1);
-                        GetSum((n - 1) / 3, sum - 1, partial, result);
+                        GetSum((n - 1) / 3, sum - 1, partial, result, memory);
                         partial.RemoveAt(partial.Count - 1);
                         partial.Add(2);
-                        GetSum((n + 2) / 3, sum + 2, partial, result);
+                        GetSum((n + 2) / 3, sum + 2, partial, result, memory);
                         partial.RemoveAt(partial.Count - 1);
                         break;
                     }
             case 2: {
                         partial.Add(-2);
-                        GetSum((n - 2) / 3, sum - 2, partial, result);
+                        GetSum((n - 2) / 3, sum - 2, partial, result, memory);
                         partial.RemoveAt(partial.Count - 1);
                         partial.Add(1);
-                        GetSum((n + 1) / 3, sum + 1, partial, result);
+                        GetSum((n + 1) / 3, sum + 1, partial, result, memory);
                         partial.RemoveAt(partial.Count - 1);
                         break;
                     }
