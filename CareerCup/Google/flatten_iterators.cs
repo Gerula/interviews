@@ -42,6 +42,22 @@ class Iterator
     }
 }
 
+class IterativeIteratorLOL
+{
+    public Iterator { get; set; }
+    private Stack<Iterator> stack = new Stack<Iterator>();
+
+    public bool HasNext()
+    {
+
+    }
+
+    public int Next()
+    {
+
+    }
+}
+
 static class Program 
 {
     static void Main()
