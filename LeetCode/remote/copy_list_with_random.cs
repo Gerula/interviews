@@ -4,6 +4,24 @@
 //
 //  Return a deep copy of the list. 
 //
+// this is fucking bullshit:
+//
+// My output:
+//
+// [1,#x] -> [2,#x] -> [3,#x] -> [4,#x] -> [5,#x] -> [6,#x] -> [7,#x] -> [8,#x] -> [9,#x] -> [10,#x] ->
+// [1,#8] -> [2,#8] -> [3,#1] -> [4,#10] -> [5,#3] -> [6,#2] -> [7,#5] -> [8,#5] -> [9,#3] -> [10,#6] ->
+// [1,#8] -> [2,#8] -> [3,#1] -> [4,#10] -> [5,#3] -> [6,#2] -> [7,#5] -> [8,#5] -> [9,#3] -> [10,#6] ->
+// [1,#8] -> [2,#8] -> [3,#1] -> [4,#10] -> [5,#3] -> [6,#2] -> [7,#5] -> [8,#5] -> [9,#3] -> [10,#6] ->
+// [100001,#100008] -> [100002,#100008] -> [100003,#100001] -> [100004,#100010] -> [100005,#100003] -> [100006,#100002] -> [100007,#100005] -> [100008,#100005] -> [100009,#100003] -> [100010,#100006] ->
+// [1,#8] -> [2,#8] -> [3,#1] -> [4,#10] -> [5,#3] -> [6,#2] -> [7,#5] -> [8,#5] -> [9,#3] -> [10,#6] ->
+//
+// and the damn OJ says:
+//
+//  Input: {-1,1,#,#}
+//  Output: Random pointer of node with label -1 points to a node from the original list.
+//  Expected: {-1,1,#,#} 
+//
+//  That's fucking bullshit. I'm modifying the original list, the second doesn't change. What bullshit, man!!
 
 using System;
 using System.Linq;
@@ -53,6 +71,11 @@ public class RandomListNode {
 class Program
 {
     public static RandomListNode CopyRandomList(RandomListNode head) {
+        if (head == null)
+        {
+            return null;
+        }
+
         var it = head;
         while (it != null)
         {
@@ -69,7 +92,11 @@ class Program
         it = head;
         while (it != null)
         {
-            it.next.random = it.random.next;
+            if (it.random != null)
+            {
+                it.next.random = it.random.next;
+            }
+
             it = it.next.next;
         }
 
@@ -114,7 +141,10 @@ class Program
         var head2 = CopyRandomList(head1);
         Console.WriteLine(head1);
         Console.WriteLine(head2);
-        head1.next.label = 1000;
+        for (int i = 0; i < head1.Length; i++)
+        {
+            head1[i].label += 100000;
+        }
         Console.WriteLine(head1);
         Console.WriteLine(head2);
     }
