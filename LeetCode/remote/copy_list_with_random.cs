@@ -52,6 +52,43 @@ public class RandomListNode {
 
 class Program
 {
+    public static RandomListNode CopyRandomList(RandomListNode head) {
+        var it = head;
+        while (it != null)
+        {
+            it.next = new RandomListNode(it.label) 
+            {
+                next = it.next,
+                random = it.next
+            };
+
+            it = it.next.next;
+        }
+
+        var result = head.next;
+        it = head;
+        while (it != null)
+        {
+            it.next.random = it.random.next;
+            it = it.next.next;
+        }
+
+        it = head;
+        while (it != null)
+        {
+            var newNode = it.next;
+            it.next = newNode.next;
+            if (newNode.next != null)
+            {
+                newNode.next = newNode.next.next;
+            }
+
+            it = it.next;
+        }
+
+        return result;
+    }
+
     static void Main()
     {
         RandomListNode head1 = null;
@@ -74,5 +111,11 @@ class Program
         }
 
         Console.WriteLine(head1);
+        var head2 = CopyRandomList(head1);
+        Console.WriteLine(head1);
+        Console.WriteLine(head2);
+        head1.next.label = 1000;
+        Console.WriteLine(head1);
+        Console.WriteLine(head2);
     }
 }
