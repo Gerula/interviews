@@ -36,6 +36,32 @@ class Array
     end
 
     def flip_2(n)
+        num_zeroes = 0
+        left = 0
+        length = 0
+        start = 0
+        right = 0
+        while right < self.length
+            if num_zeroes <= n
+                num_zeroes += 1 if self[right] == 0
+                right += 1
+            end
+
+            if num_zeroes > n
+                num_zeroes -= 1 if self[left] == 0
+                left += 1
+            end
+
+            if right - left > length
+                start = left
+                length = right - left
+            end
+        end
+        
+        return self[start, length].each_with_index.inject([]) { |acc, x|
+            acc.push(x.last + start) if x.first == 0
+            acc
+        }
     end
 end
 
