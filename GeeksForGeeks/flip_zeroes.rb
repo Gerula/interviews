@@ -13,7 +13,7 @@ class Array
         for i in 0...self.size
             j = self.size - i - 1
             left[i] = leftOnes
-            right[i] = rightOnes
+            right[j] = rightOnes
             if self[i] == 1
                 leftOnes += 1
             else
