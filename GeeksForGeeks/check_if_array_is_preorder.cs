@@ -7,21 +7,6 @@
 using System;
 using System.Collections.Generic;
 
-class Node // This is fucking bullshit. I think some of the test cases are wrong.
-{
-    public int Val;
-    public Node Left;
-    public Node Right;
-
-    public String Preorder()
-    {
-        return String.Format(" {0}{1}{2}",
-                             Val,
-                             Left != null ? Left.Preorder() : String.Empty,
-                             Right != null ? Right.Preorder() : String.Empty);
-    }
-}
-
 static class Program 
 {
     static bool IsTraversal(this int[] a)
@@ -67,18 +52,6 @@ static class Program
         {
             throw new Exception("You are weak, expected false");
         }
-
-        var preorder = new Node {
-            Val = 2,
-            Right = new Node {
-                Val = 4,
-                Left = new Node {
-                    Val = 1
-                }
-            }
-        }.Preorder();
-
-        Console.WriteLine(preorder);
 
         Console.WriteLine("All appears to be well");
     }
