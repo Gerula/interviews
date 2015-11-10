@@ -147,5 +147,11 @@ class Program
         }
         Console.WriteLine(head1);
         Console.WriteLine(head2);
+        for (int i = 0; i < head1.Length; i++)
+        {
+            head2[i].label += 1;
+        }
+        Console.WriteLine(head1);
+        Console.WriteLine(head2);
     }
 }
