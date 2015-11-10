@@ -10,6 +10,12 @@
 // sumRange(2, 5) -> -1
 // sumRange(0, 5) -> -3
 //
+// 16 / 16 test cases passed.
+//  Status: Accepted
+//  Runtime: 512 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 using System.Collections.Generic;
