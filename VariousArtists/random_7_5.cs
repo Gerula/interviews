@@ -28,9 +28,19 @@ class Program
 
     static int Rand72()
     {
-        return 1 * (Rand5() <= 2 ? 0 : 1) +
-               2 * (Rand5() == 2) +
-               4 * (Rand5() >= 3 ? 1 : 0);
+        var result = 0;
+        foreach (var power in new [] { 1, 2, 4})
+        {
+            var bit = 0;
+            while ((bit = Rand5()) == 3)
+            {
+            }
+
+            bit = (bit < 3) ? 1 : 0;
+            result += power * bit;
+        }
+
+        return result;
     }
 
     static void Main()
