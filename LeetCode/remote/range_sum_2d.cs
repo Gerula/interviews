@@ -2,6 +2,14 @@
 //
 // Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by (row1, col1), (row2, col2).
 //
+// 
+// Submission Details
+// 12 / 12 test cases passed.
+//  Status: Accepted
+//  Runtime: 560 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 
