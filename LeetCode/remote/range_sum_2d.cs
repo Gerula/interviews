@@ -18,13 +18,12 @@ public class NumMatrix {
 
     public NumMatrix(int[,] matrix) {
         m = new int[matrix.GetLength(0) + 1, matrix.GetLength(1) + 1];
-        var columns = new int [m.GetLength(1) + 1];
         for (var i = 1; i < m.GetLength(0); i++)
         {
             for (var j = 1; j < m.GetLength(1); j++)
             {
-                m[i, j] = m[i, j - 1] + matrix[i - 1, j - 1] + columns[j]; 
-                columns[j] += matrix[i - 1, j - 1];
+                m[i, j] = m[i, j - 1] + matrix[i - 1, j - 1] +
+                          m[i - 1, j] - m[i - 1, j -1];
             }
         }
     }
