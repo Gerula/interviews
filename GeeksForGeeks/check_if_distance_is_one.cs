@@ -34,7 +34,7 @@ using System.Linq;
 class DistanceResult
 {
     public bool OneDistance { get; set; }
-    public char Diff { get; set; }
+    public String Diff { get; set; }
 
     public override String ToString()
     {
@@ -48,7 +48,44 @@ static class Program
     {
         var first = 0;
         var second = 0;
-        return new DistanceResult { OneDistance = false, Diff = 'c' };
+        var edits = 0;
+        String diff = String.Empty;
+
+        while (first < s.Length || second < p.Length)
+        {
+            char? a = first < s.Length ? (char?)s[first] : null;
+            char? b = second < p.Length ? (char?)p[second] : null;
+
+            if (a == b)
+            {
+                first++;
+                second++;
+                continue;
+            }
+
+            edits++;
+
+            if (s.Length == p.Length)
+            {
+                diff += String.Format("replace {0} with {1} ", a, b);
+                first++;
+                second++;
+                continue;
+            }
+
+            if (s.Length < p.Length)
+            {
+                diff += String.Format("Delete {0} from {1} ", b, p);
+                second++;
+            }
+            else
+            {
+                diff += String.Format("Delete {0} from {1} ", a, s);
+                first++;
+            }
+        }
+
+        return new DistanceResult { OneDistance = edits == 1, Diff = diff };
     }
 
     static void Main()
