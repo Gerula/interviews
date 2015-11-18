@@ -17,17 +17,30 @@
 //
 // Given a string represents an integer, write a function to determine if it's an additive number.
 //
+// 
+// Submission Details
+// 34 / 34 test cases passed.
+//  Status: Accepted
+//  Runtime: 152 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 
 public class Solution {
     public bool IsAdditiveNumber(string num) {
-        for (var i = 1; i < num.Length / 2; i++)
+        for (var i = 1; i < num.Length; i++)
         {
-            for (var j = 1; j < num.Length - i - 1; j++)
+            for (var j = 1; j < num.Length - i; j++)
             {
-                var first = int.Parse(num.Substring(0, i));
-                var second = int.Parse(num.Substring(i, j));
+                var first = long.Parse(num.Substring(0, i));
+                var second = long.Parse(num.Substring(i, j));
+                if (second.ToString() != num.Substring(i, j))
+                {
+                    continue;
+                }
+
                 var k = i + j;
                 while (k < num.Length)
                 {
@@ -58,5 +71,8 @@ public class Solution {
         Console.WriteLine(x.IsAdditiveNumber("112358"));
         Console.WriteLine(x.IsAdditiveNumber("199100199"));
         Console.WriteLine(x.IsAdditiveNumber("19910199"));
+        Console.WriteLine(x.IsAdditiveNumber("111122335588143"));
+        Console.WriteLine(x.IsAdditiveNumber("123"));
+        Console.WriteLine(x.IsAdditiveNumber("1023"));
     }
 }
