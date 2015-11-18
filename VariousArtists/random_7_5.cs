@@ -37,7 +37,7 @@ class Program
             }
 
             bit = (bit < 3) ? 1 : 0;
-            result += power * bit;
+            result = result << 1 + bit;
         }
 
         return result;
