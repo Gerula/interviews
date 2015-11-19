@@ -42,9 +42,32 @@ static class Program
         }
     }
 
+    static int WB(this String s, HashSet<String> dictionary)
+    {
+        var dp = new int[s.Length + 1];
+        for (var i = 0; i < s.Length - 1; i++)
+        {
+            if (dp[i] == 0 && i > 0)
+            {
+                continue;
+            }
+
+            for (var j = 1; j < s.Length - i; j++)
+            {
+                if (dictionary.Contains(s.Substring(i, j)))
+                {
+                    dp[i + j] += (i > 0 ? dp[i - 1] : 1) + 1;
+                }
+            }
+        }
+
+        return dp[s.Length - 1];
+    }
+
     static void Main()
     {
         var dictionary = new HashSet<String> {"apple", "tablet", "able", "t", "app", "let"};
         Console.WriteLine(String.Join(Environment.NewLine, "appletablet".WordBreak(dictionary)));
+        Console.WriteLine("appletablet".WB(dictionary));
     }
 }
