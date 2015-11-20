@@ -10,6 +10,11 @@ using System.Linq;
 
 static class Program
 {
+    static String ToLetter(this int n)
+    {
+        return ((char)('a' + n - 1)).ToString();
+    }
+
     static List<String> Decode(this String s)
     {
         if (String.IsNullOrEmpty(s))
@@ -18,27 +23,19 @@ static class Program
         }
 
         var result = new List<String>();
-        for (var i = 1; i <= s.Length; i++)
+        if (int.Parse(s) < 27)
         {
-            var num = int.Parse(s.Substring(0, i));
-            if (num < 27)
-            {
-                var current = ((char)('a' + num - 1)).ToString(); 
-                if (i == s.Length)
-                {
-                    result.Add(current);
-                }
-                else
-                {
-                    foreach (var next in s.Substring(i).Decode())
-                    {
-                        result.Add(current + next);
-                    }
-                }
-            }
+            result.Add(int.Parse(s).ToLetter());
         }
 
-        return result;
+        return Enumerable
+               .Range(1, s.Length - 1)
+               .Select(x => int.Parse(s.Substring(0, x)))
+               .Where(y => y < 27)
+               .SelectMany(z => s.Substring(z.ToString().Length).Decode(),
+                          (a, b) => a.ToLetter() + b)
+               .Concat(result)
+               .ToList();
     }
 
     static void Main()
