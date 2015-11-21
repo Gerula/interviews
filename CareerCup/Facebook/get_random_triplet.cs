@@ -36,7 +36,7 @@ static class Program
         var letters = new HashSet<char>();
         var sources = new HashSet<char>();
         var adj = new Dictionary<char, HashSet<char>>();
-        while (letters.Count != s.Length)
+        while (sources.Count != s.Length - 1)
         {
             var triple = s.Random();
             letters.Add(triple.Item1);
