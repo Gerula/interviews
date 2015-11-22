@@ -41,9 +41,19 @@ static class Program
         Console.WriteLine(String.Join(Environment.NewLine, result.Select(x => String.Join(String.Empty, x))));
     }
 
+    static void Gray2(this int n)
+    {
+        for (int i = 0; i < 1 << n; i++)
+        {
+            Console.WriteLine(Convert.ToString((i >> 1) ^ i, 2));
+        }
+    }
+
     static void Main()
     {
         4.Gray();
+        Console.WriteLine();
+        4.Gray2();
     }
 }
 
