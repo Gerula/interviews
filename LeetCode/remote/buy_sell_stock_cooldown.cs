@@ -37,6 +37,45 @@ public class Solution {
         return Math.Max(coolDown, sell);
     }
 
+// Submission Details
+// 212 / 212 test cases passed.
+//  Status: Accepted
+//  Runtime: 624 ms
+//      
+//      Submitted: 0 minutes ago
+//
+//      AHA!!! Mine worked too. Way too fucking slow, of course, but it worked!
+    public int MaxProfitBackTrack(int[] prices) {
+        return MaxProfitHelper(prices, 0, new int[prices.Length]);
+    }
+
+    public int MaxProfitHelper(int[] prices, int start, int[] cache)
+    {
+        if (start >= prices.Length - 1)
+        {
+            return 0;
+        }
+
+        if (cache[start] != 0)
+        {
+            return cache[start];
+        }
+
+        var buy = prices[start];
+        var max = MaxProfitHelper(prices, start + 1,  cache);
+        for (var i = start + 1; i < prices.Length; i++)
+        {
+            if (prices[i] > buy)
+            {
+                var localMax = prices[i] - buy;
+                max = Math.Max(max, localMax + MaxProfitHelper(prices, i + 2, cache));
+            }
+        }
+
+        cache[start] = max;
+        return max;
+    }
+
     static void Main()
     {
         Console.WriteLine(new Solution().MaxProfit(new [] {1, 2, 3, 0, 2}));
