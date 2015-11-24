@@ -8,30 +8,25 @@ using System.Collections.Generic;
 
 static class Program
 {
-    static List<String> Gen(this int n)
+    static List<String> Gen(this int n, int open = 0, int closed = 0, String partial = "")
     {
         var result = new List<String>();
-        n.GenRec(0, 0, result, String.Empty);
-        return result;
-    }
-
-    static void GenRec(this int n, int open, int closed, List<String> result, String partial)
-    {
         if (open == n && closed == n)
         {
             result.Add(partial);
-            return;
         }
 
         if (open < n)
         {
-            n.GenRec(open + 1, closed, result, partial + "(");
+            result.AddRange(n.Gen(open + 1, closed, partial + "("));
         }
 
         if (closed < open)
         {
-            n.GenRec(open, closed + 1, result, partial + ")");
+            result.AddRange(n.Gen(open, closed + 1, partial + ")"));
         }
+
+        return result;
     }
 
     static void Main()
