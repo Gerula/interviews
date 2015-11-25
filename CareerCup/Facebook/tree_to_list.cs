@@ -55,6 +55,27 @@ class Node
 
         return root.Right;
     }
+
+    public Node Flatten()
+    {
+        var left = this.Left;
+        var right = this.Right;
+        
+        this.Left = null;
+        this.Right = null;
+
+        left = left == null ? left : left.Flatten();
+        right = right == null ? right : right.Flatten();
+        this.Right = left;
+        var marker = this;
+        while (marker.Right != null)
+        {
+            marker = marker.Right;
+        }
+
+        marker.Right = right;
+        return this;
+    }
 }
 
 class Program
@@ -84,5 +105,7 @@ class Program
 
         var ordered = node.Clone();
         Console.WriteLine(ordered.ToList().Preorder());
+        var flattened = node.Clone();
+        Console.WriteLine(flattened.Flatten().Preorder());
     }
 }
