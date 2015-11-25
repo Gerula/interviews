@@ -10,6 +10,10 @@ extend Test::Unit::Assertions
 class String
     def composed(dict, hash = nil)
         hash ||= {}
+        if hash[self]
+            return hash[self]
+        end
+
         next_result = (1..self.size)
                         .map{ |x| self[0, x] }
                         .select { |y| !dict[y].nil? }
@@ -22,7 +26,8 @@ class String
                             end
                         }
 
-        return next_result.empty? ? false : next_result.reduce(:|)
+        hash[self] = next_result.empty? ? false : next_result.reduce(:|)
+        return hash[self]
     end
 end
 
