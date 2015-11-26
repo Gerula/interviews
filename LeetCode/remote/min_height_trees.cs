@@ -5,6 +5,13 @@
 //  those with minimum height are called minimum height trees (MHTs). Given such a graph,
 //  write a function to find all the MHTs and return a list of their root labels in ascending order.
 //
+// 
+// Submission Details
+// 66 / 66 test cases passed.
+//  Status: Accepted
+//  Runtime: 676 ms
+//      
+//      Submitted: 0 minutes ago
 
 using System;
 using System.Collections;
@@ -14,20 +21,30 @@ using System.Linq;
 public class Solution {
     public IList<int> FindMinHeightTrees(int n, int[,] edges) {
         var hash = new Dictionary<int, HashSet<int>>();
+        var degrees = new Dictionary<int, int>();
+        var unVisited = new HashSet<int>();
         for (var i = 0; i < edges.GetLength(0); i++)
         {
-            if (!hash.ContainsKey(edges[i, 0]))
+            var x = edges[i, 0];
+            var y = edges[i, 1];
+            if (!hash.ContainsKey(x))
             {
-                hash[edges[i, 0]] = new HashSet<int>();
+                hash[x] = new HashSet<int>();
+                degrees[x] = 0;
             }
 
-            if (!hash.ContainsKey(edges[i, 1]))
+            if (!hash.ContainsKey(y))
             {
-                hash[edges[i, 1]] = new HashSet<int>();
+                hash[y] = new HashSet<int>();
+                degrees[y] = 0;
             }
 
-            hash[edges[i, 0]].Add(edges[i, 1]);
-            hash[edges[i, 1]].Add(edges[i, 0]);
+            hash[x].Add(y);
+            hash[y].Add(x);
+            unVisited.Add(x);
+            unVisited.Add(y);
+            degrees[x]++;
+            degrees[y]++;
         }
 
         if (!hash.Any())
@@ -35,51 +52,27 @@ public class Solution {
             return Enumerable.Range(0, n).ToList();
         }
 
-        var candidates = Enumerable
-                         .Range(0, n)
-                         .Where(x => hash[x].Count > 1);
-
-        var min = int.MaxValue;
-        if (!candidates.Any())
+        var currentLevel = hash.Keys.Where(x => hash[x].Count == 1).ToList();
+        while (unVisited.Count > 2)
         {
-            candidates = Enumerable.Range(0, n);
-        }
-
-        var counts = candidates.Select(x => {
-                var queue = new Queue<int>();
-                var visited = new BitArray(n, false);
-                var levels = 1;
-                var currentLevel = 1;
-                var nextLevel = 0;
-                queue.Enqueue(x);
-                visited[x] = true;
-                while (queue.Count > 0)
+            var nextLevel = new List<int>();
+            foreach (var node in currentLevel)
+            {
+                unVisited.Remove(node);
+                foreach (var neighbor in hash[node].Where(x => unVisited.Contains(x)))
                 {
-                    var current = queue.Dequeue();
-                    currentLevel--;
-                    foreach (var i in hash[current].Where(z => !visited[z]))
+                    degrees[neighbor]--;
+                    if (degrees[neighbor] == 1)
                     {
-                        visited[i] = true;
-                        nextLevel++;
-                        queue.Enqueue(i);
-                    }
-                    
-                    if (currentLevel == 0)
-                    {
-                        levels++;
-                        currentLevel = nextLevel;
-                        nextLevel = 0;
+                        nextLevel.Add(neighbor);
                     }
                 }
+            }
 
-                min = Math.Min(min, levels);
-                return new { Node = x, Levels = levels };
-        });
+            currentLevel = nextLevel;
+        }
 
-        return counts
-               .Where(x => x.Levels == min)
-               .Select(y => y.Node)
-               .ToList();
+        return currentLevel;
     }
 
     static void Main()
@@ -91,6 +84,17 @@ public class Solution {
                                     {1, 0},
                                     {1, 2},
                                     {1, 3} // Yeah, great work leetcode. This is a way more smarter way to hold a graph
+                                })));
+
+        Console.WriteLine(String.Join(
+                            ", ", 
+                            new Solution()
+                                .FindMinHeightTrees(6, new int[,] {
+                                    {0, 1},
+                                    {0, 2},
+                                    {0, 3},
+                                    {3, 4},
+                                    {4, 5}
                                 })));
 
         Console.WriteLine(String.Join(
