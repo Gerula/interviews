@@ -13,20 +13,31 @@ using System.Linq;
 
 public class Solution {
     public IList<int> FindMinHeightTrees(int n, int[,] edges) {
+        var hash = new Dictionary<int, HashSet<int>>();
+        for (var i = 0; i < edges.GetLength(0); i++)
+        {
+            if (!hash.ContainsKey(edges[i, 0]))
+            {
+                hash[edges[i, 0]] = new HashSet<int>();
+            }
+
+            if (!hash.ContainsKey(edges[i, 1]))
+            {
+                hash[edges[i, 1]] = new HashSet<int>();
+            }
+
+            hash[edges[i, 0]].Add(edges[i, 1]);
+            hash[edges[i, 1]].Add(edges[i, 0]);
+        }
+
+        if (!hash.Any())
+        {
+            return Enumerable.Range(0, n).ToList();
+        }
+
         var candidates = Enumerable
                          .Range(0, n)
-                         .Where(x => {
-                            var count = 0;
-                            for (var i = 0; i < n; i++)
-                            {
-                                if (edges[i, x] != 0)
-                                {
-                                    count++;
-                                }
-                            }
-
-                            return count > 1;
-                         });
+                         .Where(x => hash[x].Count > 1);
 
         var min = int.MaxValue;
         if (!candidates.Any())
@@ -46,14 +57,11 @@ public class Solution {
                 {
                     var current = queue.Dequeue();
                     currentLevel--;
-                    for (int i = 0; i < n; i++)
+                    foreach (var i in hash[current].Where(z => !visited[z]))
                     {
-                        if (edges[i, current] != 0 && !visited[i])
-                        {
-                            visited[i] = true;
-                            nextLevel++;
-                            queue.Enqueue(i);
-                        }
+                        visited[i] = true;
+                        nextLevel++;
+                        queue.Enqueue(i);
                     }
                     
                     if (currentLevel == 0)
@@ -80,10 +88,14 @@ public class Solution {
                             ", ", 
                             new Solution()
                                 .FindMinHeightTrees(4, new int[,] {
-                                    {0, 1, 0, 0},
-                                    {1, 0, 1, 1},
-                                    {0, 1, 0, 0},
-                                    {0, 1, 0, 0}
+                                    {1, 0},
+                                    {1, 2},
+                                    {1, 3} // Yeah, great work leetcode. This is a way more smarter way to hold a graph
                                 })));
+
+        Console.WriteLine(String.Join(
+                            ", ", 
+                            new Solution()
+                                .FindMinHeightTrees(1, new int[0, 0])));
     }
 }
