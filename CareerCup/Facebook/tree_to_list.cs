@@ -56,6 +56,31 @@ class Node
         return root.Right;
     }
 
+    public Node FlattenPre()
+    {
+        var stack = new Stack<Node>();
+        var root = new Node();
+        var marker = root;
+        stack.Push(this);
+        while (stack.Count > 0)
+        {
+            var current = stack.Pop();
+            marker.Left = null;
+            marker.Right = current;
+            marker = marker.Right;
+            if (current.Right != null)
+            {
+                stack.Push(current.Right);
+            }
+            if (current.Left != null)
+            {
+                stack.Push(current.Left);
+            }
+        }
+
+        return root.Right;
+    }
+
     public Node Flatten()
     {
         var left = this.Left;
@@ -107,5 +132,7 @@ class Program
         Console.WriteLine(ordered.ToList().Preorder());
         var flattened = node.Clone();
         Console.WriteLine(flattened.Flatten().Preorder());
+        var flattenedPre = node.Clone();
+        Console.WriteLine(flattenedPre.FlattenPre().Preorder());
     }
 }
