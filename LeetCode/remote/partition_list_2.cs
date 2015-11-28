@@ -8,6 +8,14 @@
 // Given 1->4->3->2->5->2 and x = 3,
 // return 1->2->2->4->3->5. 
 //
+// 
+// Submission Details
+// 166 / 166 test cases passed.
+//  Status: Accepted
+//  Runtime: 180 ms
+//      
+//      Submitted: 0 minutes ago
+// (><)
 
 using System;
 
