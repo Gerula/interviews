@@ -18,52 +18,40 @@ using System.Linq;
 
 public class Solution {
     public bool IsScramble(string s1, string s2) {
-        return IsScrambleHelper(s1, s2, new Dictionary<String, bool>());
-    }
-
-    public bool IsScrambleHelper(string s1, string s2, Dictionary<String, bool> cache)
-    {
-        var key = s1 + "." + s2;
-        if (cache.ContainsKey(key))
+        if (s1.Length != s2.Length)
         {
-            return cache[key];
+            return false;
         }
 
-        if (s1 == s2)
-        {
-            cache[key] = true;
-            return cache[key];
-        }
+        var n = s1.Length;
+        var dp = new bool[n, n, n];
 
-        if (!s1.OrderBy(x => x).SequenceEqual(s2.OrderBy(x => x)))
+        for (var i = 0; i < n; i++)
         {
-            cache[key] = false;
-            return cache[key];
-        }
-
-        for (var i = 1; i < s1.Length; i++)
-        {
-            var s11 = s1.Substring(0, i);
-            var s12 = s1.Substring(i);
-            var s21 = s2.Substring(0, i);
-            var s22 = s2.Substring(i);
-            if (IsScramble(s11, s21) && IsScramble(s12, s22))
+            for (var j = 0; j < n; j++)
             {
-                cache[key] = true;
-                return cache[key];
-            }
-
-            s21 = s2.Substring(0, s2.Length - i);
-            s22 = s2.Substring(s2.Length - i);
-            if (IsScramble(s11, s22) && IsScramble(s12, s21))
-            {
-                cache[key] = true;
-                return cache[key];
+                dp[i, j, 0] = s1[i] == s2[j];
             }
         }
 
-        cache[key] = false;
-        return cache[key];
+        for (var l = 1; l < n; l++)
+        {
+            for (var i = 0; i <= n - l; i++)
+            {
+                for (var j = 0; j <= n - l; j++)
+                {
+                    dp[i, j, l] = false;
+                    for (var k = 1; k < l; k++)
+                    {
+                        dp[i, j, l] = dp[i, j, l] ||
+                                      dp[i, j, k] && dp[i + k + 1, j + k + 1, l - k - 1] ||
+                                      dp[i, j + l - k, k] && dp[i + k + 1, j, l - k - 1];
+                    }
+                }
+            }
+        }
+
+        return dp[0, 0, n - 1];
     }
 
     static void Main()
