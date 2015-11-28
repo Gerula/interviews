@@ -2,17 +2,21 @@
 //
 //  Given a string s1, we may represent it as a binary tree by partitioning it to two non-empty substrings recursively. 
 //
+// First attempt:
+//
+// Submission Details
+// 281 / 281 test cases passed.
+//  Status: Accepted
+//  Runtime: 164 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 using System.Linq;
 
 public class Solution {
     public bool IsScramble(string s1, string s2) {
-        if (s1.Length != s2.Length)
-        {
-            return false;
-        }
-
         if (s1 == s2)
         {
             return true;
@@ -35,7 +39,7 @@ public class Solution {
             }
 
             s21 = s2.Substring(0, s2.Length - i);
-            s22 = s2.Substring(s2.Length - 1);
+            s22 = s2.Substring(s2.Length - i);
             if (IsScramble(s11, s22) && IsScramble(s12, s21))
             {
                 return true;
