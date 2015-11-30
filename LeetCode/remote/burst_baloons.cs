@@ -22,14 +22,20 @@ public class Solution {
         var others = new int[n + 2];
         others[0] = others[n + 1] = 1;
         Array.Copy(nums, 0, others, 1, n);
-        return Burst(others, 0, n + 1);
+        var cache = new int[n + 2, n + 2];
+        return Burst(others, 0, n + 1, cache);
     }
 
-    public int Burst(int[] nums, int low, int high)
+    public int Burst(int[] nums, int low, int high, int[,] cache)
     {
         if (low + 1 == high)
         {
             return 0;
+        }
+
+        if (cache[low, high] > 0)
+        {
+            return cache[low, high];
         }
 
         var max = int.MinValue;
@@ -38,9 +44,10 @@ public class Solution {
             var localMax = nums[low] * nums[i] * nums[high];
             max = Math.Max(
                     max,
-                    Burst(nums, low, i) + localMax + Burst(nums, i, high));
+                    Burst(nums, low, i, cache) + localMax + Burst(nums, i, high, cache));
         }
 
+        cache[low, high] = max;
         return max;
     }
 
