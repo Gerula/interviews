@@ -8,6 +8,14 @@
 //
 //  Find the maximum coins you can collect by bursting the balloons wisely. 
 //
+// 
+// Submission Details
+// 76 / 76 test cases passed.
+//  Status: Accepted
+//  Runtime: 1348 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 using System.Collections.Generic;
