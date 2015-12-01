@@ -27,6 +27,28 @@ public class Solution {
         return NumTree(n, cache);
     }
 
+    // 
+    // Submission Details
+    // 19 / 19 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 56 ms
+    //      
+    //      Submitted: 0 minutes ago
+    public int NumTreees(int n)
+    {
+        var dp = new int[n + 2];
+        dp[0] = dp[1] = 1;
+        for (var i = 2; i <= n; i++)
+        {
+            for (var j = 0; j < i; j++)
+            {
+                dp[i] += dp[j] * dp[i - j - 1];
+            }
+        }
+
+        return dp[n];
+    }
+
     public int NumTree(int n, int[] cache)
     {
         if (cache[n] != 0)
@@ -47,5 +69,7 @@ public class Solution {
         var c = new Solution();
         Console.WriteLine(c.NumTrees(3));
         Console.WriteLine(c.NumTrees(19));
+        Console.WriteLine(c.NumTreees(3));
+        Console.WriteLine(c.NumTreees(19));
     }
 }
