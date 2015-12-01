@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Linq;
 
 public class Solution {
     public int NumTrees(int n) {
@@ -55,11 +56,12 @@ public class Solution {
         {
             return cache[n];
         }
-        
-        for (var i = 1; i <= n; i++)
-        {
-            cache[n] += NumTree(i - 1, cache) * NumTree(n - i, cache);
-        }
+
+        cache[n] = Enumerable
+                    .Range(1, n)
+                    .Aggregate(0, (acc, x) => {
+                                return acc + NumTree(x - 1, cache) * NumTree(n - x, cache);
+                            });
         
         return cache[n];
     }
