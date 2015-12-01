@@ -9,23 +9,37 @@
 //     /     /       \                 \
 //    2     1         2                 3
 //
+// 
+// Submission Details
+// 19 / 19 test cases passed.
+//  Status: Accepted
+//  Runtime: 56 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 
 public class Solution {
     public int NumTrees(int n) {
-        if (n < 2) 
+        var cache = new int[n + 2];
+        cache[0] = cache[1] = 1;
+        return NumTree(n, cache);
+    }
+
+    public int NumTree(int n, int[] cache)
+    {
+        if (cache[n] != 0)
         {
-            return 1;
+            return cache[n];
         }
         
-        var count = 0;
         for (var i = 1; i <= n; i++)
         {
-            count += NumTrees(i - 1) * NumTrees(n - i);
+            cache[n] += NumTree(i - 1, cache) * NumTree(n - i, cache);
         }
-
-        return count;
+        
+        return cache[n];
     }
 
     static void Main()
