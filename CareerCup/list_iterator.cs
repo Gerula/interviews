@@ -48,6 +48,6 @@ static class Program
 
         Console.WriteLine("{0} = {1}", String.Join(", ", head.GetEnumerator()), head.IsPalindrome());
         head = new Node { Val = "x", Next = head };
-        Console.WriteLine("{0} = {1}", String.Join(", ", head.GetEnumerator()), head.IsPalindrome());
+        Console.WriteLine("{0} = {1:", String.Join(", ", head.GetEnumerator()), head.IsPalindrome());
     }
 }
