@@ -4,6 +4,14 @@
 //
 // Given an integer n, return all distinct solutions to the n-queens puzzle.
 //
+// 
+// Submission Details
+// 9 / 9 test cases passed.
+//  Status: Accepted
+//  Runtime: 444 ms
+//      
+//      Submitted: 0 minutes ago
+//
 
 using System;
 using System.Collections.Generic;
@@ -27,25 +35,26 @@ public class Solution {
 
         for (var i = 0; i < n; i++)
         {
-            bool valid = true;
-            var levels = level;
-            for (var k = 0; k < partial.Count && valid; k++)
+            if (IsValid(partial, level, i)) 
             {
-                var low = i - levels;
-                var high = i + levels;
-                levels--;
-                valid = partial[k] != i && partial[k] != low && partial[k] != high;
+                partial.Add(i);
+                Queens(level + 1, n, partial, result);
+                partial.RemoveAt(partial.Count - 1);
             }
-
-            if (!valid)
-            {
-                continue;
-            }
-
-            partial.Add(i);
-            Queens(level + 1, n, partial, result);
-            partial.RemoveAt(partial.Count - 1);
         }
+    }
+
+    static bool IsValid(List<int> rows, int currentRow, int val)
+    {
+        for (var k = 0; k < rows.Count; k++)
+        {
+            if (rows[k] == val || Math.Abs(currentRow - k) == Math.Abs(val - rows[k]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     static String ToBoard(int n, int val)
