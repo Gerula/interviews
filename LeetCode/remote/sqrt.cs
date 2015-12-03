@@ -8,36 +8,45 @@
 using System;
 
 public class Solution {
+    // 
+    // Submission Details
+    // 1017 / 1017 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 64 ms
+    //      
+    //      Submitted: 0 minutes ago
     public int MySqrt(int x) {
         var low = 0;
-        var high = x - 1;
+        var high = x;
+        if (x < 2) 
+        {
+            return x;
+        }
+
         while (low < high)
         {
             var mid = low + (high - low) / 2;
-            var result = mid * mid;
-            if (result == x)
+            if (mid <= x / mid) // Integer overflow. It used to be mid * mid <= x !! Pay attention, you muppet.
             {
-                return mid;
-            }
-            else if (result < x)
-            {
-                low = mid;
+                low = mid + 1;
             }
             else
             {
-                high = mid - 1;
+                high = mid;
             }
         }
 
-        return low;
+        return high - 1;
     }
 
     static void Main()
     {
         var c = new Solution();
+        Console.WriteLine(c.MySqrt(2));
         Console.WriteLine(c.MySqrt(4));
         Console.WriteLine(c.MySqrt(16));
         Console.WriteLine(c.MySqrt(81));
         Console.WriteLine(c.MySqrt(82));
+        Console.WriteLine(c.MySqrt(2147483647));
     }
 }
