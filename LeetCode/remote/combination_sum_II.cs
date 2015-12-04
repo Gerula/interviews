@@ -23,6 +23,14 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    
+    // Submission Details
+    // 172 / 172 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 528 ms <- this is why we can't have nice things... It's supposed to be faster but the OJ is inconsistent
+    //      
+    //      Submitted: 0 minutes ago
+    //
     public IList<IList<int>> CombinationSum2(int[] candidates, int target) {
         var result = new List<IList<int>>();
         Array.Sort(candidates);
@@ -32,7 +40,7 @@ public class Solution {
 
     public void Combinations(int[] candidates, int index, int target, List<int> partial, IList<IList<int>> result)
     {
-        if (target == 0 && !result.Any(x => x.SequenceEqual(partial)))
+        if (target == 0)
         {
             result.Add(new List<int>(partial));
             return;
@@ -40,12 +48,15 @@ public class Solution {
 
         for (var i = index; i < candidates.Length; i++)
         {
-            if (target - candidates[i] >= 0)
+            if (target - candidates[i] < 0 ||
+               (i > 0 && i > index && candidates[i] == candidates[i - 1]))
             {
-                partial.Add(candidates[i]);
-                Combinations(candidates, i + 1, target - candidates[i], partial, result);
-                partial.RemoveAt(partial.Count - 1);
+                continue;
             }
+
+            partial.Add(candidates[i]);
+            Combinations(candidates, i + 1, target - candidates[i], partial, result);
+            partial.RemoveAt(partial.Count - 1);
         }
     }
 
