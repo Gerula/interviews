@@ -39,6 +39,17 @@ public class Solution {
         return high - 1;
     }
 
+    public int MySqrt2(int x)
+    {
+        var root = x;
+        while (root > x / root)
+        {
+            root = (root + x / root) / 2;
+        }
+
+        return root;
+    }
+
     static void Main()
     {
         var c = new Solution();
@@ -48,5 +59,11 @@ public class Solution {
         Console.WriteLine(c.MySqrt(81));
         Console.WriteLine(c.MySqrt(82));
         Console.WriteLine(c.MySqrt(2147483647));
+        Console.WriteLine(c.MySqrt2(2));
+        Console.WriteLine(c.MySqrt2(4));
+        Console.WriteLine(c.MySqrt2(16));
+        Console.WriteLine(c.MySqrt2(81));
+        Console.WriteLine(c.MySqrt2(82));
+        Console.WriteLine(c.MySqrt2(2147483647));
     }
 }
