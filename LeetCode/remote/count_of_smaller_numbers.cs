@@ -16,8 +16,7 @@ public class Solution {
                     return acc;
                 });
 
-        Sort(nums, 0, nums.Length, counts);
-        Console.WriteLine(String.Join(", ", nums));
+        Sort(nums.ToArray(), 0, nums.Length, counts);
         return nums
                .Select(x => counts[x])
                .ToList();
@@ -40,7 +39,7 @@ public class Solution {
             if (nums[i] > nums[j])
             {
                 sorted.Add(nums[i]);
-                counts[nums[i++]] += length - length / 2;
+                counts[nums[i++]] += counts[nums[j]] + 1; 
             }
             else
             {
