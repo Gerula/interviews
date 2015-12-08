@@ -13,10 +13,20 @@ using System.Linq;
 
 // HAHA
 // Submission Result: Memory Limit Exceeded 
+
+// 
+// Submission Details
+// 13 / 13 test cases passed.
+//  Status: Accepted
+//  Runtime: 668 ms
+//      
+//      Submitted: 0 minutes ago
+//
+//      Fixed it by chaning the Dictionary to an Array - less overhead much efficient.
 public class WordDictionary {
     class Node
     {
-        internal readonly Dictionary<char, Node> Next = new Dictionary<char, Node>();
+        internal readonly Node[] Next = new Node[27];
         internal bool IsFinal = false;
     }
 
@@ -31,13 +41,14 @@ public class WordDictionary {
         var node = word.Aggregate(
                             Root,
                             (acc, x) => {
-                                if (acc.Next.ContainsKey(x))
+                                var idx = x - 'a';
+                                if (acc.Next[idx] != null)
                                 {
-                                    return acc.Next[x];
+                                    return acc.Next[idx];
                                 }
                                 
-                                acc.Next[x] = new Node();
-                                return acc.Next[x];
+                                acc.Next[idx] = new Node();
+                                return acc.Next[idx];
                             });
         node.IsFinal = true;
     }
@@ -57,17 +68,18 @@ public class WordDictionary {
         {
             return current
                    .Next
-                   .Keys
-                   .Select(x => Search(word.Substring(1), current.Next[x]))
+                   .Where(node => node != null)
+                   .Select(x => Search(word.Substring(1), x))
                    .Aggregate(false, (acc, a) => acc || a);
         }
 
-        if (!current.Next.ContainsKey(word.First()))
+        var idx = word.First() - 'a';
+        if (current.Next[idx] == null)
         {
             return false;
         }
 
-        return Search(word.Substring(1), current.Next[word.First()]);
+        return Search(word.Substring(1), current.Next[idx]);
     }
 }
 
