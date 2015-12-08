@@ -30,7 +30,7 @@ public class Solution {
         }
 
         Sort(nums, start, length / 2, counts);
-        Sort(nums, length / 2, length - length / 2, counts);
+        Sort(nums, start + length / 2, length - length / 2, counts);
         var sorted = new List<int>();
         var i = start;
         var j = start + length / 2;
@@ -39,7 +39,7 @@ public class Solution {
             if (nums[i] > nums[j])
             {
                 sorted.Add(nums[i]);
-                counts[nums[i++]] += counts[nums[j]] + 1; 
+                counts[nums[i++]] += start + length - j;
             }
             else
             {
@@ -63,5 +63,8 @@ public class Solution {
     {
         var s = new Solution();
         Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 5, 2, 6, 1 })));
+        Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 2, 0, 1 })));
+        Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 1, 2, 7, 8, 5 })));
+        Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 26,78,27,100,33,67,90,23,66,5,38,7,35,23,52,22,83,51,98,69,81,32,78,28,94,13,2,97,3,76,99,51,9,21,84,66,65,36,100,41})));
     }
 }
