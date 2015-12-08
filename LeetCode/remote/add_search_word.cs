@@ -30,14 +30,15 @@ public class WordDictionary {
         internal bool IsFinal = false;
     }
 
-    private Node Root;
-
-    public WordDictionary()
-    {
-        Root = new Node();
-    }
+    private Dictionary<int, Node> Roots = new Dictionary<int, Node>();
 
     public void AddWord(String word) {
+        if (!Roots.ContainsKey(word.Length))
+        {
+            Roots[word.Length] = new Node();
+        }
+
+        var Root = Roots[word.Length];
         var node = word.Aggregate(
                             Root,
                             (acc, x) => {
@@ -54,7 +55,12 @@ public class WordDictionary {
     }
 
     public bool Search(string word) {
-        return Search(word, Root);
+        if (!Roots.ContainsKey(word.Length))
+        {
+            return false;
+        }
+
+        return Search(word, Roots[word.Length]);
     }
 
     private bool Search(string word, Node current)
