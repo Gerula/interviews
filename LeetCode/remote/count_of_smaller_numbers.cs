@@ -8,6 +8,56 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    public IList<int> CountSmall(int[] nums)
+    {
+        var result = new List<int>();
+        var numList = new List<int>();
+        foreach (var num in nums.Reverse())
+        {
+            var idx = FindPosition(numList, num);
+            numList.Insert(idx, num);
+            result.Add(idx);
+        }
+
+        result.Reverse();
+        return result;
+    }
+
+    int FindPosition(List<int> list, int element)
+    {
+        if (list.Count == 0)
+        {
+            return 0;
+        }
+
+        if (element <= list.First())
+        {
+            return 0;
+        }
+
+        if (element >= list.Last())
+        {
+            return list.Count;
+        }
+
+        var low = 0;
+        var high = list.Count;
+        while (low < high)
+        {
+            var mid = low + (high - low) / 2;
+            if (element >= list[mid])
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
+            }
+        }
+
+        return low;
+    }
+
     public IList<int> CountSmaller(int[] nums) {
         var counts = nums.Aggregate(
                 new Dictionary<int, int>(),
@@ -66,5 +116,9 @@ public class Solution {
         Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 2, 0, 1 })));
         Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 1, 2, 7, 8, 5 })));
         Console.WriteLine(String.Join(", ", s.CountSmaller(new [] { 26,78,27,100,33,67,90,23,66,5,38,7,35,23,52,22,83,51,98,69,81,32,78,28,94,13,2,97,3,76,99,51,9,21,84,66,65,36,100,41})));
+        Console.WriteLine(String.Join(", ", s.CountSmall(new [] { 5, 2, 6, 1 })));
+        Console.WriteLine(String.Join(", ", s.CountSmall(new [] { 2, 0, 1 })));
+        Console.WriteLine(String.Join(", ", s.CountSmall(new [] { 1, 2, 7, 8, 5 })));
+        Console.WriteLine(String.Join(", ", s.CountSmall(new [] { 26,78,27,100,33,67,90,23,66,5,38,7,35,23,52,22,83,51,98,69,81,32,78,28,94,13,2,97,3,76,99,51,9,21,84,66,65,36,100,41})));
     }
 }
