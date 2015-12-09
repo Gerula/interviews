@@ -9,48 +9,40 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
-    //  Memory limit exceeded
+    //  Time Limit Exceeded 
     public int NumSquares(int n) {
         var squares = Enumerable.Range(1, (int)Math.Sqrt(n)).Select(x => x * x).ToArray();
-        var queue = new Queue<int>();
-        squares.ToList().ForEach(x => queue.Enqueue(x));
+        var queue = new List<int>();
         
         if (n == squares.Last())
         {
             return 1;
         }
 
-        var currentLevelCount = squares.Length;
-        var nextLevelCount = 0;
-        var currentLevel = 1;
+        var level = 0;
+        queue.Add(n);
         var found = false;
-        while (queue.Count > 0 && !found)
+        while (!found)
         {
-            var item = queue.Dequeue();
-            currentLevelCount--;
-            foreach (var square in squares.Where(x => x + item <= n))
+            level++;
+            var temp = new List<int>();
+            foreach (var x in queue)
             {
-                var sum = square + item;
-                if (sum == n)
+                foreach (var candidate in squares.Where(y => y <= x).Select(y => x - y))
                 {
-                    currentLevel++;
-                    found = true;
-                    break;
+                    temp.Add(candidate);
+                    if (candidate == 0)
+                    {
+                        found = true;
+                        break;
+                    }
                 }
-                
-                queue.Enqueue(sum);
-                nextLevelCount++;
             }
 
-            if (currentLevelCount == 0)
-            {
-                currentLevel++;
-                currentLevelCount = nextLevelCount;
-                nextLevelCount = 0;
-            }
+            queue = temp;
         }
 
-        return currentLevel;
+        return level;
     }
 
     static void Main()
