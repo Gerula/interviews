@@ -11,43 +11,18 @@ using System.Linq;
 public class Solution {
     //  Time Limit Exceeded 
     public int NumSquares(int n) {
-        var squares = Enumerable.Range(1, (int)Math.Sqrt(n)).Select(x => x * x).ToArray();
-        var queue = new List<int>();
-        
-        if (n == squares.Last())
-        {
-            return 1;
-        }
+        var dp = new int[n + 1];
 
-        var level = 0;
-        queue.Add(n);
-        while (queue.Count > 0)
+        for (var i = 1; i <= n; i++)
         {
-            level++;
-            var temp = new List<int>();
-            foreach (var x in queue)
+            dp[i] = int.MaxValue;
+            for (var j = 1; j * j <= i; j++)
             {
-                foreach (var candidate in squares)
-                {
-                    if (x < candidate)
-                    {
-                        break;
-                    }
-                    
-                    var diff = x - candidate;
-                    if (diff == 0)
-                    {
-                        return level;
-                    }
-
-                    temp.Add(diff);
-                }
+                dp[i] = Math.Min(dp[i], dp[i - j * j] + 1);
             }
-
-            queue = temp;
         }
 
-        return level;
+        return dp[n];
     }
 
     static void Main()
