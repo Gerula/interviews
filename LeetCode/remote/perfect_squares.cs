@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  Memory limit exceeded
     public int NumSquares(int n) {
         var squares = Enumerable.Range(1, (int)Math.Sqrt(n)).Select(x => x * x).ToArray();
         var queue = new Queue<int>();
