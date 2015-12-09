@@ -21,21 +21,26 @@ public class Solution {
 
         var level = 0;
         queue.Add(n);
-        var found = false;
-        while (!found)
+        while (queue.Count > 0)
         {
             level++;
             var temp = new List<int>();
             foreach (var x in queue)
             {
-                foreach (var candidate in squares.Where(y => y <= x).Select(y => x - y))
+                foreach (var candidate in squares)
                 {
-                    temp.Add(candidate);
-                    if (candidate == 0)
+                    if (x < candidate)
                     {
-                        found = true;
                         break;
                     }
+                    
+                    var diff = x - candidate;
+                    if (diff == 0)
+                    {
+                        return level;
+                    }
+
+                    temp.Add(diff);
                 }
             }
 
@@ -51,5 +56,6 @@ public class Solution {
         Console.WriteLine(s.NumSquares(4));
         Console.WriteLine(s.NumSquares(12));
         Console.WriteLine(s.NumSquares(13));
+        Console.WriteLine(s.NumSquares(1535));
     }
 }
