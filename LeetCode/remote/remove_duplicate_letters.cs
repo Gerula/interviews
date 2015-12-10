@@ -16,11 +16,18 @@ using System.Linq;
 
 public class Solution {
     public string RemoveDuplicateLetters(string s) {
+        if (String.IsNullOrEmpty(s)) // FUCK YOU!! ('Given a string which contains only lowercase letters,')
+        {
+            return s;
+        }
+
         var positions = new Dictionary<char, int>();
         positions[s[s.Length - 1]] = s.Length - 1;
         for (var i = s.Length - 2; i >= 0; i--)
         {
-            if (s[i] >= s[i + 1] ||  s[i] < s[i + 1] && positions[s[i + 1]] == i + 1)
+            Console.WriteLine(s[i] + " " + s[i + 1]);
+            if (s[i] > s[i + 1] && !positions.ContainsKey(s[i]) ||
+                s[i] <= s[i + 1] && positions[s[i + 1]] == i + 1)
             {
                 positions[s[i]] = i;
             }
@@ -38,6 +45,9 @@ public class Solution {
     {
         var s = new Solution();
         Console.WriteLine(s.RemoveDuplicateLetters("bcabc"));
-        Console.WriteLine(s.RemoveDuplicateLetters("acdb"));
+        Console.WriteLine(s.RemoveDuplicateLetters("cbacdcbc"));
+        Console.WriteLine(s.RemoveDuplicateLetters("bcabc"));
+        Console.WriteLine(s.RemoveDuplicateLetters("dbdd"));
+        Console.WriteLine(s.RemoveDuplicateLetters("bbcaac"));
     }
 }
