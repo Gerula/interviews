@@ -9,7 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
-    //  Time Limit Exceeded 
+    // 
+    // Submission Details
+    // 600 / 600 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 180 ms
+    //      
+    //      Submitted: 0 minutes ago
+    //
     public int NumSquares(int n) {
         var dp = new int[n + 1];
 
