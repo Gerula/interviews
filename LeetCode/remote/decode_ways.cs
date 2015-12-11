@@ -15,12 +15,23 @@
 //   The number of ways decoding "12" is 2. 
 
 using System;
+using System.Collections.Generic;
 
 public class Solution {
-    // "9371597631128776948387197132267188677349946742344217846154932859125134924241649584251978418763151253"
+    // "4757562545844617494555774581341211511296816786586787755257741178599337186486723247528324612117156948"
     //
-    // Time limit exceeded - lol of course
+    // Time limit exceeded - but wtf?
     public int NumDecodings(string s) {
+        return NumDecodings(s, new Dictionary<String, int>());
+    }
+
+    public int NumDecodings(string s, Dictionary<String, int> hash)
+    {
+        if (hash.ContainsKey(s))
+        {
+            return hash[s];
+        }
+
         if (String.IsNullOrEmpty(s))
         {
             return 1;
