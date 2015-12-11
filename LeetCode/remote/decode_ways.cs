@@ -18,37 +18,38 @@ using System;
 using System.Collections.Generic;
 
 public class Solution {
-    // "4757562545844617494555774581341211511296816786586787755257741178599337186486723247528324612117156948"
+    //  
+    //  Submission Details
+    //  259 / 259 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 144 ms
+    //          
+    //          Submitted: 0 minutes ago
     //
-    // Time limit exceeded - but wtf?
+    //  Yay! Did this all by myself after fishing out all the fucking corner-cases from the OJ
+    //  Remember kids, CORNER CASES!!
     public int NumDecodings(string s) {
-        return NumDecodings(s, new Dictionary<String, int>());
-    }
-
-    public int NumDecodings(string s, Dictionary<String, int> hash)
-    {
-        if (hash.ContainsKey(s))
-        {
-            return hash[s];
-        }
-
+        var dp = new int[s.Length + 1];
         if (String.IsNullOrEmpty(s))
         {
-            return 1;
+            return 0;
         }
 
-        var sum = 0;
-        if (s[0] != '0')
+        dp[s.Length] = 1;
+        for (var i = s.Length - 1; i >= 0; i--)
         {
-            sum += NumDecodings(s.Substring(1));
+            if (s[i] == '0')
+            {
+                dp[i] = 0;
+            }
+            else
+            {
+                var nextTwo = i + 1 < s.Length ? int.Parse(s.Substring(i, 2)) : 0;
+                dp[i] = dp[i + 1] + (0 < nextTwo && nextTwo < 27 ? dp[i + 2] : 0);
+            }
         }
 
-        if (s.Length > 1 && int.Parse(s.Substring(0, 2)) < 27)
-        {
-            sum += NumDecodings(s.Substring(2));
-        }
-
-        return sum;
+        return dp[0];
     }
 
     static void Main()
@@ -59,7 +60,7 @@ public class Solution {
         // 12 26
         // 1 2 26
         // 1 22 6
-        foreach (var t in new [] { "12", "1226" })
+        foreach (var t in new [] { "12", "1226", "", "1", "00", "01" })
         {
             Console.WriteLine("{0} - {1}", t, s.NumDecodings(t));
         }
