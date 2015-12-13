@@ -5,7 +5,6 @@
 #   1 4 9 16 25
 
 n = 10
-prev = 1
 puts (1..n).inject([1]) { |acc, x|
     acc << acc.last + x * x
 }.inspect
