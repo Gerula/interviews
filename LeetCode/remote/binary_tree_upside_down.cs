@@ -17,8 +17,27 @@ class Node
         return String.Format(
                 "{0} {1} {2}",
                 Val,
-                Left == null ? "#" : Left.ToString(),
-                Right == null ? "#" : Right.ToString());
+                Left == null ? "." : Left.ToString(),
+                Right == null ? "." : Right.ToString());
+    }
+
+    public static Node AustraliaIterative(Node root)
+    {
+        Node parent = null;
+        Node previous = null;
+
+        while (root != null)
+        {
+            var left = root.Left;
+            var right = root.Right;
+            root.Right = parent;
+            root.Left = previous;
+            parent = root;
+            previous = right;
+            root = left;
+        }
+
+        return parent;
     }
 
     public static Node Australia(Node root)
@@ -67,6 +86,25 @@ class Node
 
         Console.WriteLine(root);
         Console.WriteLine(Australia(root));
+
+        root = new Node {
+            Val = 1,
+            Left = new Node {
+                Val = 2,
+                Left = new Node {
+                    Val = 4
+                },
+                Right = new Node {
+                    Val = 5
+                }
+            },
+            Right = new Node {
+                Val = 3
+            }
+        };
+
+        Console.WriteLine(root);
+        Console.WriteLine(AustraliaIterative(root));
     }
 }
 
