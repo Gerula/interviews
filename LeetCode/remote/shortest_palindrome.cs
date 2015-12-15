@@ -55,7 +55,7 @@ public class Solution {
     //
     public String ShortestPalindrome2(string s) 
     {
-        long _base = 19;
+        long _base = 9;
         if (String.IsNullOrEmpty(s))
         {
             return s;
