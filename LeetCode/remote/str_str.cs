@@ -8,6 +8,13 @@ using System;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  72 / 72 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 128 ms
+    //          
+    //          Submitted: 1 minute ago
     public int StrStr(string haystack, string needle) {
         if (needle.Length > haystack.Length)
         {
@@ -16,34 +23,38 @@ public class Solution {
 
         if (needle.Length == haystack.Length)
         {
-            return needle == haystack? 0 : -1;
+            return needle == haystack ? 0 : -1;
         }
 
-        long _base = 37;
-        long needleValue = needle.Aggregate((long) 0, (acc, x) => acc * _base + x);
-        long haystackValue = Enumerable.Range(0, needle.Length).Aggregate((long) 0, (acc, x) => acc * _base + haystack[x]);
+        long _base = 7;
+        long needleFingerPrint = needle.Aggregate((long) 0, (acc, x) => acc * _base + x);
+        long hayFingerPrint = Enumerable
+                              .Range(0, needle.Length)
+                              .Aggregate((long) 0, (acc, x) => acc * _base + haystack[x]);
         long rank = (long) Math.Pow(_base, needle.Length - 1);
 
+        var start = 0;
         for (var i = needle.Length; i < haystack.Length; i++)
         {
-            if (needleValue == haystackValue && Contains(haystack, needle, i - needle.Length))
+            start = i - needle.Length;
+            if (hayFingerPrint == needleFingerPrint && Match(haystack, needle, start))
             {
-                return i - needle.Length;
+                return start;
             }
 
-            haystackValue -= rank * haystack[i - needle.Length];
-            haystackValue *= _base;
-            haystackValue += haystack[i];
+            hayFingerPrint -= rank * haystack[start];
+            hayFingerPrint = hayFingerPrint * _base + haystack[i];
         }
 
-        return -1;
+        start++;
+        return hayFingerPrint == needleFingerPrint && Match(haystack, needle, start) ? start : -1;
     }
 
-    static bool Contains(string haystack, string needle, int pos)
+    public bool Match(string haystack, string needle, int index)
     {
-        var i = 0;
-        while (i< needle.Length && needle[i++] == haystack[pos++]) {}
-        return i == needle.Length;
+        var needleIdx = 0;
+        while (needleIdx < needle.Length && needle[needleIdx++] == haystack[index++]) {}
+        return needleIdx == needle.Length;
     }
 
     static void Main()
