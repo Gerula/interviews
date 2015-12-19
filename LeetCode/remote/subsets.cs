@@ -12,32 +12,45 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  19 / 19 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 584 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public IList<IList<int>> SubsetsWithDup(int[] nums) {
-        if (nums.Length == 0)
+        var result = new List<IList<int>>();
+        Subsets(nums, 0, result, new List<int>());
+        return result.Concat(new List<IList<int>>() { new List<int>() }).ToList();
+    }
+
+    public void Subsets(int[] nums, int position, List<IList<int>> result, List<int> partial)
+    {
+        if (position == nums.Length)
         {
-            return new List<IList<int>>();
+            return;
         }
-        var empty = new List<int>();
 
-        return Enumerable
-            .Range(0, nums.Length)
-            .SelectMany(x => {
-                var list = new List<IList<int>>();
-                list.Add(new List<int> { nums[x] });
-                foreach (var l in SubsetsWithDup(nums.Skip(x + 1).ToArray()).Where(y => y.Any()))
-                {
-                    list.Add(new List<int> { nums[x] }.Concat(l).ToList());
-                }
+        for (var i = position; i < nums.Length; i++)
+        {
+            if (i != position && nums[i] == nums[i - 1]) 
+            {
+                continue;
+            }
 
-                return list;
-            })
-            .Concat(new List<IList<int>>() { empty })
-            .ToList();
+            partial.Add(nums[i]);
+            result.Add(new List<int>(partial));
+            Subsets(nums, i + 1, result, partial);
+            partial.RemoveAt(partial.Count - 1);
+        }
     }
 
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().SubsetsWithDup(new [] { 1, 2, 2 }).Select(x => String.Join(", ", x))));
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().SubsetsWithDup(new [] { 0 }).Select(x => String.Join(", ", x))));
+        Console.WriteLine(String.Join(Environment.NewLine, new Solution().SubsetsWithDup(new [] { 1, 1 }).Select(x => String.Join(", ", x))));
     }
 }
