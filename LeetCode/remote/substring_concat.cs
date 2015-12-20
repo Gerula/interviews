@@ -14,30 +14,62 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  169 / 169 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 712 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          You are here!
+    //          Your runtime beats 84.00% of csharp submissions.
     public IList<int> FindSubstring(string s, string[] words) {
         var result = new List<int>();
-        var hash = words.Aggregate(new HashSet<String>(), (acc, x) => {
-                    acc.Add(x);
-                    return acc;
-                });
-
-        var partition = words[0].Length;
         var i = 0;
-        while (i < s.Length - partition)
-        {
-            Console.WriteLine(s.Substring(i, partition));
-            if (hash.Contains(s.Substring(i, partition)))
-            {
-                result.Add(i);
-                while (i < s.Length - partition && hash.Contains(s.Substring(i, partition)))
+        var partition = words[0].Length;
+        var wordsHash = words.Aggregate(new Dictionary<String, int>(), (acc, x) => {
+                if (!acc.ContainsKey(x))
                 {
-                    i += partition;
+                    acc[x] = 0;
+                }
+
+                acc[x]++;
+                return acc;
+        });
+        while (i <= s.Length - partition * words.Length)
+        {
+            var part = s.Substring(i, partition);
+            if (wordsHash.ContainsKey(part))
+            {
+                var hash = new Dictionary<String, int>(wordsHash);
+                var j = i;
+                while (hash.ContainsKey(part))
+                {
+                    hash[part]--;
+                    if (hash[part] == 0)
+                    {
+                        hash.Remove(part);
+                    }
+
+                    j += partition;
+                    if (j <= s.Length - partition)
+                    {
+                        part = s.Substring(j, partition);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (hash.Count == 0)
+                {
+                    result.Add(i);
                 }
             }
-            else
-            {
-                i++;
-            }
+
+            i++;
         }
 
         return result;
@@ -47,5 +79,7 @@ public class Solution {
     {
         Console.WriteLine(String.Join(", ", new Solution().FindSubstring("barfoothefoobarman", new [] { "foo", "bar" })));
         Console.WriteLine(String.Join(", ", new Solution().FindSubstring("barfoofoobarthefoobarman", new [] { "foo", "bar", "the" })));
+        Console.WriteLine(String.Join(", ", new Solution().FindSubstring("aaa", new [] { "aa", "aa" })));
+        Console.WriteLine(String.Join(", ", new Solution().FindSubstring("wordgoodgoodgoodbestword", new [] { "word","good","best","good" })));
     }
 }
