@@ -77,6 +77,21 @@ public class Solution {
         {
             Console.WriteLine(tree);
         }
+
+        Console.WriteLine();
+
+        foreach (var tree in s.GenerateTrees2(3))
+        {
+            Console.WriteLine(tree);
+        }
+
+        Console.WriteLine();
+        foreach (var tree in s.GenerateTrees2(4))
+        {
+            Console.WriteLine(tree);
+        }
+
+        Console.WriteLine();
     }
 }
 
