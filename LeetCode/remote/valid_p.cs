@@ -3,6 +3,7 @@
 public class Solution {
     public bool IsValid(string s) {
         string prev = s;
+
         while (!String.IsNullOrWhiteSpace(s)) {
             s = s.Replace("()", String.Empty).
                 Replace("[]", String.Empty).
@@ -12,6 +13,7 @@ public class Solution {
             }
             prev = s;
         }
+
         return true;
     }
 }
