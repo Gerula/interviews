@@ -14,6 +14,8 @@ public class Solution {
     //          Submitted: 0 minutes ago
     //
     //          but why?
+
+
     public int SingleNumber(int[] nums) {
         int ones = 0;
         int twos = 0;
