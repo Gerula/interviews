@@ -13,6 +13,37 @@ public class UndirectedGraphNode {
 }
 
 public class Solution {
+    Dictionary<UndirectedGraphNode, UndirectedGraphNode> clones = new Dictionary<UndirectedGraphNode, UndirectedGraphNode>();
+
+    //  
+    //  Submission Details
+    //  12 / 12 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 108 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    public UndirectedGraphNode CloneGraph(UndirectedGraphNode node)
+    {
+        if (node == null)
+        {
+            return node;
+        }
+
+        if (clones.ContainsKey(node))
+        {
+            return clones[node];
+        }
+
+        clones[node] = new UndirectedGraphNode(node.label);
+        foreach (var neighbor in node.neighbors)
+        {
+            clones[node].neighbors.Add(CloneGraph(neighbor));
+        }
+
+        return clones[node];
+    }
+
     //  
     //  Submission Details
     //  12 / 12 test cases passed.
@@ -21,7 +52,7 @@ public class Solution {
     //          
     //          Submitted: 0 minutes ago
     //
-    public UndirectedGraphNode CloneGraph(UndirectedGraphNode node) {
+    public UndirectedGraphNode CloneGraph2(UndirectedGraphNode node) {
         var clones = new Dictionary<UndirectedGraphNode, UndirectedGraphNode>();
         var queue = new Queue<UndirectedGraphNode>();
         queue.Enqueue(node);
