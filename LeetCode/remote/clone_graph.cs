@@ -13,14 +13,27 @@ public class UndirectedGraphNode {
 }
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  12 / 12 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 136 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public UndirectedGraphNode CloneGraph(UndirectedGraphNode node) {
         var clones = new Dictionary<UndirectedGraphNode, UndirectedGraphNode>();
         var queue = new Queue<UndirectedGraphNode>();
         queue.Enqueue(node);
+        if (node == null)
+        {
+            return null;
+        }
+
         while (queue.Count != 0)
         {
             var local = queue.Dequeue();
-            clones[local] = new UndirectedGraphNode(node.label);
+            clones[local] = new UndirectedGraphNode(local.label);
             foreach (var neighbor in local.neighbors.Where(x => !clones.ContainsKey(x)))
             {
                 queue.Enqueue(neighbor);
