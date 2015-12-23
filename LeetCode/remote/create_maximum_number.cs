@@ -29,9 +29,12 @@ using System.Linq;
 public class Solution {
     public int[] MaxNumber(int[] nums1, int[] nums2, int k) {
         var dp = new int [nums1.Length + 1, nums2.Length + 1, k + 1];
+        var result = new int[k];
         
+        var prevMax = 0;
         for (var i = 0; i <= k; i++)
         {
+            var max = 0;
             for (var a = 0; a <= nums1.Length; a++)
             {
                 for (var b = 0; b <= nums2.Length; b++)
@@ -39,35 +42,52 @@ public class Solution {
                     if (i == 0 || a == 0 && b == 0)
                     {
                         dp[a, b, i] = 0;
-                        continue;
                     }
-                    
+                    else 
                     if (a == 0)
                     {
-                        dp[a, b, i] = Math.Max(nums2[b - 1] + dp[0, b - 1, i - 1] * 10, dp[0, b - 1, i]);
-                        continue;
+                        dp[a, b, i] = Math.Max(nums2[b - 1] + dp[0, b - 1, i - 1], dp[0, b - 1, i]);
                     }
-
+                    else
                     if (b == 0)
                     {
-                        dp[a, b, i] = Math.Max(nums1[a - 1] + dp[a - 1, 0, i - 1] * 10, dp[a - 1, 0, i]);
-                        continue;
+                        dp[a, b, i] = Math.Max(nums1[a - 1] + dp[a - 1, 0, i - 1], dp[a - 1, 0, i]);
+                    }
+                    else
+                    {
+                        dp[a, b, i] = Math.Max(
+                                        dp[a - 1, b - 1, i],
+                                        Math.Max(
+                                            nums1[a - 1] + dp[a - 1, b, i - 1],
+                                            nums2[b - 1] + dp[a, b - 1, i - 1]));
                     }
 
-                    dp[a, b, i] = Math.Max(
-                                    dp[a - 1, b - 1, i] * 10,
-                                    Math.Max(
-                                        nums1[a - 1] + dp[a - 1, b, i - 1] * 10,
-                                        nums2[b - 1] + dp[a, b - 1, i - 1] * 10));
+                    max = Math.Max(max, dp[a, b, i]);
                 }
+            }
+
+            if (i > 0)
+            {
+                result[i - 1] = max - prevMax;
+                prevMax = max;
             }
         }
 
-        return dp[nums1.Length, nums2.Length, k]
-               .ToString()
-               .Select(x => x - '0')
-               .Take(k)
-               .ToArray();
+        for (var i = 0; i <= k; i++)
+        {
+            Console.WriteLine(i);
+            for (var a = 0; a <= nums1.Length; a++)
+            {
+                for (var b = 0; b <= nums2.Length; b++)
+                {
+                    Console.Write(dp[a, b, i] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+
+        return result;
     }
 
     static void Main()
