@@ -7,6 +7,7 @@ using System.Linq;
 class Node
 {
     public int Val { get; set; }
+    public int Diag { get; set; }
     public Node Left { get; set; }
     public Node Right { get; set; }
     
@@ -22,40 +23,36 @@ class Node
     public static IEnumerable<int> GetSums(Node root)
     {
         var queue = new Queue<Node>();
-        var sum = 0;
-        var nextLevel = 0;
-        var currentLevel = 0;
+        var sums = new Dictionary<int, int>();
         while (root != null)
         {
+            root.Diag = 0;
             queue.Enqueue(root);
-            currentLevel++;
             root = root.Right;
         }
 
         while (queue.Any())
         {
             root = queue.Dequeue();
-            currentLevel--;
-            sum += root.Val;
+            if (!sums.ContainsKey(root.Diag))
+            {
+                sums[root.Diag] = 0;
+            }
+            
+            sums[root.Diag] += root.Val;
             if (root.Left != null)
             {
                 var it = root.Left;
                 while (it != null)
                 {
+                    it.Diag = root.Diag + 1;
                     queue.Enqueue(it);
                     it = it.Right;
-                    nextLevel++;
                 }
             }
-            
-            if (currentLevel == 0)
-            {
-                currentLevel = nextLevel;
-                nextLevel = 0;
-                yield return sum;
-                sum = 0;
-            }
         }
+
+        return sums.Values;
     }
 }
 
