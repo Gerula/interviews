@@ -21,47 +21,40 @@ class Node
 
     public static IEnumerable<int> GetSums(Node root)
     {
-        var mock = new Node();
-        var falseLinks = new HashSet<Node>();
+        var queue = new Queue<Node>();
+        var sum = 0;
+        var nextLevel = 0;
+        var currentLevel = 0;
         while (root != null)
         {
-            var sum = 0;
-            var dummy = mock;
-            while (root != null)
-            {
-                sum += root.Val;
-                if (root.Left != null)
-                {
-                    if (dummy.Right == null)
-                    {
-                        falseLinks.Add(dummy);
-                    }
-
-                    dummy.Right = root.Left;
-                    dummy = dummy.Right;
-                }
-
-                if (root.Right != null)
-                {
-                    if (dummy.Right == null)
-                    {
-                        falseLinks.Add(dummy);
-                    }
-
-                    dummy.Right = root.Right;
-                    dummy = dummy.Right;
-                }
-
-                root = root.Right;
-            }
-
-            yield return sum;
-            root = dummy.Right;
+            queue.Enqueue(root);
+            currentLevel++;
+            root = root.Right;
         }
 
-        foreach (var node in falseLinks)
+        while (queue.Any())
         {
-            node.Right = null;
+            root = queue.Dequeue();
+            currentLevel--;
+            sum += root.Val;
+            if (root.Left != null)
+            {
+                var it = root.Left;
+                while (it != null)
+                {
+                    queue.Enqueue(it);
+                    it = it.Right;
+                    nextLevel++;
+                }
+            }
+            
+            if (currentLevel == 0)
+            {
+                currentLevel = nextLevel;
+                nextLevel = 0;
+                yield return sum;
+                sum = 0;
+            }
         }
     }
 }
