@@ -29,9 +29,34 @@ public class Solution {
         return max;
     }
 
+    //  
+    //  Submission Details
+    //  201 / 201 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 172 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          Kadane
     public int MaxSubArray2(int[] nums)
     {
-        return 0;
+        var maxGlobal = int.MinValue;
+        var sum = 0;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            sum += nums[i];
+            if (sum > maxGlobal)
+            {
+                maxGlobal = sum;
+            }
+
+            if (sum <= 0)
+            {
+                sum = 0;
+            }
+        }
+
+        return maxGlobal;
     }
 
     static void Main()
