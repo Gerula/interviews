@@ -14,35 +14,39 @@ public class TreeNode {
 }
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  114 / 114 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 576 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public IList<IList<int>> PathSum(TreeNode root, int sum) {
-        if (root == null || root.val > sum)
+        if (root == null)
         {
             return new List<IList<int>>();
         }
 
-        if (sum == root.val && root.left == null && root.right == null)
+        if (root.left == null && root.right == null)
         {
-            return new List<IList<int>> { new List<int> { root.val } };
+            return sum == root.val ? 
+                    new List<IList<int>> { new List<int> { root.val } } :
+                    new List<IList<int>>();
         }
 
         var result = new List<IList<int>>();
         var current = new List<int> { root.val };
-        if (root.left != null)
+        var left = PathSum(root.left, sum - root.val);
+        if (left.Any())
         {
-            var left = PathSum(root.left, sum - root.val);
-            if (left.Any())
-            {
-                result = result.Concat(left.Select(x => current.Concat(x).ToList()).ToList()).ToList();
-            }
+            result = result.Concat(left.Select(x => current.Concat(x).ToList()).ToList()).ToList();
         }
 
-        if (root.right != null)
+        var right = PathSum(root.right, sum - root.val);
+        if (right.Any())
         {
-            var right = PathSum(root.right, sum - root.val);
-            if (right.Any())
-            {
-                result = result.Concat(right.Select(x => current.Concat(x).ToList()).ToList()).ToList();
-            }
+            result = result.Concat(right.Select(x => current.Concat(x).ToList()).ToList()).ToList();
         }
 
         return result;
