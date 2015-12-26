@@ -32,8 +32,16 @@ public class Solution {
         return result;
     }
 
+    //  
+    //  Submission Details
+    //  8266 / 8266 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 144 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public int RangeBitwiseAnd3(int m, int n) {
-        return Enumerable.Range(m, (n - m) + 1).Aggregate(255, (acc, x) => acc & x);
+        return n > m ? RangeBitwiseAnd3(m / 2, n / 2) << 1 : m;
     }
 
     static void Main()
