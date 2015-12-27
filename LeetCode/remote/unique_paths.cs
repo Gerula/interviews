@@ -18,28 +18,27 @@ public class Solution {
     //          
     //          Submitted: 0 minutes ago
     //
+    //
+    //Submission Details
+    //61 / 61 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 56 ms
+    //      
+    //      Submitted: 0 minutes ago
+    //
     public int UniquePaths(int m, int n) {
-        var dp = new int[m, n];
-        dp[0, 0] = 1;
-        for (var i = 0; i < m; i++)
-        {
-            dp[i, 0] = 1;
-        }
+        var dp = new int[m + 1, n + 1];
+        dp[0, 1] = 1;
 
-        for (var j = 0; j < n; j++)
+        for (var i = 1; i <= m; i++)
         {
-            dp[0, j] = 1;
-        }
-
-        for (var i = 1; i < m; i++)
-        {
-            for (var j = 1; j < n; j++)
+            for (var j = 1; j <= n; j++)
             {
                 dp[i, j] = dp[i - 1, j] + dp[i, j - 1];
             }
         }
 
-        return dp[m - 1, n - 1];
+        return dp[m, n];
     }
 
     static void Main()
