@@ -41,8 +41,45 @@ public class Solution {
         return dp[m, n];
     }
 
+    public int Uniq(int m, int n)
+    {
+        //  Combinatorial approach.
+        //  The robot needs to move (m - 1) + (n - 1) steps in total
+        //  with m - 1 down and n - 1 right, in any order.
+        //
+        //  So D D D ... D R R ... R.
+        //  Count the number of permutations of this array.
+        //  It's (m + n)! / m! * n!
+
+        if (n == 1 || m == 1)
+        {
+            return 1;
+        }
+
+        m--;
+        n--;
+        
+        if (m < n)
+        {
+            var c = m;
+            m = n;
+            n = c;
+        }
+
+        long res = 1;
+        int j = 1;
+        for (var i = m + 1; i <= m + n; i++, j++)
+        {
+            res *= i;
+            res /= j;
+        }
+
+        return (int) res;
+    }
+
     static void Main()
     {
         Console.WriteLine(new Solution().UniquePaths(3, 7));
+        Console.WriteLine(new Solution().Uniq(3, 7));
     }
 }
