@@ -28,10 +28,21 @@ public class Solution {
     //
     //          https://leetcode.com/submissions/detail/48992357/
     //
+    //  
+    //  Submission Details
+    //  311 / 311 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 524 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/48992913/
+    //
+    //          Your runtime beats 63.33% of csharp submissions.
     public IList<IList<int>> ThreeSum(int[] nums) {
         var sorted = nums.OrderBy(x => x).ToArray();
         var result = new List<IList<int>>();
-        for (var i = 0; i < sorted.Length - 1; i++)
+        for (var i = 0; i < sorted.Length - 1 && sorted[i] <= 0; i++)
         {
             if (i > 0 && sorted[i] == sorted[i - 1])
             {
@@ -40,13 +51,14 @@ public class Solution {
 
             var low = i + 1;
             var high = sorted.Length - 1;
+            var target = -sorted[i];
             while (low < high)
             {
-                var sum = sorted[i] + sorted[low] + sorted[high];
-                if (sum == 0)
+                var sum = sorted[low] + sorted[high];
+                if (sum == target)
                 {
                     result.Add(new List<int> { sorted[i], sorted[low], sorted[high] });
-                    while (low < sorted.Length - 1 && sorted[low] == sorted[low + 1])
+                    while (low < high && sorted[low] == sorted[low + 1])
                     {
                         low++;
                     }
@@ -58,12 +70,22 @@ public class Solution {
                     low++;
                     high--;
                 }
-                else if (sum < 0)
+                else if (sum < target)
                 {
+                    while (low < high && sorted[low] == sorted[low + 1])
+                    {
+                        low++;
+                    }
+
                     low++;
                 }
                 else
                 {
+                    while (high > low && sorted[high] == sorted[high - 1])
+                    {
+                        high--;
+                    }
+
                     high--;
                 }
             }
