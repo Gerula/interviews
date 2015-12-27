@@ -7,6 +7,15 @@
 using System;
 
 static class Solution {
+    //  
+    //  Submission Details
+    //  20 / 20 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 164 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/48980539/
     static void Rotate(int[,] matrix) {
         var n = matrix.GetLength(0);
 
@@ -15,8 +24,8 @@ static class Solution {
             for (var j = 0; j < n - i; j++)
             {
                 var c = matrix[i, j];
-                matrix[i, j] = matrix[n - i - 1, n - j - 1];
-                matrix[n - i - 1, n - j - 1] = c;
+                matrix[i, j] = matrix[n - j - 1, n - i - 1];
+                matrix[n - j - 1, n - i - 1] = c;
             }
         }
 
@@ -30,7 +39,7 @@ static class Solution {
             }
         }
     }
-
+    
     public static void Print(this int[,] a)
     {
         for (var i = 0; i < a.GetLength(0); i++)
@@ -46,14 +55,13 @@ static class Solution {
 
     static void Main()
     {
-        var a = new int[10, 10];
+        var a = new int[3, 3];
+        var k = 1;
         for (var i = 0; i < a.GetLength(0); i++)
         {
-            a[i, i] = i;
-            for (var x = 0; x < i; x++)
+            for (var j = 0; j < a.GetLength(0); j++)
             {
-                a[x, i] = a[i, i];
-                a[i, x] = a[i, i];
+                a[i, j] = k++;
             }
         }
 
