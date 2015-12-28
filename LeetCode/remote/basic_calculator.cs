@@ -11,6 +11,16 @@ using System.Collections.Generic;
 using System.Text;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  37 / 37 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 184 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49069534/
+    //
     public int Calculate(string s) {
         var operands = new Stack<int>();
         var operators = new Stack<String>();
@@ -18,28 +28,34 @@ public class Solution {
         {
             switch (token)
             {
-                case "(" : 
+                case "(" : operators.Push(token); break; 
                 case "+" : 
-                case "-" : operators.Push(token); break;
-                case ")" : Evaluate(operators, operands); break;
+                case "-" : Evaluate(operators, operands, token);
+                           operators.Push(token);
+                           break;
+                case ")" : Evaluate(operators, operands, token); break;
                 default : operands.Push(int.Parse(token)); 
-                          Evaluate(operators, operands);
                           break;
             }
         }
 
         while (operators.Count != 0)
         {
-            Evaluate(operators, operands);
+            Evaluate(operators, operands, String.Empty);
         }
 
         return operands.Pop();
     }
 
-    public void Evaluate(Stack<String> operators, Stack<int> operands)
+    public void Evaluate(Stack<String> operators, Stack<int> operands, String current)
     {
         while (operators.Count != 0)
         {
+            if (current != ")" && operators.Peek() == "(")
+            {
+                return;
+            }
+
             var op = operators.Pop();
             if (op == "(")
             {
@@ -94,5 +110,6 @@ public class Solution {
         Console.WriteLine(s.Calculate(" 2-1 + 2 "));
         Console.WriteLine(s.Calculate("(1+(4+5+2)-3)+(6+8)"));
         Console.WriteLine(s.Calculate("(1+(4+5+2)-3)+(6+89)"));
+        Console.WriteLine(s.Calculate("2-4-(8+2-6+(8+4-(1)+8-10))"));
     }
 }
