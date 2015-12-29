@@ -56,5 +56,6 @@ static class Program
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, new [] { 1, 2, 3, 4 }.GetWords()));
+        Console.WriteLine(String.Join(Environment.NewLine, "81161625815129412519419122516181571811313518".Select(x => (int)(x - '0')).ToArray().GetWords()));
     }
 }

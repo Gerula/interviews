@@ -59,6 +59,13 @@ static class Program
         return low;
     }
 
+    //       1
+    //     1 0
+    //     1 1
+    //   1 0 0
+    //   1 0 1
+    //   0 0 1
+
     static void Main()
     {
         Console.WriteLine(new [] { 1, 2, 3, 2, 2, 4 }.Dupe());
