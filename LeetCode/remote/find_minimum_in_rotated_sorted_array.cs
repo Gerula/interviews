@@ -11,6 +11,14 @@
 using System;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  146 / 146 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 164 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public int FindMin(int[] nums) {
         var low = 0;
         var high = nums.Length - 1;
@@ -19,9 +27,10 @@ public class Solution {
             var mid = low + (high - low) / 2;
             if (nums[low] < nums[high])
             {
-                high = mid;
+                return nums[low];
             }
-            else if (nums[mid] > nums[low])
+
+            if (nums[mid] >= nums[low])
             {
                 low = mid + 1;
             }
