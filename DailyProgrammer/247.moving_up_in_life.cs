@@ -25,14 +25,12 @@ static class Program
     {
         var exes = new HashSet<Tuple<int, int>>();
         var i = 0;
-        var m = 0;
         using (StreamReader reader = new StreamReader(path))
         {
             reader.ReadLine();
             String line = null;
             while ((line = reader.ReadLine()) != null)
             {
-                i++;
                 for (var j = 0; j < line.Length; j++)
                 {
                     if (line[j] == 'X')
@@ -41,34 +39,45 @@ static class Program
                     }
                 }
 
-                m = line.Length;
+                i++;
             }
         }
-        
-        return exes
-               .SelectMany(x => exes.Select(y => new { first = x, second = y }))
-               .Where(x => x.first.Item1 <= x.second.Item1 && x.first.Item2 <= x.second.Item2)
-               .Select(x => CountPaths(x.first.Item1, x.first.Item2, x.second.Item1, x.second.Item2, m))
+       
+        var orderedExes = exes.ToList();
+        orderedExes.Sort((a, b) => {
+                    if (a.Item1 == b.Item1)
+                    {
+                        return a.Item2.CompareTo(b.Item2);
+                    }
+
+                    return -a.Item1.CompareTo(b.Item1);
+                });
+        Console.WriteLine(String.Join(", ", orderedExes));
+        return Enumerable
+               .Range(0, orderedExes.Count - 1)
+               .Select(x => new { first = orderedExes[x], second = orderedExes[x + 1] })
+               .Select(x => {
+                       Console.WriteLine(x.first + " X " + x.second);
+                       return CountPaths(x.first.Item1, x.first.Item2, x.second.Item1, x.second.Item2);
+                       })
                .Aggregate(1, (acc, x) => acc * x);
     }
 
-    public static int CountPaths(int x1, int y1, int x2, int y2, int m)
+    public static int CountPaths(int x1, int y1, int x2, int y2)
     {
-        Console.WriteLine("{0}-{1} {2}-{3}", x1, y1, x2, y2);
-        Console.ReadLine();
         if (x1 == x2 && y1 == y2)
         {
             return 1;
         }
 
-        if (x1 < 0 || y2 == m)
+        if (x1 < x2 || y1 > y2)
         {
             return 0;
         }
 
-        return CountPaths(x1 - 1, y1, x2, y2, m) +
-               CountPaths(x1 - 1, y1 + 1, x2, y2, m) + 
-               CountPaths(x1, y1 + 1, x2, y2, m);
+        return CountPaths(x1 - 1, y1, x2, y2) +
+               CountPaths(x1 - 1, y1 + 1, x2, y2) + 
+               CountPaths(x1, y1 + 1, x2, y2);
     }
 
     static void Main()
