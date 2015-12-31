@@ -23,75 +23,52 @@ static class Program
 {
     static long Ways(this String path)
     {
-        var matrix = new List<String>();
+        var exes = new HashSet<Tuple<int, int>>();
+        var i = 0;
+        var m = 0;
         using (StreamReader reader = new StreamReader(path))
         {
             reader.ReadLine();
             String line = null;
             while ((line = reader.ReadLine()) != null)
             {
-                matrix.Add(line);
-            }
-        }
-
-        var exes = new HashSet<String>();
-        var n = matrix.Count;
-        var m = matrix.First().Length;
-        for (var i = 0; i < n; i++)
-        {
-            for (var j = 0; j < m; j++)
-            {
-                if (matrix[i][j] == 'X')
+                i++;
+                for (var j = 0; j < line.Length; j++)
                 {
-                    exes.Add(Tuple.Create(i, j).ToString());
+                    if (line[j] == 'X')
+                    {
+                        exes.Add(Tuple.Create(i, j));
+                    }
                 }
+
+                m = line.Length;
             }
         }
-
-        var start = Tuple.Create(n - 1, 0);
-        var counts = new Dictionary<String, long>();
-        var stack = new Stack<Tuple<int, int>>();
-        var visited = new HashSet<String>();
-        exes.Remove(start.ToString());
-        stack.Push(start);
-        counts[start.ToString()] = 1;
         
-        while (stack.Count != 0)
+        return exes
+               .SelectMany(x => exes.Select(y => new { first = x, second = y }))
+               .Where(x => x.first.Item1 <= x.second.Item1 && x.first.Item2 <= x.second.Item2)
+               .Select(x => CountPaths(x.first.Item1, x.first.Item2, x.second.Item1, x.second.Item2, m))
+               .Aggregate(1, (acc, x) => acc * x);
+    }
+
+    public static int CountPaths(int x1, int y1, int x2, int y2, int m)
+    {
+        Console.WriteLine("{0}-{1} {2}-{3}", x1, y1, x2, y2);
+        Console.ReadLine();
+        if (x1 == x2 && y1 == y2)
         {
-            var current = stack.Pop();
-            if (visited.Contains(current.ToString()))
-            {
-                continue;
-            }
-
-            visited.Add(current.ToString());
-            foreach (var next in new [] {
-                Tuple.Create(current.Item1 - 1, current.Item2 + 1),
-                Tuple.Create(current.Item1, current.Item2 + 1),
-                Tuple.Create(current.Item1 - 1, current.Item2)
-            })
-            {
-                if (!counts.ContainsKey(next.ToString()))
-                {
-                    counts[next.ToString()] = 0;
-                }
-
-                counts[next.ToString()] += counts[current.ToString()];
-
-                if (exes.Contains(next.ToString()))
-                {
-                    exes.Remove(next.ToString());
-                }
-
-                if (0 <= next.Item1 && next.Item2 < m)
-                {
-                    stack.Push(next);
-                }
-            }
+            return 1;
         }
 
-        Console.WriteLine(String.Join(", ", exes));
-        return exes.Any() ? 0 : counts[Tuple.Create(0, m - 1).ToString()];
+        if (x1 < 0 || y2 == m)
+        {
+            return 0;
+        }
+
+        return CountPaths(x1 - 1, y1, x2, y2, m) +
+               CountPaths(x1 - 1, y1 + 1, x2, y2, m) + 
+               CountPaths(x1, y1 + 1, x2, y2, m);
     }
 
     static void Main()
