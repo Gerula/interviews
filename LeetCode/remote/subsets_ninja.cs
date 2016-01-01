@@ -13,8 +13,19 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  10 / 10 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 468 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          You are here!
+    //          Your runtime beats 98.53% of csharp submissions. - WOW HOLY SHIT!!! \m/ (><) \m/
     public IList<IList<int>> Subsets(int[] nums) {
         var result = new List<IList<int>>();
+        Array.Sort(nums);
         var max = 1 << nums.Length;
         for (var mask = 0; mask < max; mask++)
         {
