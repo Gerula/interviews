@@ -16,15 +16,25 @@ using System;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  39 / 39 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 252 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49415901/
+    //
+    //          Hey, at least I learned something. Happy New Year! 🎆
     public void WiggleSort(int[] nums) {
-        Array.Sort(nums);
-        var larger = nums.Length / 2 + nums.Length % 2;
-        for (var i = 1; i < nums.Length; i += 2)
+        var sorted = nums.OrderBy(x => x).ToArray();
+        var half = (nums.Length - 1) / 2 + 1;
+        var a = 0;
+        var b = half;
+        for (var i = nums.Length - 1; i >= 0; i--)
         {
-            var c = nums[i];
-            nums[i] = nums[larger];
-            nums[larger] = c;
-            larger++;
+            nums[i] = i % 2 == 0 ? sorted[a++] : sorted[b++];
         }
     }
 
@@ -34,6 +44,7 @@ public class Solution {
         foreach (var x in new [] {
                     new [] { 1, 5, 1, 1, 6, 4 },
                     new [] { 1, 3, 2, 2, 3, 1 },
+                    new [] { 4, 5, 5, 6 },
                     new [] { 2, 5, 1, 3, 2, 1, 1 }
                 })
         {
