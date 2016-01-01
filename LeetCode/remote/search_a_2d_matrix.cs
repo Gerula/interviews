@@ -8,6 +8,17 @@
 using System;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  127 / 127 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 304 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49418465/
+    //
+    //          Idea was good but I kinda got lost in the details
     public bool SearchMatrix(int[,] matrix, int target) {
         var line = 0;
         var column = matrix.GetLength(1) - 1;
