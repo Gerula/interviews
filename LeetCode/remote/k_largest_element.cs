@@ -17,14 +17,14 @@ public class Solution {
     public int FindKthLargest(int[] nums, int k) 
     {
         var low = 0;
-        var high = nums.Length;
+        var high = nums.Length - 1;
         k = nums.Length - k;
         while (low < high)
         {
             var pivot = r.Next(low, high);
             var num = nums[pivot];
             var smaller = low;
-            var larger = high - 1;
+            var larger = high;
             while (smaller < larger)
             {
                 if (nums[smaller] < num)
@@ -40,7 +40,7 @@ public class Solution {
                 }
             }
 
-            if (smaller > larger)
+            if (nums[smaller] > num)
             {
                 smaller--;
             }
@@ -52,15 +52,15 @@ public class Solution {
 
             if (smaller > k)
             {
-                high = smaller + 1;
+                high = smaller;
             }
             else
             {
-                low = smaller;
+                low = smaller + 1;
             }
         }
 
-        return nums[low];
+        return nums[k];
     }
 
     public int KthLargest(int[] nums, int k) 
