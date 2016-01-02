@@ -12,6 +12,16 @@
 using System;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  69 / 69 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 152 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49513114/
+    //
     public int Rob(int[] nums) {
         var dp = new int[nums.Length + 1, 2];
         for (var i = 1; i <= nums.Length; i++)
@@ -21,6 +31,30 @@ public class Solution {
         }
 
         return Math.Max(dp[nums.Length, 0], dp[nums.Length, 1]);
+    }
+
+    //  
+    //  Submission Details
+    //  69 / 69 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 156 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49513354/
+    //
+    public int RobSimple(int[] nums) {
+        var a = 0;
+        var b = 0;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            var dontRob = Math.Max(a, b);
+            var rob = a + nums[i];
+            a = dontRob;
+            b = rob;
+        }
+
+        return Math.Max(a, b);
     }
 
     static void Main()
@@ -33,9 +67,10 @@ public class Solution {
                 })
         {
             Console.WriteLine(
-                    "{0} {1}",
+                    "{0} {1} {2}",
                     String.Join(", ", a),
-                    s.Rob(a));
+                    s.Rob(a),
+                    s.RobSimple(a));
         }
     }
 }
