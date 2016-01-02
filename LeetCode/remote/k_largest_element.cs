@@ -14,6 +14,15 @@ using System.Linq;
 public class Solution {
     static Random r = new Random();
 
+    //  
+    //  Submission Details
+    //  27 / 27 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 156 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49482991/
     public int FindKthLargest(int[] nums, int k) 
     {
         var low = 0;
@@ -21,7 +30,7 @@ public class Solution {
         k = nums.Length - k;
         while (low < high)
         {
-            var pivot = r.Next(low, high);
+            var pivot = r.Next(low, high + 1); // Randomizing added 20ms of speed to the solution
             var num = nums[pivot];
             var smaller = low;
             var larger = high;
@@ -45,12 +54,7 @@ public class Solution {
                 smaller--;
             }
 
-            if (smaller == k)
-            {
-                return nums[smaller];
-            }
-
-            if (smaller > k)
+            if (k <= smaller)
             {
                 high = smaller;
             }
@@ -84,13 +88,16 @@ public class Solution {
                        .Select(x => r.Next(1, 20))
                        .ToArray();
             var k = r.Next(1, nums.Length);
+            var naive = s.KthLargest(nums, k);
+            var efficient = s.FindKthLargest(nums, k);
             Console.WriteLine(
-                    "{0}:{1} - naive {2} - efficient {3}. Sorted {4}",
+                    "{0}:{1} - naive {2} - efficient {3}. Sorted {4}. {5}",
                     String.Join(", ", nums),
                     k,
-                    s.KthLargest(nums, k),
-                    s.FindKthLargest(nums, k),
-                    String.Join(", ", nums.OrderBy(x => x).Reverse()));
+                    naive,
+                    efficient,
+                    String.Join(", ", nums.OrderBy(x => x).Reverse()),
+                    naive != efficient ? "FUCK! ಠ_ಠ" : String.Empty);
         }
     }
 }
