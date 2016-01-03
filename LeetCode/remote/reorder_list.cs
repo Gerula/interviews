@@ -22,43 +22,51 @@ public class ListNode {
 }
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  13 / 13 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 188 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49593972/
+    //
     public void ReorderList(ListNode head) {
-        if (head == null)
+        if (head == null || head.next == null)
         {
             return;
         }
 
         var slow = head;
-        var mid = new ListNode(0);
-        mid.next = slow;
-        var fast = head;
+        var fast = head.next;
         while (fast != null && fast.next != null)
         {
-            mid.next = slow;
             slow = slow.next;
             fast = fast.next.next;
         }
 
-        mid.next.next = null;
-        mid = slow;
+        var head2 = slow.next;
+        slow.next = null;
+
         ListNode prev = null;
-        while (slow != null)
+        ListNode reverse = head2;
+        while (reverse != null)
         {
-            var next = slow.next;
-            slow.next = prev;
-            prev = slow;
-            slow = next;
+            var next = reverse.next;
+            reverse.next = prev;
+            prev = reverse;
+            reverse = next;
         }
+
+        head2 = prev;
         
-        mid = prev;
-        while (mid != null)
+        while (head != null)
         {
             var firstNext = head.next;
-            var secondNext = mid.next;
-            head.next = mid;
-            mid.next = firstNext;
-            head = firstNext;
-            mid = secondNext;
+            head.next = head2;
+            head = head.next;
+            head2 = firstNext;
         }
     }
 
