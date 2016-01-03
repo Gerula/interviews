@@ -13,6 +13,16 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  35 / 35 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 260 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //          https://leetcode.com/submissions/detail/49563347/
+    //
     public int[] FindOrder(int numCourses, int[,] prerequisites) {
         var adjacency = new Dictionary<int, HashSet<int>>();
         for (var i = 0; i < prerequisites.GetLength(0); i++)
@@ -50,7 +60,6 @@ public class Solution {
             return true;
         }
 
-        visited.Add(current);
         visiting.Add(current);
         var result = true;
         if (adjacency.ContainsKey(current))
@@ -58,11 +67,13 @@ public class Solution {
             result = adjacency[current]
                         .Where(x => !visited.Contains(x))
                         .Aggregate(true, (acc, x) => {
-                            return !visiting.Contains(x) && Dfs(x, adjacency, visited, visiting, stack);
+                            return acc && !visiting.Contains(x) && Dfs(x, adjacency, visited, visiting, stack);
                         });
         }
 
+        visited.Add(current);
         visiting.Remove(current);
+        stack.Push(current);
         return result;
     }
 
@@ -70,6 +81,7 @@ public class Solution {
     {
         var s = new Solution();
         Console.WriteLine(String.Join(", ", s.FindOrder(2, new [,] { {1, 0} })));
+        Console.WriteLine(String.Join(", ", s.FindOrder(2, new [,] { {0, 1}, {1, 0} })));
         Console.WriteLine(String.Join(", ", s.FindOrder(4, new [,] { {1, 0}, {2, 0}, {3, 1}, {3, 2} })));
     }
 }
