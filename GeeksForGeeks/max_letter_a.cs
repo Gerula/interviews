@@ -36,11 +36,36 @@ static class Program
         return max;
     }
 
+    static int Max2(this int n)
+    {
+        var dp = new int[n];
+        if (n < 7)
+        {
+            return n;
+        }
+
+        for (var i = 1; i < 7; i++)
+        {
+            dp[i - 1] = i;
+        }
+
+        for (var i = 7; i <= n; i++)
+        {
+            dp[i - 1] = int.MinValue;
+            for (var b = i - 3; b >= 1; b--)
+            {
+                dp[i - 1] = Math.Max(dp[i - 1], (i - b - 1) * dp[b - 1]);
+            }
+        }
+
+        return dp[n - 1];
+    }
+
     static void Main()
     {
         foreach (var x in new [] { 3, 7, 11 })
         {
-            Console.WriteLine("{0} = {1}", x, x.Max());
+            Console.WriteLine("{0} = {1} {2}", x, x.Max(), x.Max2());
         }
     }
 }
