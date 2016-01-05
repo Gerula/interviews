@@ -14,27 +14,41 @@
 //   You may assume that you have an infinite number of each kind of coin.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  180 / 180 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 416 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  https://leetcode.com/submissions/detail/49744360/
+    //
     public int CoinChange(int[] coins, int amount) {
-        if (amount == 0)
+        var dp = new int[amount + 1];
+        for (var i = 1; i <= amount; i++)
         {
-            return 0;
+            var min = int.MaxValue;
+            foreach (var x in coins.Where(a => a <= i && dp[i - a] != -1))
+            {
+                min = Math.Min(min, dp[i - x] + 1);
+            }
+
+            dp[i] = min == int.MaxValue ? -1 : min;
         }
 
-        var forward = coins
-                      .Where(x => x <= amount)
-                      .Select(x => CoinChange(coins, amount - x))
-                      .Where(x => x != -1);
-
-        return forward.Any() ? forward.Min() + 1 : -1;
+        return dp[amount];
     }
 
     static void Main()
     {
         var s = new Solution();
         Console.WriteLine(s.CoinChange(new [] { 1, 2, 5 }, 11));
+        Console.WriteLine(s.CoinChange(new [] { 1, 2, 5 }, 100));
         Console.WriteLine(s.CoinChange(new [] { 2 }, 3));
     }
 }
