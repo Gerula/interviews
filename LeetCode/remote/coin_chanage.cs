@@ -24,8 +24,8 @@ public class Solution {
         }
 
         var forward = coins
-                      .Where(x => x < amount)
-                      .Select(x => CoinChange(coins, x - amount))
+                      .Where(x => x <= amount)
+                      .Select(x => CoinChange(coins, amount - x))
                       .Where(x => x != -1);
 
         return forward.Any() ? forward.Min() + 1 : -1;
