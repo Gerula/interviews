@@ -51,9 +51,29 @@ class Program
         return max;
     }
 
+    static int Prog2(int[] a)
+    {
+        var n = a.Length;
+        var dp = new int[n, a.Max()];
+        var max = int.MinValue;
+        for (var i = n - 1; i >= 0; i--)
+        {
+            for (var j = i + 1; j < n; j++)
+            {
+                var diff = a[j] - a[i];
+                dp[i, diff] = 1 + (dp[j, diff] == 0 ? 1 : dp[j, diff]);
+                max = Math.Max(max, dp[i, diff]);
+            }
+        }
+
+        return max;
+    }
+
     static void Main()
     {
         Console.WriteLine(Prog(new [] { 1, 7, 10, 15, 27, 29 }));
         Console.WriteLine(Prog(new [] { 5, 10, 15, 20, 25, 30 }));
+        Console.WriteLine(Prog2(new [] { 1, 7, 10, 15, 27, 29 }));
+        Console.WriteLine(Prog2(new [] { 5, 10, 15, 20, 25, 30 }));
     }
 }
