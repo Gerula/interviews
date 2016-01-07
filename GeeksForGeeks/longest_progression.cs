@@ -13,6 +13,7 @@
 //  The whole set is in AP
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 class Program
@@ -54,18 +55,38 @@ class Program
     static int Prog2(int[] a)
     {
         var n = a.Length;
-        var dp = new int[n, a.Max()];
+        var dp = Enumerable
+                 .Range(0, n)
+                 .Select(x => new Dictionary<int, int>())
+                 .ToArray();
+
+        var next = Enumerable
+                   .Range(0, n)
+                   .ToArray();
         var max = int.MinValue;
+        var maxIdx = -1;
         for (var i = n - 1; i >= 0; i--)
         {
             for (var j = i + 1; j < n; j++)
             {
                 var diff = a[j] - a[i];
-                dp[i, diff] = 1 + (dp[j, diff] == 0 ? 1 : dp[j, diff]);
-                max = Math.Max(max, dp[i, diff]);
+                dp[i][diff] = 1 + (dp[j].ContainsKey(diff) ? dp[j][diff] : 1);
+                if (max <= dp[i][diff])
+                {
+                    max = dp[i][diff];
+                    maxIdx = i;
+                    next[i] = j;
+                }
             }
         }
 
+        while (next[maxIdx] != maxIdx)
+        {
+            Console.Write("{0} ", a[maxIdx]);
+            maxIdx = next[maxIdx];
+        }
+
+        Console.WriteLine("{0} ", a[maxIdx]);
         return max;
     }
 
