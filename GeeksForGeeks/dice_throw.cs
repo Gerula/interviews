@@ -21,6 +21,33 @@ static class Program
                .Sum();
     }
 
+    static int WaysDp(this int sum, int n, int m)
+    {
+        if (sum < n)
+        {
+            return 0;
+        }
+
+        var dp = new int[n + 1, sum + 1];
+        for (var i = 1; i <= m; i++)
+        {
+            dp[1, i] = 1;
+        }
+
+        for (var i = 2; i <= n; i++)
+        {
+            for (var j = 1; j <= sum; j++)
+            {
+                for  (var k = 1; k <= m && k < j; k++)
+                {
+                    dp[i, j] += dp[i - 1, j - k];
+                }
+            }
+        }
+
+        return dp[n, sum];
+    }
+
     static void Main()
     {
         foreach (var x in new [] { 
@@ -36,13 +63,15 @@ static class Program
             var sum = x.Item3;
             var expected = x.Item4;
             var result = sum.Ways(dices, m);
+            var dpResult = sum.WaysDp(dices, m);
             Console.WriteLine(
-                    "Sum {0} Dice {1} Faces {2} [Expected {3} Actual {4}]",
+                    "Sum {0} Dice {1} Faces {2} [Expected {3} Actual {4} Dp {5}]",
                     sum, 
                     dices,
                     m,
                     expected,
-                    result);
+                    result,
+                    dpResult);
         }
     }
 }
