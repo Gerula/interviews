@@ -20,14 +20,42 @@ static class Program
                !String.IsNullOrEmpty(b) && s[0] == b[0] && s.Substring(1).Inter(a, b.Substring(1));
     }
 
+    static bool InterDp(this String s, String a, String b)
+    {
+        var n = a.Length;
+        var m = b.Length;
+        if (s.Length != n + m)
+        {
+            return false;
+        }
+
+        var interleaved = new bool[n + 1, m + 1];
+        interleaved[0, 0] = true;
+        for (var i = 1; i <= n && (interleaved[i, 0] = s[i - 1] == a[i - 1] && interleaved[i - 1, 0]); i++) {}
+        for (var i = 1; i <= n && (interleaved[0, 0] = s[i - 1] == b[i - 1] && interleaved[0, i - 1]); i++) {}
+        for (var i = 1; i <= n; i++)
+        {
+            for (var j = 1; j <= m; j++)
+            {
+                interleaved[i, j] = interleaved[i - 1, j] && a[i - 1] == s[i + j - 1] ||
+                                    interleaved[i, j - 1] && b[j - 1] == s[i + j - 1];
+            }
+        }
+
+        return interleaved[n, m];
+    }
+
     static void Main()
     {
         foreach (var x in new [] {
                     Tuple.Create("aadbbcbcac","aabcc","dbbca", true),
-                    Tuple.Create("aadbbbaccc","aabcc","dbbca", false)
+                    Tuple.Create("abc","","abc", true),
+                    Tuple.Create("aadbbbaccc","aabcc","dbbca", false),
+                    Tuple.Create("abc","","ab", false)
                 })
         {
             Console.WriteLine("{0} {1} {2}", x.Item1, x.Item1.Inter(x.Item2, x.Item3), x.Item4);
+            Console.WriteLine("{0} {1} {2}", x.Item1, x.Item1.InterDp(x.Item2, x.Item3), x.Item4);
         }
     }
 }
