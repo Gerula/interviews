@@ -30,6 +30,24 @@ static class Program
                     s.Substring(0, s.Length - 1).Palind()) + 1);
     }
 
+    static int PalindDp(this String s)
+    {
+        var n = s.Length;
+        var dp = new int[n, n];
+        
+        for (var length = 1; length < n; length++)
+        {
+            for (int i = 0, h = length; h < n; i++, h++)
+            {
+                dp[i, h] = (s[i] == s[h]) ?
+                                dp[i + 1, h - 1] :
+                                (Math.Min(dp[i, h - 1], dp[i + 1, h]) + 1);
+            }
+        }
+
+        return dp[0, n - 1];
+    }
+
     static void Main()
     {
         foreach (var x in new [] {
@@ -43,7 +61,8 @@ static class Program
             var s = x.Item1;
             var e = x.Item2;
             var a = s.Palind();
-            Console.WriteLine("{0} [{1}, {2}]", s, e, a);
+            var d = s.PalindDp();
+            Console.WriteLine("{0} [{1}, {2}, {3}]", s, e, a, d);
         }
     }
 }
