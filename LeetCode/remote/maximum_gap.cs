@@ -84,7 +84,7 @@ class Solution {
 
     public List<int>[]  Radix(int[] a, int index, int max)
     {
-        if (index <= max)
+        if (index < max)
         {
            a = Radix(a, index * 10, max)
                .Where(x => x != null)
@@ -92,12 +92,12 @@ class Solution {
                .ToArray();
         }
 
-        return a
+        var result = a
                .Aggregate(
                     new List<int>[10],
                     (acc, x) =>
                     {
-                        var bucket = x / index;
+                        var bucket = x / index % 10;
                         if (acc[bucket] == null)
                         {
                             acc[bucket] = new List<int>();
@@ -106,6 +106,14 @@ class Solution {
                         acc[bucket].Add(x);
                         return acc;
                     });
+
+        Console.WriteLine("index " + index + Environment.NewLine + String.Join(Environment.NewLine, 
+                                        Enumerable
+                                        .Range(0, 10)
+                                        .Select(x => result[x] == null ? 
+                                                    String.Format("{0} null",x) : 
+                                                    String.Format("{0} {1}", x, String.Join(", ", result[x])))));
+        return result;
     }
 
     static void Main()
