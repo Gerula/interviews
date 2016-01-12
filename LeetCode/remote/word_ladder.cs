@@ -19,18 +19,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  37 / 37 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 288 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  You are here!
+    //  Your runtime beats 50.00% of csharp submissions.
+    //
+    //  Even Steven!!
+    //
+    // Key learning:
+    // - the original algorithm was O(n^2)
+    // - the optimized version is O(n x l x 27)
     public int LadderLength(string beginWord, string endWord, ISet<string> wordList) {
-        wordList.Add(beginWord);
         wordList.Add(endWord);
-
-        var adjacency = wordList.Aggregate(
-                            new Dictionary<String, HashSet<String>>(),
-                            (agg, x) => {
-                                agg[x] = new HashSet<String>(wordList.Where(y => OneEdit(x, y)));
-                                return agg;
-                            });
 
         var queue = new Queue<String>();
         var visited = new HashSet<String>();
@@ -43,7 +52,8 @@ public class Solution {
         {
             var current = queue.Dequeue();
             currentLevel--;
-            foreach (var x in adjacency[current].Where(y => !visited.Contains(y)))
+
+            foreach (var x in GetVariants(current, wordList, visited))
             {
                 if (x == endWord)
                 {
@@ -66,18 +76,29 @@ public class Solution {
         return -1;
     }
 
-    public static bool OneEdit(String first, String second)
+    public IEnumerable<String> GetVariants(string word, ISet<string> wordList, ISet<string> visited)
     {
-        var diffs = 0;
-        var i = 0;
-
-        while (i < first.Length && diffs < 2)
+        StringBuilder next = new StringBuilder(word);
+        for (var i = 0; i < word.Length; i++)
         {
-            diffs += first[i] != second[i] ? 1 : 0;
-            i++;
-        }
+            var c = next[i];
+            for (var k = 'a'; k <= 'z'; k++)
+            {
+                if (next[i] == k)
+                {
+                    continue;
+                }
+                
+                next[i] = k;
+                string candidate = next.ToString();
+                if (wordList.Contains(candidate) && !visited.Contains(candidate))
+                {
+                    yield return candidate;
+                }
+            }
 
-        return diffs == 1;
+            next[i] = c;
+        }
     }
     
     static void Main()
