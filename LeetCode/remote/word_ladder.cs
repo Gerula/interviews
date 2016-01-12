@@ -68,9 +68,16 @@ public class Solution {
 
     public static bool OneEdit(String first, String second)
     {
-        return first
-               .Zip(second, (x, y) => x != y)
-               .Count(x => x) == 1;
+        var diffs = 0;
+        var i = 0;
+
+        while (i < first.Length && diffs < 2)
+        {
+            diffs += first[i] != second[i] ? 1 : 0;
+            i++;
+        }
+
+        return diffs == 1;
     }
     
     static void Main()
