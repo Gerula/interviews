@@ -13,11 +13,21 @@ public class Solution {
         public int Count { get; set; }
     }
 
+    //  
+    //  Submission Details
+    //  64 / 64 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 596 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  https://leetcode.com/submissions/detail/50653272/
+    //
     public IList<int> MajorityElement(int[] nums) {
         var pairs = new List<Pair>();
         foreach (var num in nums)
         {
-            if (pairs.Count < 2)
+            if (pairs.Count < nums.Length / 3 + 3)
             {
                 pairs.Add(new Pair { Value = num, Count = 1 });
                 continue;
@@ -44,7 +54,6 @@ public class Solution {
             }
         }
 
-        Console.WriteLine(String.Join(", ", pairs.Select(x => x.Value + " . " + x.Count + " ")));
         return pairs 
                .Select(x => x.Value)
                .Distinct()
@@ -59,6 +68,7 @@ public class Solution {
         Console.WriteLine(String.Join(", ", s.MajorityElement(new [] { 1, 1, 1, 3, 3, 2, 2, 2 })));
         Console.WriteLine(String.Join(", ", s.MajorityElement(new [] { 2, 2, 1, 3 })));
         Console.WriteLine(String.Join(", ", s.MajorityElement(new [] { 4, 2, 1, 1 })));
+        Console.WriteLine(String.Join(", ", s.MajorityElement(new [] { 1, 2 })));
         Console.WriteLine(String.Join(", ", s.MajorityElement(
                                                 Enumerable
                                                 .Repeat(1, 6)
