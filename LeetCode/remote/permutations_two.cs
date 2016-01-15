@@ -27,16 +27,13 @@ public class Solution {
     //
     //  https://leetcode.com/problems/permutations/
     //
-    public IList<IList<int>> Permute(int[] nums) {
-        var result = new List<IList<int>>();
+    public List<List<int>> Permute(int[] nums) {
         if (!nums.Any())
         {
-            result.Add(new List<int>());
-            return result;
+            return new List<List<int>> { new List<int>() };
         }
 
-        result.AddRange(
-               nums
+        return nums
                .SelectMany(
                        x => Permute(
                                 nums
@@ -47,8 +44,7 @@ public class Solution {
                                 y => new List<int> {x}
                                 .Concat(y)
                                 .ToList()))
-               .ToList());
-        return result;
+               .ToList();
     }
 
     static void Main()
