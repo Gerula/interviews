@@ -48,3 +48,37 @@ public class Solution {
         return oddStart.next;
     }
 }
+
+// Actual solution: READ THE FUCKING PROBLEM DESCRIPTION. It was all about the indexes, not values.
+// 
+// Submission Details
+// 70 / 70 test cases passed.
+//  Status: Accepted
+//  Runtime: 164 ms
+//      
+//      Submitted: 0 minutes ago
+//
+//  https://leetcode.com/submissions/detail/50863957/
+public class Solution {
+    public ListNode OddEvenList(ListNode head) {
+        if (head == null)
+        {
+            return head;
+        }
+        
+        var odd = head;
+        var even = head.next;
+        var evenHead = even;
+        while (even != null && even.next != null)
+        {
+            odd.next = odd.next.next;
+            even.next = even.next.next;
+            odd = odd.next;
+            even = even.next;
+        }
+        
+        odd.next = evenHead;
+        
+        return head;
+    }
+}
