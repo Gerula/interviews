@@ -28,23 +28,20 @@ public class Solution {
     //  https://leetcode.com/problems/permutations/
     //
     public List<List<int>> Permute(int[] nums) {
-        if (!nums.Any())
-        {
-            return new List<List<int>> { new List<int>() };
-        }
-
-        return nums
-               .SelectMany(
-                       x => Permute(
-                                nums
-                                .Where(
-                                    y => y != x)
-                                .ToArray())
-                            .Select(
-                                y => new List<int> {x}
-                                .Concat(y)
-                                .ToList()))
-               .ToList();
+        return  nums.Any() ?
+                    nums
+                    .SelectMany(
+                            x => Permute(
+                                        nums
+                                        .Where(
+                                            y => y != x)
+                                        .ToArray())
+                                    .Select(
+                                        y => new List<int> {x}
+                                        .Concat(y)
+                                        .ToList()))
+                    .ToList() :
+                    new List<List<int>> { new List<int>() };  
     }
 
     static void Main()
