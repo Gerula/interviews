@@ -19,20 +19,23 @@ static class Program
 {
     public static List<List<int>> GetFactors(this int n, int start = 2) 
     {
-        var result = new List<List<int>> { new List<int> { n } };
-        
-        for (var i = start; i < Math.Sqrt(n); i++)
-        {
-            if (n % i == 0)
-            {
-                foreach (var x in (n / i).GetFactors(start))
-                {
-                    result.Add(new [] { i }.Concat(x).ToList());
-                }
-            }
-        }
-
-        return result;
+        return new List<List<int>> { new List<int> { n }}
+               .Concat(
+                    Enumerable
+                    .Range(start, (int) Math.Sqrt(n) - start + 1 < 0 ? 0 : (int) Math.Sqrt(n) - start + 1)
+                    .Where(x => n % x == 0)
+                    .Select(
+                        x => 
+                        (n / x)
+                        .GetFactors(x)
+                        .Select(
+                            y => 
+                            new [] { x }
+                            .Concat(y)
+                            .ToList()))
+                    .SelectMany(x => x)
+                    .ToList()
+               ).ToList();
     }
 
     static void Main()
