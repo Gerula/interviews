@@ -51,6 +51,12 @@ public class Solution {
         }
     }
 
+    public IList<string> GenerateParenthesis2(int n) {
+        var result = new List<string>();
+        GenPar(n, n, result, new StringBuilder());
+        return result;
+    }
+
     static void Main()
     {
         var s = new Solution();
@@ -58,6 +64,8 @@ public class Solution {
         {
             Console.WriteLine(i);
             Console.WriteLine(String.Join(Environment.NewLine, s.GenerateParenthesis(i)));
+            Console.WriteLine();
+            Console.WriteLine(String.Join(Environment.NewLine, s.GenerateParenthesis2(i)));
             Console.WriteLine();
         }
     }
