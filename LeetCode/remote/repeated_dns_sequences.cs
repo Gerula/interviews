@@ -37,8 +37,20 @@ public class Solution {
         return set.ToList();
     }
 
+    //  Same idea but with linq. TLE
+    public IList<string> FindRepeatedDnaSequences2(string s) {
+        return Enumerable
+               .Range(0, s.Length - 9)
+               .Select(x => s.Substring(x, 10))
+               .GroupBy(x => x)
+               .Where(x => x.Count() > 1)
+               .Select(x => x.Key)
+               .ToList();
+    }
+
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().FindRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT")));
+        Console.WriteLine(String.Join(Environment.NewLine, new Solution().FindRepeatedDnaSequences2("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT")));
     }
 }
