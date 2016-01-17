@@ -10,20 +10,28 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  https://leetcode.com/submissions/detail/50962169/
+    //
+    //
+    //  Submission Details
+    //  30 / 30 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 568 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public IList<string> FindRepeatedDnaSequences(string s) {
         var set = new HashSet<String>();
-        for (var i = 0; i < s.Length - 10; i++)
+        var seen = new HashSet<String>();
+        for (var i = 0; i < s.Length - 9; i++)
         {
             var seq = s.Substring(i, 10);
-            if (set.Contains(seq))
-            {
-                continue;
-            }
-
-            if (s.Substring(i + 10).Contains(seq))
+            if (seen.Contains(seq))
             {
                 set.Add(seq);
             }
+            
+            seen.Add(seq);
         }
 
         return set.ToList();
