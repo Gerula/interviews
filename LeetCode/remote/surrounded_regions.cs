@@ -23,6 +23,16 @@ using System;
 using System.Collections.Generic;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  58 / 58 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 224 ms
+    //          
+    //          Submitted: 1 minute ago
+    //
+    //  https://leetcode.com/submissions/detail/51054233/
+    //
     public void Solve(char[,] board) {
         var n = board.GetLength(0);
         var m = board.GetLength(1);
@@ -72,22 +82,18 @@ public class Solution {
             var current = stack.Pop();
             line = current.Item1;
             col = current.Item2; 
-            if (!replacements.ContainsKey(board[line, col]))
+            if (line < 0 || line > board.GetLength(0) - 1 ||
+                col < 0 || col > board.GetLength(1) - 1 ||
+                !replacements.ContainsKey(board[line, col]))
             {
                 continue;
             }
 
             board[line, col] = replacements[board[line, col]];
-            for (var a = Math.Max(0, line - 1); a <= Math.Min(board.GetLength(0) - 1, line + 1); a++)
-            {
-                for (var b = Math.Max(0, col - 1); b <= Math.Min(board.GetLength(1) - 1, col + 1); b++)
-                {
-                    if (a != b)
-                    {
-                        stack.Push(Tuple.Create(a, b));
-                    }
-                }
-            }
+            stack.Push(Tuple.Create(line - 1, col));
+            stack.Push(Tuple.Create(line + 1, col));
+            stack.Push(Tuple.Create(line, col - 1));
+            stack.Push(Tuple.Create(line, col + 1));
         }
     }
 
