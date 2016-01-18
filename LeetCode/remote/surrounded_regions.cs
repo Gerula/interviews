@@ -21,32 +21,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 public class Solution {
     public void Solve(char[,] board) {
         var n = board.GetLength(0);
         var m = board.GetLength(1);
         var borderReplacements = new Dictionary<char, char> { {'O', 'Y'} };
-        int stackSize = 1024*1024*64;
         for (var i = 0; i < n; i++)
         {
-            var thread = new Thread(() => 
-            {
-                Fill(board, i, m - 1, borderReplacements);
-            }, stackSize);
-            thread.Start();
-            thread.Join();
+            Fill(board, i, m - 1, borderReplacements);
+            Fill(board, i, 0, borderReplacements);
         }
 
         for (var i = 0; i < m; i++)
         {
-            var thread = new Thread(() => 
-            {
-                Fill(board, n - 1, i, borderReplacements);
-            }, stackSize);
-            thread.Start();
-            thread.Join();
+            Fill(board, n - 1, i, borderReplacements);
+            Fill(board, 0, i, borderReplacements);
         }
 
         var finalReplacements = new Dictionary<char, char> { {'O', 'X'} };
@@ -54,52 +44,48 @@ public class Solution {
         {
             for (var j = 0; j < m; j++)
             {
-                var thread = new Thread(() => 
-                {
-                    Fill(board, i, j, finalReplacements);
-                }, stackSize);
-                thread.Start();
-                thread.Join();
+                Fill(board, i, j, finalReplacements);
             }
         }
 
         borderReplacements = new Dictionary<char, char> { {'Y', 'O'} };
         for (var i = 0; i < n; i++)
         {
-            var thread = new Thread(() => 
-            {
-                Fill(board, i, m - 1, borderReplacements);
-            }, stackSize);
-            thread.Start();
-            thread.Join();
+            Fill(board, i, m - 1, borderReplacements);
+            Fill(board, i, 0, borderReplacements);
         }
 
         for (var i = 0; i < m; i++)
         {
-            var thread = new Thread(() => 
-            {
-                Fill(board, n - 1, i, borderReplacements);
-            }, stackSize);
-            thread.Start();
-            thread.Join();
+            Fill(board, n - 1, i, borderReplacements);
+            Fill(board, 0, i, borderReplacements);
         }
     }
 
     public void Fill(char[,] board, int line, int col, Dictionary<char, char> replacements)
     {
-        if (!replacements.ContainsKey(board[line, col]))
-        {
-            return;
-        }
+        var stack = new Stack<Tuple<int, int>>();
+        stack.Push(Tuple.Create(line, col));
 
-        board[line, col] = replacements[board[line, col]];;
-        for (var a = Math.Max(0, line - 1); a <= Math.Min(board.GetLength(0) - 1, line + 1); a++)
+        while (stack.Count > 0)
         {
-            for (var b = Math.Max(0, col - 1); b <= Math.Min(board.GetLength(1) - 1, col + 1); b++)
+            var current = stack.Pop();
+            line = current.Item1;
+            col = current.Item2; 
+            if (!replacements.ContainsKey(board[line, col]))
             {
-                if (a != b)
+                continue;
+            }
+
+            board[line, col] = replacements[board[line, col]];
+            for (var a = Math.Max(0, line - 1); a <= Math.Min(board.GetLength(0) - 1, line + 1); a++)
+            {
+                for (var b = Math.Max(0, col - 1); b <= Math.Min(board.GetLength(1) - 1, col + 1); b++)
                 {
-                    Fill(board, a, b, replacements);
+                    if (a != b)
+                    {
+                        stack.Push(Tuple.Create(a, b));
+                    }
                 }
             }
         }
@@ -128,6 +114,15 @@ public class Solution {
             { 'X', 'O', 'O', 'X' },
             { 'X', 'X', 'O', 'X' },
             { 'X', 'O', 'X', 'X' },
+        };
+
+        s.Print(a);
+        s.Solve(a);
+        s.Print(a);
+        
+        a = new char[2, 2] { 
+            { 'O', 'O' },
+            { 'O', 'O' }
         };
 
         s.Print(a);
