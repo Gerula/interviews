@@ -24,6 +24,8 @@
 //  Return 4
 //  The longest increasing path is [3, 4, 5, 6]. Moving diagonally is not allowed.
 
+using System;
+
 public class Solution {
     public int LongestIncreasingPath(int[,] matrix) {
         var max = 0;
@@ -69,5 +71,74 @@ public class Solution {
         
         cache[line, col] = max + 1;
         return cache[line, col];
+    }
+
+    public int LongestIncreasingPath2(int[,] matrix)
+    {
+        var n = matrix.GetLength(0);
+        var m = matrix.GetLength(1);
+        var leftUp = new int[n, m, 2];
+        var rightDown = new int[n, m, 2];
+
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < m; j++)
+            {
+                if (i >= 1)
+                {
+                    var smaller = matrix[i - 1, j] >= matrix[i, j] ? 1 : 0;
+                    leftUp[i, j, smaller] = Math.Max(leftUp[i, j, smaller], leftUp[i - 1, j, smaller]); 
+                }
+
+                if (j >= 1)
+                {
+                    var smaller = matrix[i, j - 1] >= matrix[i, j] ? 1 : 0;
+                    leftUp[i, j, smaller] = Math.Max(leftUp[i, j, smaller], leftUp[i, j - 1, smaller]); 
+                }
+
+                leftUp[i, j, 0]++;
+                leftUp[i, j, 1]++;
+            }
+        }
+
+        for (var i = n - 1; i >= 0; i--)
+        {
+            for (var j = m - 1; j >= 0; j--)
+            {
+                if (i < n - 1)
+                {
+                    var smaller = matrix[i + 1, j] >= matrix[i, j] ? 1 : 0;
+                    rightDown[i, j, smaller] = Math.Max(rightDown[i, j, smaller], rightDown[i + 1, j, smaller]); 
+                }
+
+                if (j < m - 1)
+                {
+                    var smaller = matrix[i, j + 1] >= matrix[i, j] ? 1 : 0;
+                    rightDown[i, j, smaller] = Math.Max(rightDown[i, j, smaller], rightDown[i, j + 1, smaller]); 
+                }
+
+                rightDown[i, j, 0]++;
+                rightDown[i, j, 1]++;
+            }
+        }
+
+        var max = 0;
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < m; j++)
+            {
+                max = Math.Max(max, Math.Max(leftUp[i, j, 0] + rightDown[i, j, 1] - 1, leftUp[i, j, 1] + rightDown[i, j, 0] - 1));
+            }
+        }
+
+        return max;
+    }
+
+    static void Main()
+    {
+        var s = new Solution();
+        Console.WriteLine(s.LongestIncreasingPath2(new [,] { {9, 9, 4}, {6, 6, 8}, {2, 1, 1} }));
+        Console.WriteLine(s.LongestIncreasingPath2(new [,] { {3, 4, 5}, {3, 2, 6}, {2, 2, 1} }));
+        Console.WriteLine(s.LongestIncreasingPath2(new [,] { {1} }));
     }
 }
