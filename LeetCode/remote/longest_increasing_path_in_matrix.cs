@@ -26,41 +26,48 @@
 
 public class Solution {
     public int LongestIncreasingPath(int[,] matrix) {
-        var max = 1;
+        var max = 0;
+        var cache = new int[matrix.GetLength(0), matrix.GetLength(1)];
         for (var i = 0; i < matrix.GetLength(0); i++)
         {
             for (var j = 0; j < matrix.GetLength(1); j++)
             {
-                max = Math.Max(max, Longest(i, j, matrix));
+                max = Math.Max(max, Longest(i, j, matrix, cache));
             }
         }
         
         return max;
     }
     
-    public int Longest(int line, int col, int[,] matrix)
+    public int Longest(int line, int col, int[,] matrix, int[,] cache)
     {
+        if (cache[line, col] > 0)
+        {
+            return cache[line, col];
+        }
+        
         var max = 0;
         if (line - 1 >= 0 && matrix[line - 1, col] >= matrix[line, col] + 1)
         {
-            max = Math.Max(max, 1 + Longest(line - 1, col, matrix));
+            max = Math.Max(max, Longest(line - 1, col, matrix, cache));
         }
         
         if (col - 1 >= 0 && matrix[line, col - 1] >= matrix[line, col] + 1)
         {
-            max = Math.Max(max, 1 + Longest(line, col - 1, matrix));
+            max = Math.Max(max, Longest(line, col - 1, matrix, cache));
         }
         
         if (line + 1 < matrix.GetLength(0) && matrix[line + 1, col] >= matrix[line, col] + 1)
         {
-            max = Math.Max(max, 1 + Longest(line + 1, col, matrix));
+            max = Math.Max(max, Longest(line + 1, col, matrix, cache));
         }
         
         if (col + 1 < matrix.GetLength(1) && matrix[line, col + 1] >= matrix[line, col] + 1)
         {
-            max = Math.Max(max, 1 + Longest(line, col + 1, matrix));
+            max = Math.Max(max, Longest(line, col + 1, matrix, cache));
         }
         
-        return max == 0 ? 1 : max;
+        cache[line, col] = max + 1;
+        return cache[line, col];
     }
 }
