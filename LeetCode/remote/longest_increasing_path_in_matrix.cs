@@ -107,13 +107,13 @@ public class Solution {
             {
                 if (i < n - 1)
                 {
-                    var smaller = matrix[i + 1, j] >= matrix[i, j] ? 1 : 0;
+                    var smaller = matrix[i + 1, j] <= matrix[i, j] ? 1 : 0;
                     rightDown[i, j, smaller] = Math.Max(rightDown[i, j, smaller], rightDown[i + 1, j, smaller]); 
                 }
 
                 if (j < m - 1)
                 {
-                    var smaller = matrix[i, j + 1] >= matrix[i, j] ? 1 : 0;
+                    var smaller = matrix[i, j + 1] <= matrix[i, j] ? 1 : 0;
                     rightDown[i, j, smaller] = Math.Max(rightDown[i, j, smaller], rightDown[i, j + 1, smaller]); 
                 }
 
@@ -122,12 +122,33 @@ public class Solution {
             }
         }
 
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < m; j++)
+            {
+                Console.Write("{0} ", leftUp[i, j, 0]);
+            }
+
+            Console.WriteLine();
+        }
+
+            Console.WriteLine();
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < m; j++)
+            {
+                Console.Write("{0} ", rightDown[i, j, 1]);
+            }
+
+            Console.WriteLine();
+        }
         var max = 0;
         for (var i = 0; i < n; i++)
         {
             for (var j = 0; j < m; j++)
             {
-                max = Math.Max(max, Math.Max(leftUp[i, j, 0] + rightDown[i, j, 1] - 1, leftUp[i, j, 1] + rightDown[i, j, 0] - 1));
+                var diff = leftUp[i, j, 0] + rightDown[i, j, 1] - 1 == 1 && leftUp[i, j, 1] + rightDown[i, j, 0] - 1 == 1 ? 1 : 2;
+                max = Math.Max(max, Math.Max(leftUp[i, j, 0] + rightDown[i, j, 1] - diff, leftUp[i, j, 1] + rightDown[i, j, 0] - diff));
             }
         }
 
