@@ -15,33 +15,44 @@ class Node
     public Node Left { get; set ; }
     public Node Right { get; set ; }
 
-    public IEnumerable<int> Longest()
+    public List<int> Longest()
     {
-        var current = new [] { Val };
+        var result = new List<int>();
+        Longest(ref result);
+        return result;
+    }
+
+    private List<int> Longest(ref List<int> longest)
+    {
+        var current = new List<int> { Val };
         if (Left == null && Right == null)
         {
             return current;
         }
-
-        IEnumerable<int> maxLeft = new int[0];
-        if (Left != null)
+        
+        var leftLongest = Left != null ? Left.Longest(ref longest) : Enumerable.Empty<int>();
+        var rightLongest = Right != null ? Right.Longest(ref longest) : Enumerable.Empty<int>();
+        
+        var localLongest = current;
+        if (leftLongest.Any() && Math.Abs(Left.Val - Val) == 1)
         {
-            maxLeft = Left.Val + 1 == Val ? Left.Longest().Concat(current) : Left.Longest();
+            leftLongest = leftLongest.Concat(current).ToList();
+            localLongest = leftLongest.ToList();
         }
 
-        IEnumerable<int> maxRight = new int[0];
-        if (Right != null)
+        if (rightLongest.Any() && Math.Abs(Right.Val - Val) == 1)
         {
-            maxRight = Right.Val + 1 == Val ? Right.Longest().Concat(current) : Right.Longest();
+            if (Right != null && Math.Abs(Right.Val - Left.Val) == 2)
+            {
+                localLongest = localLongest.Concat(rightLongest).ToList();
+            }
+
+            rightLongest = rightLongest.Concat(current).ToList();
         }
 
-        var maxChildren = maxLeft.Count() > maxRight.Count() ? maxLeft : maxRight;
-        if (maxChildren.Count() > 1)
-        {
-            return maxChildren;
-        }
-
-        return current;
+        Console.WriteLine("{0} Left= {1} local= {2}", Val, String.Join(", ", leftLongest), String.Join(", ", localLongest));
+        longest = longest.Count() < localLongest.Count() ? localLongest : longest;
+        return leftLongest.Count() > rightLongest.Count() ? leftLongest.ToList() : rightLongest.ToList();
     }
 }
 
@@ -64,7 +75,7 @@ class Solution
                                 Val = 5
                             }
                         }
-                    },
+                    }, 
                     new Node {
                         Val = 5,
                         Left = new Node {
@@ -89,6 +100,7 @@ class Solution
                 })
         {
             Console.WriteLine(String.Join(", ", root.Longest()));
+            Console.WriteLine();
         }
     }
 }
