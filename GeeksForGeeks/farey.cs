@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 static class Program
 {
@@ -24,13 +25,18 @@ static class Program
         }
     }
 
-    static IEnumerable<Fraction> Farey(this int n)
+    static SortedSet<Fraction> AbracadabraSet()
     {
-        var set = new SortedSet<Fraction>(
+        return new SortedSet<Fraction>(
                     Comparer<Fraction>.Create((a, b) => 
                         ((double) a.Numerator / a.Denominator)
                         .CompareTo((double) b.Numerator / b.Denominator))
                   );
+    }
+
+    static IEnumerable<Fraction> Farey(this int n)
+    {
+        var set = AbracadabraSet();
         
         set.Add(new Fraction(0, 1));
         for (var i = 1; i <= n; i++)
@@ -47,7 +53,44 @@ static class Program
 
     static IEnumerable<Fraction> FareyWeird(this int n)
     {
-        return new List<Fraction>(); 
+        var result = AbracadabraSet();
+        if (n == 1)
+        {
+            result.Add(new Fraction(0, 1));
+            result.Add(new Fraction(1, 1));
+            return result;
+        }
+        
+        foreach (var x in (n - 1).FareyWeird())
+        {
+            result.Add(x);
+        }
+
+        foreach (var x in Enumerable
+                          .Range(1, n)
+                          .Where(x => x.Coprime(n)))
+        {
+            result.Add(new Fraction(x, n));
+        }
+
+        return result;
+    }
+
+    static bool Coprime(this int a, int b)
+    {
+        while (a != b)
+        {
+            if (a > b)
+            {
+                a -= b;
+            }
+            else
+            {
+                b -= a;
+            }
+        }
+
+        return a == 1;
     }
 
     static void Main()
