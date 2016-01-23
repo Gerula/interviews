@@ -16,17 +16,54 @@ using System.Linq;
 
 static class Program
 {
-    static ulong HashBase = 27;
+    static long HashBase = 27;
     static IEnumerable<String> OneEdit(this String[] a, String s)
     {
         var hash = s.Hash();
         return a
-               .Select(x => new { Diff = hash - x.Hash(), String = x })
-               .Where(x => x.Diff != 0 && (x.Diff.PowerOf(HashBase)))
+               .Select(x => new { Diff = Math.Abs(x.Hash() - hash), String = x })
+               .Where(x => x.Diff != 0 && x.Diff.PowerOf(HashBase) && x.String.OneEdit(s))
                .Select(x => x.String);
     }
 
-    static bool PowerOf(this ulong x, ulong hashBase)
+    static bool OneEdit(this String a, String b)
+    {
+        if (Math.Abs(a.Length - b.Length) > 1)
+        {
+            return false;
+        }
+
+        var i = 0;
+        var j = 0;
+        var diff = 0;
+        while (i < a.Length && j < b.Length)
+        {
+            if (a[i] != b[j])
+            {
+                if (++diff > 1)
+                {
+                    return false;
+                }
+
+                if (a.Length < b.Length)
+                {
+                    j++;
+                    continue;
+                }
+                else if (a.Length > b.Length)
+                {
+                    i++;
+                    continue;
+                }
+            }
+
+            i++; j++;
+        }
+
+        return true;
+    }
+
+    static bool PowerOf(this long x, long hashBase)
     {
         while (x % hashBase == 0)
         {
@@ -36,9 +73,9 @@ static class Program
         return x < hashBase;
     }
 
-    static ulong Hash(this String s)
+    static long Hash(this String s)
     {
-        return s.Aggregate((ulong) 0, (acc, x) => acc * HashBase + x - 'a');
+        return s.Aggregate((long) 0, (acc, x) => acc * HashBase + x - 'a' + 1);
     }
 
     static void Main()
