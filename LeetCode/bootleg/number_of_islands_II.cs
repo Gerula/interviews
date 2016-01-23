@@ -89,6 +89,7 @@ class Node
         if (a.Rank == b.Rank)
         {
             parentA.Parent = parentB;
+            parentB.Rank += 1;
             return;
         }
 
