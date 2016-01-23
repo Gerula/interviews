@@ -9,9 +9,21 @@
 //  A correct serialization will contain all the numbers and null pointers in the binary tree.
 
 using System;
+using System.Text.RegularExpressions;
 
 static class Program
 {
+    static bool ValidTree2(this String a)
+    {
+        var leaf = new Regex("[0-9]+,#,#");
+        while (a != "#" && leaf.IsMatch(a))
+        {
+            a = leaf.Replace(a, "#");
+        }
+
+        return a == "#";
+    }
+
     static bool ValidTree(this String a)
     {
         var diff = 1;
@@ -39,7 +51,7 @@ static class Program
                     "9,#,#,1"
                 })
         {
-            Console.WriteLine("{0} - {1}", x, x.ValidTree());
+            Console.WriteLine("{0} - {1} - {2}", x, x.ValidTree(), x.ValidTree2());
         }
     }
 }
