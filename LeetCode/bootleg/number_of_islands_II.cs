@@ -47,12 +47,14 @@ class Node
     public int Column { get; private set; }
     public int Rank { get; private set; }
     public Node Parent { get; private set; }
+    public static int Count = 0;
 
     public Node(int line, int column)
     {
         Line = line;
         Column = column;
         Parent = this;
+        Count++;
     }
 
     public bool IsNeighbor(Node other)
@@ -81,6 +83,8 @@ class Node
         {
             return;
         }
+
+        Count--;
 
         if (a.Rank == b.Rank)
         {
@@ -113,10 +117,7 @@ static class Program
                 Node.Union(node, neighbor);
             }
 
-            yield return nodes
-                         .Select(x => x.Find())
-                         .Distinct()
-                         .Count();
+            yield return Node.Count;
         }
     }
 
