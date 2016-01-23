@@ -9,32 +9,26 @@
 //  A correct serialization will contain all the numbers and null pointers in the binary tree.
 
 using System;
-using System.Collections.Generic;
 
 static class Program
 {
     static bool ValidTree(this String a)
     {
-        var s = new Stack<String>();
+        var diff = 1;
         foreach (var c in a.Split(new [] { ',' }))
         {
-            if (c == "#")
+            if (--diff < 0)
             {
-                if (s.Count == 0)
-                {
-                    return false;
-                }
-
-                s.Pop();
+                return false;
             }
-            else
+
+            if (c != "#")
             {
-                s.Push(c);
-                s.Push(c);
+                diff += 2;
             }
         }
 
-        return s.Count == 0;
+        return diff == 0;
     }
 
     static void Main()
