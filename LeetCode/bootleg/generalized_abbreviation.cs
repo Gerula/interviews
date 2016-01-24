@@ -14,6 +14,31 @@ static class Program
 {
     static IEnumerable<String> Abbreviations(this String s)
     {
+        switch (s.Length)
+        {
+            case 0: 
+                return Enumerable.Empty<String>();
+            case 1:
+                return new List<String> { s };
+            case 2:
+                return new List<String> { s, String.Format("{0}{1}", s[0], 1) };
+            default:
+                return Enumerable
+                       .Range(1, s.Length - 2)
+                       .SelectMany(x => s
+                                        .Substring(x + 1)
+                                        .Abbreviations()
+                                        .Select(y => x.ToString() + s[x] + y))
+                       .Concat(s
+                               .Substring(1)
+                               .Abbreviations()
+                               .Select(x => s[0] + x))
+                       .Concat(new List<String> { s.Length.ToString() });
+        }
+    }
+
+    static IEnumerable<String> Abbreviations2(this String s)
+    {
         var regex = new Regex(@"\#+");
         for (var mask = 0; mask < 1 << s.Length; mask++)
         {
