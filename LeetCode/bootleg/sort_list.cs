@@ -33,7 +33,7 @@ public class Solution {
     //
     //  Accepted as the merge operation doesn't blow up the stack.
     //
-    public ListNode SortList(ListNode head) {
+    public ListNode SortListOld(ListNode head) {
         if (head == null || head.next == null)
         {
             return head;
@@ -52,6 +52,76 @@ public class Solution {
         var left = SortList(head);
         
         return Merge(left, right);
+    }
+
+    //  
+    //  Submission Details
+    //  15 / 15 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 168 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  https://leetcode.com/submissions/detail/51766108/
+    //
+    //  Whoah!!
+    //  You are here!
+    //  Your runtime beats 91.30% of csharp submissions.
+    //  
+    //  Ok, Quicksort kicks ass.
+    public ListNode SortList(ListNode head) {
+        if (head == null || head.next == null)
+        {
+            return head;
+        }
+
+        var smallerStart = new ListNode(0);
+        var equalStart = new ListNode(0);
+        var largerStart = new ListNode(0);
+        var smaller = smallerStart;
+        var equal = equalStart;
+        var larger = largerStart;
+
+        var it = head;
+        while (it != null)
+        {
+            if (it.val == head.val)
+            {
+                equal.next = it;
+                equal = equal.next;
+            } 
+            else if (it.val < head.val)
+            {
+                smaller.next = it;
+                smaller = smaller.next;
+            }
+            else
+            {
+                larger.next = it;
+                larger = larger.next;
+            }
+
+            it = it.next;
+        }
+
+        smaller.next = equal.next = larger.next = null;
+        smallerStart.next = SortList(smallerStart.next);
+        largerStart.next = SortList(largerStart.next);
+        
+        it = smallerStart;
+        while (it.next != null)
+        {
+            it = it.next;
+        }
+
+        it.next = equalStart.next;
+        while (it.next != null)
+        {
+            it = it.next;
+        }
+
+        it.next = largerStart.next;
+        return smallerStart.next;
     }
 
     public ListNode Merge(ListNode a, ListNode b)
