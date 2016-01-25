@@ -21,13 +21,25 @@ public class ListNode {
 }
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  15 / 15 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 196 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  https://leetcode.com/submissions/detail/51758343/
+    //
+    //  Accepted as the merge operation doesn't blow up the stack.
+    //
     public ListNode SortList(ListNode head) {
         if (head == null || head.next == null)
         {
             return head;
         }
 
-        var fast = head.next.next;
+        var fast = head.next;
         var slow = head;
         while (fast != null && fast.next != null)
         {
@@ -44,24 +56,35 @@ public class Solution {
 
     public ListNode Merge(ListNode a, ListNode b)
     {
+        var dummy = new ListNode(0);
+        var it = dummy;
+        while (a != null && b != null)
+        {
+            if (a.val < b.val)
+            {
+                it.next = a;
+                it = a;
+                a = a.next;
+            }
+            else
+            {
+                it.next = b;
+                it = b;
+                b = b.next;
+            }
+        }
+
         if (a == null)
         {
-            return b;
+            it.next = b;
         }
 
         if (b == null)
         {
-            return a;
+            it.next = a;
         }
 
-        if (a.val < b.val)
-        {
-            a.next = Merge(a.next, b);
-            return a;
-        }
-
-        b.next = Merge(a, b.next);
-        return b;
+        return dummy.next;
     }
 
     static void Main()
