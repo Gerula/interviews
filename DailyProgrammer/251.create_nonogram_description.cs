@@ -15,12 +15,12 @@ static class Program
 {
     private static Regex Stars = new Regex(@"\*+", RegexOptions.Compiled);
 
-    static List<String> ReadNonogram(this String file)
+    static IList<String> ReadNonogram(this String file)
     {
-        return File.ReadAllLines(file).ToList();
+        return File.ReadLines(file).ToList();
     }
 
-    static List<String> Describe(this List<String> nonogram)
+    static IEnumerable<String> Describe(this IList<String> nonogram)
     {
         var lines = nonogram.Select(x => x.ReadConfiguration()).ToList();
         var lineLength = nonogram.First().Length;
@@ -51,40 +51,37 @@ static class Program
                 Enumerable
                 .Repeat(emptyBlock, maxLines));
 
-        nonogram = Enumerable
-                   .Range(0, maxColumns)
-                   .Select(x => String
-                           .Format(
-                               "{0}{1}", 
-                                emptyPadding,
-                                String
-                                .Join(
-                                    String.Empty,
-                                    columns
-                                    .Select(y => y[x].PadLeft(blockLength))
-                                )   
-                            ))
-                   .Concat(
-                       Enumerable
-                       .Range(0, nonogram.Count)
-                       .Select(x => 
+        return Enumerable
+               .Range(0, maxColumns)
+               .Select(x => String
+                       .Format(
+                           "{0}{1}", 
+                           emptyPadding,
                            String
-                           .Format(
-                               "{0}{1}",
-                               String.Join(
-                                   String.Empty, 
-                                   lines[x]
-                                   .Select(y => y.PadLeft(blockLength))),
-                               String.Join(
-                                   String.Empty, 
-                                   nonogram[x]
-                                   .Select(y => y.ToString().PadLeft(blockLength))))))
-                   .Select(x => "    " + x)
-                   .ToList();
-        return nonogram;
+                           .Join(
+                               String.Empty,
+                               columns
+                               .Select(y => y[x].PadLeft(blockLength))
+                           )   
+                       ))
+               .Concat(
+                   Enumerable
+                   .Range(0, nonogram.Count)
+                   .Select(x => 
+                       String
+                       .Format(
+                           "{0}{1}",
+                           String.Join(
+                               String.Empty, 
+                               lines[x]
+                               .Select(y => y.PadLeft(blockLength))),
+                           String.Join(
+                               String.Empty, 
+                               nonogram[x]
+                               .Select(y => y.ToString().PadLeft(blockLength))))));
     }
 
-    static List<List<String>> Pad(this List<List<String>> list, int length)
+    static List<IList<String>> Pad(this List<IList<String>> list, int length)
     {
         return list
                .Select(x => {
@@ -101,12 +98,11 @@ static class Program
                .ToList();
     }
 
-    static List<String> ReadConfiguration(this String s)
+    static IList<String> ReadConfiguration(this String s)
     {
         return Stars
                .Matches(s)
                .Cast<Match>()
-               .Where(x => x.Success)
                .Select(x => x.Length.ToString())
                .ToList();
     }
