@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 static class Program
 {
@@ -84,7 +85,7 @@ static class Program
         foreach (var x in new [] { 4, 5, 10, 15 })
         {
             Console.WriteLine(x);
-            Console.WriteLine(String.Join(Environment.NewLine, x.Oglaf()));
+            Console.WriteLine(String.Join(Environment.NewLine, x.Smart()));
             Console.WriteLine();
         }
     }
