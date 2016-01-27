@@ -33,9 +33,34 @@ class String
 
         dp[0]
     end
+
+    #
+    #   Submission Details
+    #   259 / 259 test cases passed.
+    #       Status: Accepted
+    #       Runtime: 80 ms
+    #           
+    #           Submitted: 0 minutes ago
+    #
+    #   https://leetcode.com/submissions/detail/51890817/
+    #
+    #   You are here!
+    #   Your runtime beats 100.00% of ruby submissions.
+    def num_decode
+        s = self
+        return 0 if s.nil? || s.empty?
+        dp = Array.new(s.size + 1)
+        dp[0] = 1
+        1.upto(s.size).each { |i|
+            dp[i] = s[i - 1] == "0" ? 0 : dp[i - 1]
+            dp[i] += i > 1 && s[i - 2] != "0" && s[i - 2, 2].to_i < 27 ? dp[i - 2] : 0
+        }
+
+        dp[s.size]
+    end
 end
 
 puts num_decodings("12")
-puts "12".num_decodings
-puts "10".num_decodings
-
+["10", "12"].each { |i|
+    puts "#{i} #{i.num_decodings} #{i.num_decode}"
+}
