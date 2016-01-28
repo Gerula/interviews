@@ -17,20 +17,15 @@ using System.Collections.Generic;
 public class Solution {
     public int MinPatches(int[] nums, int n) 
     {
-        return Patches(nums, n).Count;
-    }
-
-    public List<int> Patches(int[] nums, int n)
-    {
         var sum = 0;
         var i = 0;
-        var patches = new List<int>();
+        var patches = 0;
         while (i < nums.Length)
         {
-            while (sum + 1 < nums[i] && i < n)
+            while (sum + 1 < nums[i] && sum < n)
             {
                 sum += sum + 1;
-                patches.Add(sum);
+                patches++;
             }
 
             sum += nums[i++];
@@ -38,8 +33,8 @@ public class Solution {
 
         while (sum < n)
         {
-            sum++;
-            patches.Add(sum);
+            sum += sum + 1;
+            patches++;
         }
 
         return patches;
@@ -51,14 +46,15 @@ public class Solution {
         foreach (var x in new [] {
                     Tuple.Create(new [] { 1, 3 }, 6),
                     Tuple.Create(new [] { 1, 5, 10 }, 20),
-                    Tuple.Create(new [] { 1, 2, 2 }, 5)
+                    Tuple.Create(new [] { 1, 2, 2 }, 5),
+                    Tuple.Create(new [] { 1, 2, 3 }, 2147483647)
                 })
         {
             Console.WriteLine(
                     "[{0} -- {1}] - [{2}]",
                     String.Join(", ", x.Item1),
                     x.Item2,
-                    String.Join(", ", s.Patches(x.Item1, x.Item2)));
+                    s.MinPatches(x.Item1, x.Item2));
         }
     }
 }
