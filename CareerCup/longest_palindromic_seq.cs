@@ -34,8 +34,36 @@ static class Program
                         .MaxPalindrome());
     }
 
+    static int MaxPalindrome2(this int[] a)
+    {
+        var n = a.Length;
+        var dp = new int[n, n];
+        for (var i = 0; i < n; i++)
+        {
+            dp[i, i] = 1;
+        }
+
+        for (var length = 2; length <= n; length++)
+        {
+            for (var start = 0; start <= n - length; start++)
+            {
+                var end = start + length - 1;
+                dp[start, end] = a[start] == a[end] ?
+                                    2 + dp[start + 1, end - 1] :
+                                    Math.Max(
+                                        dp[start, end - 1],
+                                        dp[start + 1, end]);
+            }
+        }
+
+        return dp[0, n - 1];
+    }
+
     static void Main()
     {
-        Console.WriteLine(new [] { 1, 2, 4, 1 }.MaxPalindrome());
+        Console.WriteLine(
+                "{0} - {1}",
+                new [] { 1, 2, 4, 1 }.MaxPalindrome(),
+                new [] { 1, 2, 4, 1 }.MaxPalindrome2());
     }
 }
