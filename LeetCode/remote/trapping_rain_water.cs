@@ -23,7 +23,7 @@ public class Solution {
     //
     //  You are here!
     //  Your runtime beats 71.79% of csharp submissions.
-    public int Trap(int[] height) {
+    public int Trap2(int[] height) {
         var n = height.Length;
         if (n < 3)
         {
@@ -45,6 +45,37 @@ public class Solution {
         }
 
         return water;
+    }
+
+    public int Trap(int[] height)
+    {
+        if (height.Length < 3)
+        {
+            return 0;
+        }
+
+        return height
+               .Aggregate(
+                       new List<int>(),
+                       (acc, x) => {
+                            acc.Add(acc.Count == 0 ? x : Math.Max(x, acc.Last()));
+                            return acc;
+                       })
+               .Zip(height
+                    .Reverse()
+                    .Aggregate(
+                        new List<int>(),
+                        (acc, x) => {
+                            acc.Add(acc.Count == 0 ? x : Math.Max(x, acc.Last()));
+                            return acc;
+                        })
+                    .AsEnumerable()
+                    .Reverse(),
+                    (a, b) => Math.Min(a, b))
+               .Zip(height,
+                    (a, b) => a - b)
+               .Where(x => x > 0)
+               .Sum();
     }
 
     static void Main()
