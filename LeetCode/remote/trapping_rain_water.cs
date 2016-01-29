@@ -54,21 +54,20 @@ public class Solution {
             return 0;
         }
 
+        Func<List<int>, int, List<int>> runningMax = (acc, x) => {
+            acc.Add(acc.Count == 0 ? x : Math.Max(x, acc.Last()));
+            return acc;
+        };
+
         return height
                .Aggregate(
                        new List<int>(),
-                       (acc, x) => {
-                            acc.Add(acc.Count == 0 ? x : Math.Max(x, acc.Last()));
-                            return acc;
-                       })
+                       runningMax)
                .Zip(height
                     .Reverse()
                     .Aggregate(
                         new List<int>(),
-                        (acc, x) => {
-                            acc.Add(acc.Count == 0 ? x : Math.Max(x, acc.Last()));
-                            return acc;
-                        })
+                        runningMax)
                     .AsEnumerable()
                     .Reverse(),
                     (a, b) => Math.Min(a, b))
