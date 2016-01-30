@@ -67,7 +67,7 @@ public class Solution {
                     .Reverse()
                     .Aggregate(
                         new List<int>(),
-                        runningMax)
+                        runningMam)
                     .AsEnumerable()
                     .Reverse(),
                     (a, b) => Math.Min(a, b))
