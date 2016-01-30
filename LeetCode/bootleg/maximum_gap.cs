@@ -13,18 +13,79 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Solution {
+    //  
+    //  Submission Details
+    //  17 / 17 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 256 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  https://leetcode.com/submissions/detail/52187017/
+    //
+    //  You are here!
+    //  Your runtime beats 10.00% of csharp submissions.
+    //  Of course.. Linq is slow.
     public int MaximumGap(int[] nums) {
-        var sorted = Radix(nums, 1 << 30);
-        Console.WriteLine("Ninja sort : {0}", String.Join(", ", sorted));
+        if (nums.Length < 2)
+        {
+            return 0;
+        }
+
+        var sorted = Radix(nums.ToList(), 1000000000);
         return sorted
                .Zip(
-                 sorted
-                 .Skip(1),
-                 (a, b) => b - a)
+                  sorted
+                  .Skip(1),
+                  (a, b) => b - a)
                .Max();
     }
 
-    public IEnumerable<int> Radix(IEnumerable<int> nums, int mask)
+    public List<int> Radix(List<int> nums, int digit)
+    {
+        if (!nums.Any())
+        {
+            return nums;
+        }
+
+        var result = Enumerable
+                     .Range(0, 10)
+                     .Aggregate(
+                             new Dictionary<int, List<int>>(),
+                             (acc, x) => {
+                                acc[x] = new List<int>();
+                                return acc;
+                             });
+
+        foreach (var x in nums)
+        {
+            result[x / digit % 10].Add(x);
+        }
+
+        if (digit > 1)
+        {
+            result = result
+                     .Keys
+                     .Aggregate(
+                             new Dictionary<int, List<int>>(),
+                             (acc, x) => {
+                                acc[x] = Radix(result[x], digit / 10);
+                                return acc;
+                             });
+        }
+
+        return Enumerable
+               .Range(0, 10)
+               .Aggregate(
+                       new List<int>(),
+                       (acc, x) => {
+                            acc.AddRange(result[x]);
+                            return acc;
+                       })
+               .ToList() ;
+    }
+
+    public IEnumerable<int> Radix2(IEnumerable<int> nums, int mask)
     {
         if (!nums.Any())
         {
@@ -36,8 +97,8 @@ public class Solution {
         
         if (mask > 1)
         {
-            smaller = Radix(smaller, mask >> 1);
-            larger = Radix(larger, mask >> 1);
+            smaller = Radix2(smaller, mask >> 1);
+            larger = Radix2(larger, mask >> 1);
         }
 
         return smaller.Concat(larger);
