@@ -28,21 +28,10 @@ public class Solution {
 
     public IList<int> CountSmaller(int[] nums)
     {
-        var indexes = nums.Select((val, index) => new Pair { Index = index, Value = val });
-        var dictionary = indexes
-                         .Aggregate(
-                                 new Dictionary<int, Pair>(),
-                                 (acc, x) => {
-                                    acc[x.Index] = x;
-                                    return acc;
-                                 });
-
-        indexes = SortPairs(indexes);
-        Console.WriteLine(String.Join(", ", indexes.Select(x => String.Format("{0} - {1} - {2}", x.Value, x.Count, x.Index))));
-        Console.WriteLine(String.Join(", ", dictionary.Select(x => String.Format("{0} - {1} - {2}", x.Value.Value, x.Value.Count, x.Value.Index))));
-        return Enumerable
-               .Range(0, nums.Length)
-               .Select(x => dictionary[x].Count)
+        return SortPairs(nums
+                         .Select((val, index) => new Pair { Index = index, Value = val }))
+               .OrderBy(x => x.Index)
+               .Select(x => x.Count)
                .ToList();
     }
 
