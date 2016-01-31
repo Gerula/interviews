@@ -29,8 +29,9 @@ public class Solution {
                .Skip(1)
                .Aggregate(
                    triangle.Last(),
-                   (acc, x) => x 
-                               .Select((val, index) => Math.Min(acc[index], acc[index + 1]) + val)
+                   (acc, x) => acc
+                               .Zip(acc.Skip(1), (a, b) => Math.Min(a, b))
+                               .Zip(x, (a, b) => a + b)
                                .ToList())
                .First();
     }
