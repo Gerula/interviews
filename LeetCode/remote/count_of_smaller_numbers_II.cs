@@ -24,6 +24,10 @@ public class Solution {
         public int Index { get; set; }
         public int Value { get; set; }
         public int Count { get; set; }
+        public override String ToString()
+        {
+            return String.Format("[val : {0}, cnt: {1}, idx: {2}]", Value, Count, Index);
+        }
     }
 
     public IList<int> CountSmaller(int[] nums)
@@ -39,58 +43,39 @@ public class Solution {
                                     return acc;
                                  });
 
-        indexes = SortPairs(indexes).ToList();
+        SortPairs(indexes, 1 << 30);
+        Console.WriteLine(String.Join(", ", indexes.Select(x => x.ToString())));
         return Enumerable
                .Range(0, nums.Length)
                .Select(x => dictionary[x].Count)
                .ToList();
     }
 
-    private IEnumerable<Pair> SortPairs(IEnumerable<Pair> nums)
+    private void SortPairs(List<Pair> nums, int mask)
     {
-        var count = nums.Count();
-        if (count < 2)
+        if (nums.Count <= 1 || mask == 0)
         {
-            return nums;
+            return;
         }
 
-        return Merge(
-                SortPairs(nums.Take(count / 2)),
-                SortPairs(nums.Skip(count / 2)));
-    }
-
-    private IEnumerable<Pair> Merge(IEnumerable<Pair> first, IEnumerable<Pair> second)
-    {
-        var firstEnum = first.GetEnumerator();
-        var secondEnum = second.GetEnumerator();
-        bool anyFirst = firstEnum.MoveNext();
-        bool anySecond = secondEnum.MoveNext();
-        while (anyFirst && anySecond)
+        var smaller = new List<Pair>();
+        var larger = new List<Pair>();
+        var bit = mask < 0 ? 0 : mask;
+        foreach (var x in nums)
         {
-            if (firstEnum.Current.Value > secondEnum.Current.Value)
+            if ((x.Value & mask) == bit)
             {
-                firstEnum.Current.Count += secondEnum.Current.Count + 1;
-                yield return firstEnum.Current;
-                anyFirst = firstEnum.MoveNext();
+                x.Count += smaller.Count;
+                larger.Add(x);        
             }
             else
             {
-                yield return secondEnum.Current;
-                anySecond = secondEnum.MoveNext();
+                smaller.Add(x);
             }
         }
 
-        while (anyFirst)
-        {
-            yield return firstEnum.Current;
-            anyFirst = firstEnum.MoveNext();
-        }
-
-        while (anySecond)
-        {
-            yield return secondEnum.Current;
-            anySecond = secondEnum.MoveNext();
-        }
+        SortPairs(smaller, mask >> 1);
+        SortPairs(larger, mask >> 1);
     }
 
     static void Main()
