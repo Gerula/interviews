@@ -87,6 +87,7 @@ static class Solution {
 
     static void Main()
     {
+        Console.WriteLine(String.Join(", ", GeneratePalindromes("acabb")));
         Console.WriteLine(String.Join(", ", GeneratePalindromes("aabb")));
         Console.WriteLine(String.Join(", ", GeneratePalindromes("abc")));
     }
