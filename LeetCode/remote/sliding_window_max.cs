@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Solution {
     public class Dequeue 
@@ -85,9 +86,23 @@ public class Solution {
         return result;
     }
 
+    public int[] MaxSlidingWindow2(int[] nums, int k) {
+        return nums.Length == 0 ? 
+               new int[0] :
+               Enumerable
+               .Range(0, nums.Length - k + 1)
+               .Select(x => nums
+                            .Skip(x)
+                            .Take(k)
+                            .Max())
+               .ToArray();
+    }
+
     static void Main()
     {
         Console.WriteLine(String.Join(", ", new Solution().MaxSlidingWindow(new [] { 1, 3, -1, -3, 5, 3, 6, 7 }, 3)));
         Console.WriteLine(String.Join(", ", new Solution().MaxSlidingWindow(new [] { 7, 2, 4 }, 2)));
+        Console.WriteLine(String.Join(", ", new Solution().MaxSlidingWindow2(new [] { 1, 3, -1, -3, 5, 3, 6, 7 }, 3)));
+        Console.WriteLine(String.Join(", ", new Solution().MaxSlidingWindow2(new [] { 7, 2, 4 }, 2)));
     }
 }
