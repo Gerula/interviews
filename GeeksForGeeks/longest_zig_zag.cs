@@ -12,32 +12,63 @@ using System.Linq;
 
 static class Solution
 {
-    static int ZigZag(this int[] a)
+    static List<int> ZigZag(this int[] a)
     {
         int n = a.Length;
         var smaller = Enumerable.Repeat(1, n).ToArray();
         var larger = Enumerable.Repeat(1, n).ToArray();
-
+        var smallerParent = new Dictionary<int, int>();
+        var largerParent = new Dictionary<int, int>();
         int max = int.MinValue;
+        int maxIdx = -1;
+        bool lastSmaller = true;
 
         for (var i = 1; i < n; i++)
         {
             for (var j = 0; j < i; j++)
             {
-                if (a[i] > a[j])
+                if (a[i] > a[j] && smaller[i] < larger[j] + 1)
                 {
-                    smaller[i] = Math.Max(smaller[i], larger[j] + 1);
-                }
-                if (a[i] < a[j])
-                {
-                    larger[i] = Math.Max(larger[i], smaller[j] + 1);
+                    smaller[i] = larger[j] + 1;
+                    smallerParent[i] = j;
                 }
 
-                max = Math.Max(Math.Max(smaller[i], larger[i]), max);
+                if (a[i] < a[j] && larger[i] < smaller[j] + 1)
+                {
+                    larger[i] = smaller[j] + 1;
+                    largerParent[i] = j;
+                }
+
+                var localMax = smaller[i];
+                var flag = true;
+                if (localMax < larger[i])
+                {
+                    localMax = larger[i];
+                    flag = false; 
+                }
+
+                if (localMax > max)
+                {
+                    max = localMax;
+                    maxIdx = i;
+                    lastSmaller = flag;
+                }
             }
         }
 
-        return max;
+        var result = new List<int>();
+        var dictionary = lastSmaller ? smallerParent : largerParent;
+        result.Add(a[maxIdx]);
+        while (dictionary.ContainsKey(maxIdx))
+        {
+            maxIdx = dictionary[maxIdx];
+            result.Add(a[maxIdx]);
+            lastSmaller = !lastSmaller;
+            dictionary = lastSmaller ? smallerParent : largerParent;
+        }
+
+        result.Reverse();
+        return result;
     }
 
     static void Main()
@@ -51,7 +82,7 @@ static class Solution
             Console.WriteLine(
                     "{0} - {1}",
                     String.Join(", ", x),
-                    x.ZigZag());
+                    String.Join(", ", x.ZigZag()));
         }
     }
 }
