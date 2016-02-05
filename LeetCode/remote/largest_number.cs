@@ -11,11 +11,14 @@ public class Solution {
     //  Submission Details
     //  221 / 221 test cases passed.
     //      Status: Accepted
-    //      Runtime: 224 ms
+    //      Runtime: 184 ms
     //          
     //          Submitted: 1 minute ago
     //
-    //  https://leetcode.com/submissions/detail/52759527/
+    //  https://leetcode.com/submissions/detail/52759669/
+    //
+    //  You are here!
+    //  Your runtime beats 84.09% of csharp submissions.
     public string LargestNumber(int[] nums) {
         var strings = nums.Select(x => x.ToString()).ToArray();
         if (strings.All(x => x == "0"))
@@ -23,7 +26,7 @@ public class Solution {
             return "0";
         }
         
-        Array.Sort(strings, (a, b) => -long.Parse(a + b).CompareTo(long.Parse(b + a)));
+        Array.Sort(strings, (a, b) => -(a + b).CompareTo(b + a));
         return String.Join("", strings);
     }
 }
