@@ -39,37 +39,30 @@ public class Solution {
         var stack = new Stack<String>();
         var start = "JFK";
         stack.Push(start);
-        var hashSet = new HashSet<String>();
-        var result = new List<String> { start };
-        while (stack.Count > 0)
+        var result = new List<String>();
+
+        while (stack.Any())
         {
-            var current = stack.Pop();
-            String next;
-            if (!nexts.ContainsKey(current) ||
-                String.IsNullOrEmpty(next = nexts[current]
-                                            .FirstOrDefault(x => !hashSet
-                                                                    .Contains(String.Format(
-                                                                                        "{0}:{1}",
-                                                                                        current,
-                                                                                        x)))))
+            while (nexts.ContainsKey(stack.Peek()) &&
+                   nexts[stack.Peek()].Any())
             {
-                continue;
+                var next = nexts[stack.Peek()].Min;
+                nexts[stack.Peek()].Remove(next);
+                stack.Push(next);
             }
 
-            hashSet.Add(String.Format(
-                        "{0}:{1}",
-                        current,
-                        next));
-            stack.Push(next);
-            result.Add(next);
+            result.Add(stack.Pop());
         }
 
+        result.Reverse();
         return result;
     }
 
     static void Main()
     {
         Console.WriteLine(String.Join(", ", new Solution().FindItinerary(new [,] {{"MUC", "LHR"}, {"JFK", "MUC"}, {"SFO", "SJC"}, {"LHR", "SFO"}})));
+        Console.WriteLine(String.Join(", ", new Solution().FindItinerary(new [,] {{"JFK","KUL"}, {"JFK","NRT"}, {"NRT","JFK"}}))); 
+        Console.WriteLine(String.Join(", ", new Solution().FindItinerary(new [,] {{"EZE","AXA"},{"TIA","ANU"},{"ANU","JFK"},{"JFK","ANU"},{"ANU","EZE"},{"TIA","ANU"},{"AXA","TIA"},{"TIA","JFK"},{"ANU","TIA"},{"JFK","TIA"}})));
         Console.WriteLine(String.Join(", ", new Solution().FindItinerary(new [,] {{"JFK","SFO"}, {"JFK","ATL"}, {"SFO","ATL"}, {"ATL","JFK"}, {"ATL","SFO"}})));
     }
 }
