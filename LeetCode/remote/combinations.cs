@@ -28,7 +28,7 @@ using System.Linq;
 
 static class Program
 {
-    public static IList<IList<int>> Combine(int n, int k) {
+    public static IList<IList<int>> CombineClassic(int n, int k) {
         IList<IList<int>> result = new List<IList<int>>();
         Combine(n, 1, k, result, new List<int>());
         return result;
@@ -67,10 +67,34 @@ static class Program
                             Select(c => new [] { element }.Concat(c)));
     }
 
+    public static IList<IList<int>> Combine(int n, int k) {
+        if (k == 0 || n == 0)
+        {
+            return (IList<IList<int>>) new List<IList<int>> { new List<int>() };
+        }
+        
+        Console.WriteLine(n);
+        List<IList<int>> result = new List<IList<int>>();
+        result.AddRange(
+                        Enumerable
+                        .Range(1, n)
+                        .Reverse()
+                        .SelectMany(x =>
+                            Combine(x - 1, k - 1)
+                            .Select(y => new List<int> { n }
+                                         .Concat(y)
+                                         .ToList())
+                            .Where(y => y.Count == k)));
+        
+        return result;
+    }
+
     static void Main()
     {
-        Console.WriteLine(String.Join(Environment.NewLine, Combine(4, 2).Select(x => String.Join(", ", x))));
+        Console.WriteLine(String.Join(Environment.NewLine, CombineClassic(4, 2).Select(x => String.Join(", ", x))));
         Console.WriteLine();
         Console.WriteLine(String.Join(Environment.NewLine, Enumerable.Range(1, 4).Combinations(2).Select(x => String.Join(", ", x))));
+        Console.WriteLine();
+        Console.WriteLine(String.Join(Environment.NewLine, Combine(4, 2).Select(x => String.Join(", ", x))));
     }
 }
