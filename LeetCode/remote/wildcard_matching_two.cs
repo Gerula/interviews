@@ -44,10 +44,7 @@ public class Solution {
 
         if (p[0] == '*')
         {
-            return Enumerable
-                   .Range(0, s.Length)
-                   .Select(x => IsMatch(s.Substring(0, x), p.Substring(1)))
-                   .Aggregate((acc, x) => acc || x);
+            return IsMatch(s, p.Substring(1)) || IsMatch(s.Substring(1), p);
         }
 
         return false;
