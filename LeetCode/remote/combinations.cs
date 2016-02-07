@@ -68,9 +68,9 @@ static class Program
     }
 
     public static IList<IList<int>> Combine(int n, int k) {
-        if (k == 0 || n == 0)
+        if (k == 0)
         {
-            return (IList<IList<int>>) new List<IList<int>> { new List<int>() };
+            return (IList<IList<int>>) new List<IList<int>> { new List<int> { n } };
         }
         
         Console.WriteLine(n);
@@ -81,7 +81,7 @@ static class Program
                         .Reverse()
                         .SelectMany(x =>
                             Combine(x - 1, k - 1)
-                            .Select(y => new List<int> { n }
+                            .Select(y => new List<int> { x }
                                          .Concat(y)
                                          .ToList())
                             .Where(y => y.Count == k)));
