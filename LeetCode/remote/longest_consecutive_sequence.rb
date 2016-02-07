@@ -40,3 +40,41 @@ def longest_consecutive(nums)
         [acc, up + down.abs - 1].max
     }
 end
+
+#   
+#   Submission Details
+#   67 / 67 test cases passed.
+#       Status: Accepted
+#       Runtime: 96 ms
+#           
+#           Submitted: 0 minutes ago
+#
+# @param {Integer[]} nums
+# @return {Integer}
+def longest_consecutive(nums)
+    hash = {}
+    max = [0, 0]
+    parsed = {}
+    nums.each { |x|
+        next if !parsed[x].nil?
+        parsed[x] = true
+        
+        low = x
+        if !hash[x - 1].nil?
+            low = hash[x - 1]
+            hash.delete(x - 1)
+        end
+        
+        high = x
+        if !hash[x + 1].nil?
+            high = hash[x + 1]
+            hash.delete(x + 1)
+        end
+        
+        hash[low] = high
+        hash[high] = low
+        max = (high - low).abs > (max[1] - max[0]).abs ? [low, high] : max
+    }
+    
+    (max[1] - max[0]).abs + 1
+end
