@@ -50,6 +50,47 @@ public class Solution {
         return false;
     }
 
+    //  
+    //  Submission Details
+    //  1801 / 1801 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 304 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    //  https://leetcode.com/submissions/detail/52922349/
+    public bool IsMatchDp(string s, string p)
+    {
+        var dp = new bool[s.Length + 1, p.Length + 1];
+        dp[0, 0] = true;
+        for (var i = 1; i <= p.Length && p[i - 1] == '*'; i++)
+        {
+            dp[0, i] = true;
+        }
+
+        for (var i = 1; i <= s.Length; i++)
+        {
+            for (var j = 1; j <= p.Length; j++)
+            {
+                if (s[i - 1] == p[j - 1])
+                {
+                    dp[i, j] = dp[i - 1, j - 1];
+                }
+                else
+                {
+                    switch (p[j - 1])
+                    {
+                        case '?': dp[i, j] = dp[i - 1, j - 1]; break;
+                        case '*': dp[i, j] = dp[i - 1, j] || dp[i, j - 1]; break;
+                        default : dp[i, j] = false; break;
+                    }
+                }
+            }
+        }
+
+        return dp[s.Length, p.Length];
+    }
+
     static void Main()
     {
         var s = new Solution();
@@ -64,6 +105,11 @@ public class Solution {
                 })
         {
             if (s.IsMatch(x.Item1, x.Item2) != x.Item3)
+            {
+                Console.WriteLine("hahaha idioit!. {0} {1}", x, s.IsMatch(x.Item1, x.Item2));
+            }
+
+            if (s.IsMatchDp(x.Item1, x.Item2) != x.Item3)
             {
                 Console.WriteLine("hahaha idioit!. {0} {1}", x, s.IsMatch(x.Item1, x.Item2));
             }
