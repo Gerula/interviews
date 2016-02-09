@@ -3,6 +3,16 @@
 //  bla bla bla
 
 public class Solution {
+    //  https://leetcode.com/submissions/detail/52998001/
+    //
+    //
+    //  Submission Details
+    //  17 / 17 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 212 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public int MaximumGap(int[] nums) {
         if (nums.Length < 2)
         {
@@ -20,10 +30,8 @@ public class Solution {
     
     public int[] Count(int[] nums)
     {
-        var min = int.MaxValue;
-        var max = int.MinValue;
         var dictionary = nums.Aggregate(
-                new Dictionary<int, List<int>>(),
+                new SortedDictionary<int, List<int>>(),
                 (acc, x) => {
                     if (!acc.ContainsKey(x))
                     {
@@ -31,21 +39,15 @@ public class Solution {
                     }
                     
                     acc[x].Add(x);
-                    min = Math.Min(min, x);
-                    max = Math.Max(max, x);
                     return acc;
                 }
             );
-        return Enumerable
-               .Range(min, (max - min) + 1)
+        return dictionary
+               .Keys
                .Aggregate(
                    new List<int>(),
                    (acc, x) => {
-                        if (dictionary.ContainsKey(x))
-                        {
-                            acc.AddRange(dictionary[x]);
-                        }
-                        
+                        acc.AddRange(dictionary[x]);
                         return acc;
                    })
                .ToArray();
