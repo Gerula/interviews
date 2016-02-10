@@ -48,7 +48,11 @@ def jump(nums)
     edge = 0
     max = nums[0]
     steps = 0
-    for i in 1...nums.size
+    for i in 1...nums.size # Iterate over the array while keeping
+                           # three states:
+                           # - max - maximum current reach
+                           # - edge - length of the maximum reach expanded since the last time we had to expand
+                           # - steps - when expanding the reach, increase the number of steps
         if i > edge
             steps += 1
             edge = max
