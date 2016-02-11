@@ -37,3 +37,33 @@ public class Solution {
                .ToList();
     }
 }
+
+//  https://leetcode.com/submissions/detail/53176373/
+//
+//
+//  Submission Details
+//  12 / 12 test cases passed.
+//      Status: Accepted
+//      Runtime: 404 ms
+//          
+//          Submitted: 0 minutes ago
+//
+
+public class Solution {
+    public IList<int> GrayCode(int n) 
+    {
+        var result = new List<int> { 0 };
+        for (var i = 0; i < n; i++)
+        {
+            var local = new List<int>();
+            for (var j = result.Count - 1; j >= 0; j--)
+            {
+                local.Add(result.Count + result[j]);
+            }
+            
+            result = result.Concat(local).ToList();
+        }
+        
+        return result;
+    }
+}
