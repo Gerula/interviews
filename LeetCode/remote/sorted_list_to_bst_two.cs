@@ -64,3 +64,44 @@ public class Solution {
         return result;
     }
 }
+
+//  
+//  Submission Details
+//  32 / 32 test cases passed.
+//      Status: Accepted
+//      Runtime: 172 ms
+//          
+//          Submitted: 0 minutes ago
+//
+//  https://leetcode.com/submissions/detail/53532814/
+//
+//  Bullshit! This should be way faster complexity-wise. I would blame the OJ.
+public class Solution {
+    public TreeNode SortedListToBST(ListNode head) {
+        var length = 0;
+        for (var it = head; it != null; it = it.next)
+        {
+            length++;
+        }
+        
+        return SortedListToBST(ref head, 0, length - 1);
+    }
+    
+    public TreeNode SortedListToBST(ref ListNode head, int low, int high)
+    {
+        if (low > high)
+        {
+            return null;
+        }
+        
+        var mid = low + (high - low) / 2;
+        var left = SortedListToBST(ref head, low, mid - 1);
+        var val = head.val;
+        head = head.next;
+        var right = SortedListToBST(ref head, mid + 1, high);
+        return new TreeNode(val) {
+            left = left,
+            right = right
+        };
+    }
+}
