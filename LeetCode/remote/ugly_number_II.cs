@@ -46,3 +46,40 @@ public class Solution {
         return result[n - 1];
     }
 }
+
+//  Slower but prettier:
+//
+//  https://leetcode.com/submissions/detail/53585010/
+//
+//  Submission Details
+//  596 / 596 test cases passed.
+//      Status: Accepted
+//      Runtime: 256 ms
+//          
+//          Submitted: 0 minutes ago
+//
+public class Solution {
+    public int NthUglyNumber(int n) {
+        var factors = new Dictionary<int, int> {{2, 0}, {3, 0}, {5, 0}};
+        if (n <= 1)
+        {
+            return 1;
+        }
+        
+        var result = new int[n + 1];
+        result[0] = 1;
+        for (var i = 1; i <= n; i++)
+        {
+            result[i] = factors.Select(x => x.Key * result[x.Value]).Min();
+            foreach (var x in factors.Keys.ToList())
+            {
+                if (result[i] == x * result[factors[x]])
+                {
+                    factors[x]++;
+                }
+            }
+        }
+        
+        return result[n - 1];
+    }
+}
