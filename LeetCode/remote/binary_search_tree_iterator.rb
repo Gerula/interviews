@@ -43,3 +43,30 @@ class BSTIterator
         return result.nil?? -1 : result.val
     end
 end
+
+#   Similar approach but favorizing next for computation
+class BSTIterator
+    # @param {TreeNode} root
+    def initialize(root)
+        @current = root
+        @stack = []
+    end
+
+    # @return {Boolean}
+    def has_next
+        @stack.any? || !@current.nil?
+    end
+
+    # @return {Integer}
+    def next
+        while !@current.nil?
+            @stack.push(@current)
+            @current = @current.left
+        end
+        
+        @current = @stack.pop
+        result = @current
+        @current = @current.right
+        return result.val
+    end
+end
