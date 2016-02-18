@@ -33,3 +33,39 @@ def longest_valid_parentheses(s)
     end 
     return max
 end
+
+#   https://leetcode.com/submissions/detail/53795059/   
+#
+#   Submission Details
+#   229 / 229 test cases passed.
+#       Status: Accepted
+#       Runtime: 128 ms
+#           
+#           Submitted: 0 minutes ago
+#   Very smart solution. Too bad it's not mine..
+def longest_valid_parentheses(s)
+    stack = []
+    for i in 0...s.size
+        if s[i] == '('
+            stack.push(i)
+        else
+            if stack.any? && s[stack[-1]] == '('
+                stack.pop
+            else
+                stack.push(i)
+            end
+        end
+    end
+    
+    return s.size if stack.empty?
+    high = s.size
+    low = 0
+    max = 0
+    while stack.any?
+        low = stack.pop
+        max = [max, high - low - 1].max
+        high = low
+    end
+    
+    [max, high].max
+end
