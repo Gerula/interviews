@@ -30,3 +30,28 @@ def search_matrix(matrix, target)
     return false
 end
 
+#   Alt solution based on binary search
+#   https://leetcode.com/submissions/detail/53873035/
+#   
+#   Submission Details
+#   134 / 134 test cases passed.
+#       Status: Accepted
+#       Runtime: 88 ms
+#           
+#           Submitted: 0 minutes ago
+def search_matrix(matrix, target)
+    low = 0
+    high = matrix[0].size * matrix.size
+    while low < high
+        mid = low + (high - low) / 2
+        current = matrix[mid / matrix[0].size][mid % matrix[0].size]
+        return true if current == target
+        if current < target
+            low = mid + 1
+        else
+            high = mid
+        end
+    end
+    
+    return false
+end
