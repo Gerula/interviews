@@ -30,6 +30,7 @@ static class Solution
 {
     static String Hidden(this String s)
     {
+        Console.WriteLine(s.Length);
         var sb = new StringBuilder(s);
         Tuple<int, int> indexes;
         while ((indexes = Farthest(sb)) != null)
@@ -53,6 +54,7 @@ static class Solution
     static Tuple<int, int> Farthest(this StringBuilder sb)
     {
         var hashSet = new HashSet<char>();
+        var counts = new Dictionary<char, int>();
         var left = 0;
         var maxLeft = 0;
         var maxRight = 0;
@@ -61,14 +63,21 @@ static class Solution
             if (!hashSet.Contains(sb[i]))
             {
                 hashSet.Add(sb[i]);
+                counts[sb[i]] = 1;
             }
             else
             {
+                counts[sb[i]]++;
                 while (sb[left] != sb[i])
                 {
                     hashSet.Remove(sb[left++]);
                 }
 
+                if (left == i)
+                {
+                    hashSet.Remove(sb[i]);
+                }
+                
                 if (i - left > maxRight - maxLeft)
                 {
                     maxRight = i;
@@ -85,10 +94,14 @@ static class Solution
         Console.WriteLine("abcbba".Hidden());
         Console.WriteLine("abcdfbeba".Hidden());
         Console.WriteLine("aabcbded".Hidden());
+        Console.WriteLine("daccadfghd_i".Hidden());
+        Console.WriteLine("abacbcbefge".Hidden());
+        Console.WriteLine("_a_abda_".Hidden());
         Console.WriteLine("ttvmswxjzdgzqxotby_lslonwqaipchgqdo_yz_fqdagixyrobdjtnl_jqzpptzfcdcjjcpjjnnvopmh".Hidden());
-/*        Console.WriteLine(File
+        Console.WriteLine(File
                           .ReadAllText("252.in")
                           .Replace(Environment.NewLine, String.Empty)
-                          .Hidden()); */
+                          .ToUpper()
+                          .Hidden());
     }
 }
