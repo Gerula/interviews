@@ -25,3 +25,34 @@ def max_profit(prices)
 
     profit[0]
 end
+
+#   Very nice (genius) solution using a state machine
+#   So every index can be in 3 states: buy, sell, rest and you need to compute the local
+#   optimum for each state. Very VERY nice solution
+#   
+#   Submission Details
+#   212 / 212 test cases passed.
+#       Status: Accepted
+#       Runtime: 108 ms
+#           
+#           Submitted: 0 minutes ago
+#
+#   https://leetcode.com/submissions/detail/53925030/
+# @param {Integer[]} prices
+# @return {Integer}
+def max_profit(prices)
+    return 0 if prices.size < 2
+    buy = Array.new(prices.size - 1) { 0 }
+    sell = Array.new(prices.size - 1) { 0 }
+    rest = Array.new(prices.size - 1) { 0 }
+    buy[0] = -prices[0]
+    rest[0] = 0
+    sell[0] = 0
+    for i in 1...prices.size
+        rest[i] = [rest[i - 1], sell[i - 1]].max
+        buy[i] = [buy[i - 1], rest[i - 1] - prices[i]].max
+        sell[i] = buy[i - 1] + prices[i]
+    end
+    
+    [rest[prices.size - 1], sell[prices.size - 1]].max
+end
