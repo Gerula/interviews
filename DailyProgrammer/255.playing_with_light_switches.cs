@@ -37,21 +37,15 @@ class Node
             return;
         }
 
-        if (high < LeftSide || RightSide < low)
+        if (high < LeftSide || RightSide < low || low > high)
         {
             return;
         }
-    }
 
-    public override String ToString()
-    {
-        return String.Format(
-                "{0} ({1}, {2}) [{3}, {4}]",
-                On,
-                LeftSide,
-                RightSide,
-                Left == null ? "null" : Left.ToString(),
-                Right == null ? "null" : Right.ToString());
+        Left.Switch(low, Math.Min(Left.RightSide, high));
+        Right.Switch(Math.Max(low, Right.LeftSide), high);
+
+        On = Left.On + Right.On; 
     }
 }
 
@@ -85,10 +79,7 @@ static class Solution
         Node root = Node.Build(n - 1);
         foreach (var interval in intervals)
         {
-            Console.WriteLine(interval);
-            Console.WriteLine(root.On); 
             root.Switch(interval.Item1, interval.Item2);
-            Console.WriteLine(root.On);
         }
 
         return root.On;
@@ -97,5 +88,7 @@ static class Solution
     static void Main()
     {
         Console.WriteLine("1.in".CountSwitches());   
+        Console.WriteLine("2.in".CountSwitches());   
+        Console.WriteLine("3.in".CountSwitches());   
     }
 }
