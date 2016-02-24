@@ -24,4 +24,18 @@ def max_value(cakes, capacity)
     max
 end
 
+def max_value_2(cakes, capacity)
+    dp = Array.new(capacity + 1) { -2 ** (0.size * 8 - 2) }
+    dp[0] = 0
+    1.upto(capacity).each { |cap|
+        dp[cap] = cakes.keys
+                  .select { |x| x <= cap }
+                  .map { |x| dp[cap - x] + cakes[x] }
+                  .max || dp[cap]
+    }
+
+    dp[capacity]
+end
+
 puts max_value({7 => 160, 3 => 90, 2 => 15}, 20)
+puts max_value_2({7 => 160, 3 => 90, 2 => 15}, 20)
