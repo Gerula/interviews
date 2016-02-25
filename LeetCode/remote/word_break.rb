@@ -46,3 +46,31 @@ def word_break(s, word_dict)
 
     wb[s.size]
 end
+
+# Small optimization (old idea of mine on the C# solution)
+# to push this solution to the next level
+#
+# https://leetcode.com/submissions/detail/54509068/
+#
+# Submission Details
+# 34 / 34 test cases passed.
+#   Status: Accepted
+#   Runtime: 104 ms
+#       
+#       Submitted: 0 minutes ago
+# You are here!
+# Your runtime beats 100.00% of rubysubmissions.
+
+def word_break(s, word_dict)
+    wb = Array.new(s.size + 1) { false }
+    wb[0] = true
+    0.upto(s.size - 1).each { |i|
+        next if !wb[i]
+        current = s[i..-1]
+        word_dict.select { |word| current.start_with?(word) }.each { |word|
+            wb[i + word.size] = true
+        }
+    }
+
+    wb[s.size]
+end
