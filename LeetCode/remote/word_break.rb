@@ -23,3 +23,26 @@ def word_break(s, word_dict, hash = nil)
     hash[s] = result || false
     return hash[s]
 end
+
+#   https://leetcode.com/submissions/detail/54508959/
+#
+#   Submission Details
+#   34 / 34 test cases passed.
+#       Status: Accepted
+#       Runtime: 128 ms
+#           
+#           Submitted: 0 minutes ago
+
+def word_break(s, word_dict)
+    wb = Array.new(s.size + 1) { false }
+    wb[0] = true
+    0.upto(s.size - 1).each { |i|
+        next if !wb[i]
+        1.upto(s.size - i).each { |j|
+            next if wb[i + j]
+            wb[i + j] = word_dict.include?(s[i, j])
+        }
+    }
+
+    wb[s.size]
+end
