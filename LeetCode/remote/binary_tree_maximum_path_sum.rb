@@ -30,3 +30,15 @@ def max(root, max)
               left + right + root.val].max
     return current_include
 end
+
+def max_path_sum(root, max_val = nil)
+    max = max_val || [-2**(0.size * 8 - 2)]
+    return 0 if root.nil?
+    left = max_path_sum(root.left, max)
+    right = max_path_sum(root.right, max)
+    current_include = [[left, right].max + root.val, root.val].max
+    max[0] = [max[0], 
+              current_include,
+              left + right + root.val].max
+    return max_val.nil? ? max[0] : current_include
+end
