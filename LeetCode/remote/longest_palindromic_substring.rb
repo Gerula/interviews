@@ -3,13 +3,19 @@
 #   Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000,
 #   and there exists one unique longest palindromic substring.
 
-#   TLE:
-
+#   https://leetcode.com/submissions/detail/54658367/
 def longest_palindrome(s)
-    0.upto(s.size - 1)
-    .map { |i| [palindrome(s, i, i), palindrome(s, i, i + 1)] }
-    .flatten
-    .max { |a, b| a.size <=> b.size }
+    max = ""
+    0.upto(s.size - 1).each { |i|
+        odd = palindrome(s, i, i)
+        even = palindrome(s, i, i + 1)
+        
+        return s if odd.size == s.size || even.size == s.size
+        max = odd if odd.size > max.size
+        max = even if even.size > max.size
+    }
+
+    max    
 end
 
 def palindrome(s, low, high)
