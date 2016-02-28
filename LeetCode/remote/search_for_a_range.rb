@@ -44,3 +44,33 @@ def search(value, nums, direction)
     
     found
 end
+
+# Way nicer solution
+#   https://leetcode.com/submissions/detail/54795980/
+#
+#   Submission Details
+#   81 / 81 test cases passed.
+#       Status: Accepted
+#       Runtime: 72 ms
+#           
+#           Submitted: 0 minutes ago
+def search_range(nums, target)
+    left = search(target, nums, :left)
+    return [-1, -1] if left == nums.size || target != nums[left]
+    [left, search(target + 1, nums, :right) - 1]
+end
+
+def search(value, nums, direction)
+    low = 0
+    high = nums.size
+    while low < high
+        mid = low + (high - low) / 2
+        if nums[mid] < value
+            low = mid + 1
+        else
+            high = mid
+        end
+    end
+    
+    low
+end
