@@ -23,3 +23,13 @@ def letter_combinations(digits)
     }
     .flatten
 end
+
+def letter_combinations(digits)
+    return [] if digits.to_s.empty?
+    return @nums[digits.to_i].chars if digits.size == 1
+    letter_combinations(digits[1..-1])
+    .product(@nums[digits.chars.first.to_i].chars)
+    .map { |x, y| 
+        y + x
+    }
+end
