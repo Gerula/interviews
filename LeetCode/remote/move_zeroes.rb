@@ -40,3 +40,27 @@ assert_equal([1, 3, 12, 0, 0], a)
 a = [0, 0, 0, 1]
 move_zeroes(a)
 assert_equal([1, 0, 0, 0], a)
+
+#   Shittier solution 💩
+#
+#   Submission Details
+#   21 / 21 test cases passed.
+#       Status: Accepted
+#       Runtime: 116 ms
+#           
+#           Submitted: 0 minutes ago
+def move_zeroes(nums)
+    aux = nums.sort { |x, y| 
+        if y == 0
+            -1
+        elsif x == 0
+            1
+        else 
+            0
+        end
+    }
+    
+    (0...aux.size).each { |i|
+        nums[i] = aux[i]
+    }
+end
