@@ -29,3 +29,32 @@ def sorted_list_to_bst(head)
     result.right = sorted_list_to_bst(mid.next)
     result
 end
+
+#   Better version. And I learned a new trick! You don't need to break the list actually..
+#   https://leetcode.com/submissions/detail/55157641/
+#
+#   Submission Details
+#   32 / 32 test cases passed.
+#       Status: Accepted
+#       Runtime: 781 ms
+#           
+#           Submitted: 0 minutes ago
+def sorted_list_to_bst(head)
+    return sorted_to_bst(head, nil)
+end
+
+def sorted_to_bst(low, high)
+    return nil if low == high
+    return TreeNode.new(low.val) if low.next == high
+    half = low
+    finish = low.next
+    while finish != high && finish.next != high
+        half = half.next
+        finish = finish.next.next
+    end
+    
+    result = TreeNode.new(half.val)
+    result.left = sorted_to_bst(low, half)
+    result.right = sorted_to_bst(half.next, high)
+    result
+end
