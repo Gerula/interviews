@@ -58,3 +58,35 @@ def sorted_to_bst(low, high)
     result.right = sorted_to_bst(half.next, high)
     result
 end
+
+#   This one should be faster
+#
+#   https://leetcode.com/submissions/detail/55161943/
+#
+#   Submission Details
+#   32 / 32 test cases passed.
+#       Status: Accepted
+#       Runtime: 808 ms
+#           
+#           Submitted: 0 minutes ago
+def sorted_list_to_bst(head)
+    it = head
+    count = 0
+    while it
+        count += 1
+        it = it.next
+    end
+    
+    sorted_to_bst(0, count - 1, [head])
+end
+
+def sorted_to_bst(low, high, head)
+    return nil if low > high
+    mid = low + (high - low) / 2
+    left = sorted_to_bst(low, mid - 1, head)
+    result = TreeNode.new(head.first.val)
+    head[0] = head[0].next
+    right = sorted_to_bst(mid + 1, high, head)
+    result.left, result.right = left, right
+    result
+end
