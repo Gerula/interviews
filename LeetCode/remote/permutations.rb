@@ -32,3 +32,22 @@ def permute(nums)
     
     return result
 end
+
+#   Slightly better solution
+#   https://leetcode.com/submissions/detail/55270226/
+#
+#   Submission Details
+#   25 / 25 test cases passed.
+#       Status: Accepted
+#       Runtime: 116 ms
+#           
+#           Submitted: 0 minutes ago
+def permute(nums)
+    return [[nums.first]] if nums.size == 1
+    nums.inject([]) { |acc, x|
+        acc << permute(nums - [x]).map { |y|
+            [x] + y
+        }
+    }.flatten(1)
+end
+
