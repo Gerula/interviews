@@ -21,3 +21,20 @@ end
 def to_decimal(nums)
     (0...nums.size).map { |x| nums[nums.size - x - 1] * 2 ** x }.reduce(:+)
 end
+
+#   https://leetcode.com/submissions/detail/55287987/
+#
+#   Submission Details
+#   12 / 12 test cases passed.
+#       Status: Accepted
+#       Runtime: 92 ms
+#           
+#           Submitted: 0 minutes ago
+def gray_code(n)
+    gray = [0]
+    (1..n).each { |i|
+        gray += gray.reverse.map { |x| x + gray.size }
+    }
+    
+    gray
+end
