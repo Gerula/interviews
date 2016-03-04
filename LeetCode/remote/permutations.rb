@@ -51,3 +51,26 @@ def permute(nums)
     }.flatten(1)
 end
 
+#   https://leetcode.com/submissions/detail/55270600/
+#   
+#   Submission Details
+#   25 / 25 test cases passed.
+#       Status: Accepted
+#       Runtime: 104 ms
+#           
+#           Submitted: 0 minutes ago
+def permute(nums)
+    result = []
+    permutations(nums, 0, result)
+    result
+end
+
+def permutations(nums, position, result)
+    result << nums.clone if position == nums.size
+    (position...nums.size).each { |i|
+        nums[position], nums[i] = nums[i], nums[position]
+        permutations(nums, position + 1, result)
+        nums[position], nums[i] = nums[i], nums[position]
+    }
+end
+
