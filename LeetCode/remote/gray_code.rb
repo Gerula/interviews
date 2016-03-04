@@ -38,3 +38,17 @@ def gray_code(n)
     
     gray
 end
+
+#   https://leetcode.com/submissions/detail/55288239/
+#
+#   Submission Details
+#   12 / 12 test cases passed.
+#       Status: Accepted
+#       Runtime: 76 ms
+#           
+#           Submitted: 0 minutes ago
+def gray_code(n)
+    (0...n).reduce([0]) { |acc, i|
+        acc += acc.reverse.map { |x| x + acc.size }
+    }
+end
