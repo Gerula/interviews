@@ -24,3 +24,23 @@ def lowest_common_ancestor(root, p, q)
     return left.nil? ? right : left
 end
 
+#   https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+#   Exactly the same shit. Hooray coding olympics LOL
+#   https://leetcode.com/submissions/detail/55275178/
+#   
+#   Submission Details
+#   31 / 31 test cases passed.
+#       Status: Accepted
+#       Runtime: 116 ms
+#           
+#           Submitted: 1 minute ago
+#
+def lowest_common_ancestor(root, p, q)
+    return nil if root.nil?
+    return root if root == p || root == q
+    left = lowest_common_ancestor(root.left, p, q)
+    right = lowest_common_ancestor(root.right, p, q)
+    return root if left && right
+    return left ? left : right
+end
+
