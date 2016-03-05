@@ -46,3 +46,31 @@ def find_order(num_courses, prerequisites)
     
     result
 end
+
+#   Stack level too deep
+def find_order(num_courses, prerequisites)
+    adj = prerequisites.reduce({}) { |acc, x|
+        acc[x[1]] ||= []
+        acc[x[1]] << x[0]
+        acc
+    }
+    
+    visiting, visited, result = {}, {}, []
+    (0...num_courses).reduce(true) { |acc, i|
+        acc & order(i, adj, visiting, visited, result)
+    } ? result.reverse : []
+end
+
+def order(current, adj, visiting, visited, result)
+    return false if visiting[current]
+    return true if visited[current]
+    visiting[current] = true
+    forward = (adj[current] || []).reduce(true) { |acc, x|
+        acc & order(x, adj, visiting, visited, result)
+    }
+    
+    visited[current] = true
+    visiting[current] = nil
+    result << current
+    return forward
+end
