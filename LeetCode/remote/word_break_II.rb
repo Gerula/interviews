@@ -4,6 +4,29 @@
 require 'test/unit'
 extend Test::Unit::Assertions
 
+#   https://leetcode.com/submissions/detail/55559619/
+#
+#   Submission Details
+#   37 / 37 test cases passed.
+#       Status: Accepted
+#       Runtime: 164 ms
+#           
+#           Submitted: 1 minute ago
+def word_break(s, word_dict, hash = nil)
+    hash ||= {}
+    return hash[s] if hash[s]
+    return [] if s.to_s.empty?
+    hash[s] = 
+    (word_dict.include?(s) ? [s] : []) +
+    (1..s.size)
+    .map { |i| s[0,i] }
+    .select { |word| word_dict.include?(word) }
+    .map { |x| word_break(s.sub(x, ""), word_dict, hash)
+               .map { |y| "#{x} #{y}" }
+    }
+    .flatten
+end
+
 # Submission Details
 # 29 / 29 test cases passed.
 #   Status: Accepted
