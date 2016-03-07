@@ -105,3 +105,20 @@ def word_break(s, word_dict)
     
     dp[s.size]
 end
+
+# Still TLE
+def word_break(s, word_dict)
+    return [] if s.to_s.empty?
+    dp = [[""]]
+    (0...s.size).each { |i|
+        next if !dp[i]
+        word_dict
+        .select { |x| s[i..-1].start_with?(x) }
+        .each { |word|
+            dp[i + word.size] ||= []
+            dp[i + word.size] += dp[i].map { |y| "#{y} #{word}".strip }
+        }
+    }
+    
+    dp[s.size]
+end
