@@ -87,3 +87,21 @@ assert_equal(["cats and dog", "cat sand dog"].sort,
 assert_equal([].sort,
              word_break("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
                         ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]).sort)
+
+#   TLE
+def word_break(s, word_dict)
+    return [] if s.to_s.empty?
+    dp = [[""]]
+    (0...s.size).each { |i|
+        next if !dp[i]
+        (i).upto(s.size - 1)
+        .map { |j| s[i..j] }
+        .select { |x| word_dict.include?(x) }
+        .each { |x|
+            dp[i + x.size] ||= []
+            dp[i + x.size] += dp[i].map { |y| "#{y} #{x}".strip }
+        }
+    }
+    
+    dp[s.size]
+end
