@@ -4,7 +4,7 @@
 
 # @param {String} s
 # @return {String}
-def remove_duplicate_letters(s)
+def remove_duplicate_letters_1(s)
     return "" if s.to_s.empty?
     hash = s.chars.reduce({}) { |acc, c|
         acc[c] ||= 0
@@ -23,7 +23,7 @@ def remove_duplicate_letters(s)
 end
 
 #   https://leetcode.com/submissions/detail/55780403/
-def remove_duplicate_letters(s)
+def remove_duplicate_letters_2(s)
     return "" if s.to_s.empty?
     counts = s.chars.reduce({}) { |acc, x|
         acc[x] ||= 0
@@ -43,3 +43,39 @@ def remove_duplicate_letters(s)
     
     s[idx] + remove_duplicate_letters(s[idx  + 1..-1].gsub(s[idx], ""))
 end
+
+#   https://leetcode.com/submissions/detail/55828173/
+#
+#   Submission Details
+#   286 / 286 test cases passed.
+#       Status: Accepted
+#       Runtime: 208 ms
+#           
+#           Submitted: 0 minutes ago
+#
+def remove_duplicate_letters(s)
+    last_occurrences = (0...s.size).reduce({}) { |acc, i|
+        acc[s[i]] = i
+        acc
+    }
+    
+    result = ""
+    last = 0
+    while last_occurrences.any?
+        min_occurrence = last_occurrences.min { |x, y| x.last <=> y.last }
+        min_char = ('z'.ord + 1).chr
+        (last..min_occurrence.last).each { |i|
+            if s[i] < min_char && last_occurrences[s[i]]
+                last = i + 1
+                min_char = s[i]
+            end
+        }
+        
+        last_occurrences.delete(min_char)
+        result += min_char
+    end
+    
+    result
+end
+
+puts remove_duplicate_letters("cbacdcbc")
