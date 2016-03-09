@@ -69,3 +69,36 @@ def reverse(head)
     
     prev
 end
+
+#   https://leetcode.com/submissions/detail/55765538/
+#
+#   Submission Details
+#   81 / 81 test cases passed.
+#       Status: Accepted
+#       Runtime: 100 ms
+#           
+#           Submitted: 0 minutes ago
+def reverse_k_group(head, k)
+    count = 0
+    it = head
+    while it && count < k
+        count += 1
+        it = it.next
+    end
+    
+    if count == k
+        it = reverse_k_group(it, k)
+        
+        while count > 0
+            count -= 1
+            tmp = head.next
+            head.next = it
+            it = head
+            head = tmp
+        end
+        
+        head = it
+    end
+    
+    head
+end
