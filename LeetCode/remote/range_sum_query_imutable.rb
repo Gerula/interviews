@@ -21,3 +21,20 @@ class NumArray
     end
 end
 
+class NumArray
+
+    # Initialize your data structure here.
+    # @param {Integer[]} nums
+    def initialize(nums)
+        @accumulator = nums.reduce([]) { |acc, x|
+            acc << {:num => x, :sum => acc.last.nil? ? 0 : acc.last[:sum] + x }
+        }
+    end
+
+    # @param {Integer} i
+    # @param {Integer} j
+    # @return {Integer}
+    def sum_range(i, j)
+        @accumulator[j][:sum] - @accumulator[i][:sum] + @accumulator[i][:num]
+    end
+end
