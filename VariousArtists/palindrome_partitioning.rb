@@ -26,7 +26,7 @@ def partition(s)
         Array.new(s.size)
     }
     
-    cuts = []
+    cuts = [[]]
     
     (0...s.size).each { |i|
         (0..i).each { |j|
@@ -37,23 +37,16 @@ def partition(s)
                                else
                                     s[i] == s[j] && palindrome[j + 1][i - 1]
                                end
+
+            next if !palindrome[j][i] || cuts[j - 1].nil? && j > 1
+            cuts[i] ||= []
+            cuts[i] << cuts[j - 1].map { |x| x + [s[j..i]] }.flatten(1)
         }
     }
     
-    generate(s, 0, palindrome)
+    puts "#{cuts}"
+    cuts[s.size - 1]
 end
 
-def generate(s, start, palindrome)
-    return [[]] if start == s.size
-    
-    (start...s.size)
-    .select { |j|
-        palindrome[start][j]
-    }
-    .map { |i| generate(s, i + 1, palindrome)
-               .map { |x| [s[start..i]] + x }
-    }
-    .flatten(1)
-end
-
-puts "#{partition("aab")}"
+partition("aab")
+#puts "#{partition("aab")}"
