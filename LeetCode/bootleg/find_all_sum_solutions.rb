@@ -21,6 +21,21 @@ def count_sum_solution(target)
                       .reduce(:+)
 end
 
+def count_sum_solution_dp(target)
+    dp = [0, 0]
+    (2..target).each { |i|
+        dp[i] = 0
+        (1...i).each { |j|
+            dp[i] += 1 + dp[i - j]
+        }
+    }
+
+    dp[target]
+end
+
+assert_same(0, count_sum_solution_dp(1), "1 dp")
+assert_same(1, count_sum_solution_dp(2), "2 dp")
+assert_same(7, count_sum_solution_dp(4), "4 dp")
 assert_same(0, count_sum_solution(1), "1")
 assert_same(1, count_sum_solution(2), "2")
 assert_same(7, count_sum_solution(4), "4")
