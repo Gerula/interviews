@@ -16,7 +16,29 @@ extend Test::Unit::Assertions
 # @param {Integer} num
 # # @return {Integer[]}
 def count_bits(num)
-    generate_bits(num)
+# 0      0 - 0
+# 1      1 - 1
+# 2     10 - 1
+# 3     11 - 2
+# 4    100 - 1
+# 5    101 - 2
+# 6    110 - 2
+# 7    111 - 3
+# 8   1000 - 1
+# 9   1001 - 2
+# 10  1010 - 2
+# 11  1011 - 3
+# 12  1100 - 2
+# 13  1101 - 3
+# 14  1110 - 3
+# 15  1111 - 4
+#   Fucking GRAY CODE it!!
+    acc = [0]
+    while acc.size < num + 1
+        acc += acc.map { |x| x + 1 }
+    end
+
+    acc.take(num + 1)
 end
 
 class Fixnum
@@ -36,4 +58,6 @@ def generate_bits(num)
     (0..num).map { |x| x.bit_count }
 end
 
-assert_equal([0, 1, 1, 2, 1, 2], count_bits(5))
+(1...100).each { |i|
+    assert_equal(generate_bits(i), count_bits(i), i.to_s)
+}
