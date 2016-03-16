@@ -20,4 +20,27 @@ def num_decodings(s)
            (s.size > 1 && s[0...2].to_i < 27 ? num_decodings(s[2..-1]) : 0)
 end
 
+#   https://leetcode.com/submissions/detail/56467066/
+#
+#   Submission Details
+#   259 / 259 test cases passed.
+#       Status: Accepted
+#       Runtime: 72 ms
+#           
+#           Submitted: 0 minutes ago
+#
+def num_dec(s)
+    return 0 if s.to_s.empty?
+    dp = Array.new(s.size + 1)
+    dp[s.size] = 1
+    (s.size - 1).downto(0).each { |i|
+        dp[i] = s[i] == '0' ? 
+                0 :
+                dp[i + 1] + (i < s.size && s[i, 2].to_i < 27 ? dp[i + 2] || 0 : 0)
+    }
+
+    dp[0]
+end
+
 assert_same(2, num_decodings("12"))
+assert_same(2, num_dec("12"))
