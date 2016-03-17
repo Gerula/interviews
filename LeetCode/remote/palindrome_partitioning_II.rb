@@ -37,3 +37,5 @@ def min_cut(s)
     
     min_cuts[s.size - 1]
 end
+
+puts "Yay vim!"

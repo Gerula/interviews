@@ -33,4 +33,5 @@ class WordDictionary
         return false if trie[word[0]].nil?
         return search(word[1..-1], trie[word[0]])
     end
-end
+To https://github.com/Gerula/interviews.git
+   63e01b1..3c4d4b2  master -> master
