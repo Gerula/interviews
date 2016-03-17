@@ -30,3 +30,28 @@ def insert(intervals, new_interval)
              }] +
     intervals.select { |x| x.start > new_interval.end }
 end
+
+#   Evolution in a nutshell
+#   
+#   Submission Details
+#   151 / 151 test cases passed.
+#       Status: Accepted
+#       Runtime: 144 ms
+#           
+#           Submitted: 0 minutes ago
+#   https://leetcode.com/submissions/detail/56512286/
+def insert(intervals, new_interval)
+    intervals << new_interval
+    intervals.select { |x| x.end < new_interval.start } +
+    [intervals.select { |x| overlaps?(x, new_interval) }.reduce { |acc, x|
+        Interval.new([acc.start, x.start].min, [acc.end, x.end].max)
+    }] +
+    intervals.select { |x| new_interval.end < x.start}
+end
+
+def overlaps?(first, second)
+    first.start.between?(second.start, second.end) ||
+    first.end.between?(second.start, second.end) ||
+    second.start.between?(first.start, first.end) ||
+    second.end.between?(first.start, first.end) 
+end
