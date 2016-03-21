@@ -9,14 +9,10 @@
 #     end
 # end
 
-class ListNode
-    def +(other)
-        return merge(self, other) 
-    end
-end
-
 def merge_k_lists(lists)
-    lists.reduce(:+)
+    lists.reduce { |acc, x|
+        merge(acc, x)
+    }
 end
 
 def merge(a, b)
