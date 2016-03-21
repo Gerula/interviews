@@ -70,3 +70,29 @@ class BSTIterator
         return result.val
     end
 end
+
+class BSTIterator
+    # @param {TreeNode} root
+    def initialize(root)
+        @current = root
+        @stack = []
+    end
+
+    # @return {Boolean}
+    def has_next
+         @stack.any? || @current
+    end
+
+    # @return {Integer}
+    def next
+        while @current
+            @stack << @current
+            @current = @current.left
+        end
+        
+        @current = @stack.pop
+        result = @current.val
+        @current = @current.right
+        result
+    end
+end
