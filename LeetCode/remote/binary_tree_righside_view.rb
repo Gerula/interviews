@@ -21,3 +21,15 @@ def right_side_view(root, max_level = [-1], current_level = 0)
            right_side_view(root.right, max_level, current_level + 1) +
            right_side_view(root.left, max_level, current_level + 1)
 end
+
+def right_side_view(root, max_level = [-1], current_level = 0)
+    return root.nil? ? [] :
+           (if current_level > max_level[0]
+               max_level[0] = current_level
+               [root.val]
+           else
+               []
+           end) +
+           right_side_view(root.right, max_level, current_level + 1) +
+           right_side_view(root.left, max_level, current_level + 1)
+end
