@@ -20,3 +20,20 @@ def search_insert(nums, target)
     
     return low
 end
+
+#   https://leetcode.com/submissions/detail/57269455/
+#   It's evolution, baby!
+def search_insert(nums, target)
+    low = 0
+    high = nums.size
+    while low < high
+        mid = low + (high - low) / 2
+        if nums[mid] < target
+            low = mid + 1
+        else
+            high = mid
+        end
+    end
+    
+    low
+end
