@@ -37,6 +37,32 @@ def shortest_palindrome_2(s)
     (s[idx + 1..-1] || "").reverse + s
 end
 
+#   https://leetcode.com/submissions/detail/57365892/
+#
+#   Submission Details
+#   117 / 117 test cases passed.
+#       Status: Accepted
+#       Runtime: 1044 ms
+#           
+#           Submitted: 0 minutes ago
+def shortest_palindrome_3(s)
+    idx = 0
+    front = 0
+    back = 0
+    pow = 1
+    (0...s.size).each { |i|
+        dijit = s[i].ord - 'a'.ord
+        front = front * 27 + dijit
+        back = back + dijit * pow
+        pow *= 27
+        idx = [idx, i].max if front == back
+    }
+
+    (s[idx + 1..-1] || "").reverse + s
+end
+
+assert("aaacecaaa" == shortest_palindrome_3("aacecaaa"))
+assert("dcbabcd" == shortest_palindrome_3("abcd"))
 assert("aaacecaaa" == shortest_palindrome_2("aacecaaa"))
 assert("dcbabcd" == shortest_palindrome_2("abcd"))
 assert("aaacecaaa" == shortest_palindrome("aacecaaa"))
