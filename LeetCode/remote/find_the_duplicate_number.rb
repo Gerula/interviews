@@ -24,3 +24,31 @@ def find_duplicate(nums)
     
     start
 end
+
+#   https://leetcode.com/submissions/detail/57659725/
+#   
+#   Submission Details
+#   53 / 53 test cases passed.
+#       Status: Accepted
+#       Runtime: 96 ms
+#           
+#           Submitted: 0 minutes ago
+#
+def find_duplicate(nums)
+    slow = nums.size
+    fast = nums.size
+    
+    begin
+        slow = nums[slow - 1]
+        fast = nums[nums[fast - 1] - 1]
+    end while slow != fast
+    
+    slow = nums.size
+    
+    while slow != fast
+        slow = nums[slow - 1]
+        fast = nums[fast - 1]
+    end 
+    
+    slow
+end
