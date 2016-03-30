@@ -24,3 +24,20 @@ def rob(nums)
 end
 
 assert_equal(25, rob([1, 2, 3, 4, 5, 6, 7, 8, 9]))
+
+# No idea what was going on above..
+# https://leetcode.com/submissions/detail/57718789/
+#
+# Submission Details
+# 69 / 69 test cases passed.
+#   Status: Accepted
+#   Runtime: 108 ms
+#       
+#       Submitted: 1 minute ago
+#
+def rob(nums, hash = nil)
+    hash ||= {}
+    return 0 if nums.nil? || nums.empty?
+    return hash[nums] if hash[nums]
+    hash[nums] = [nums.first + rob(nums.drop(2), hash), rob(nums.drop(1), hash)].max
+end
