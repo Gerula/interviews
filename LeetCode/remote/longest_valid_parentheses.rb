@@ -69,3 +69,26 @@ def longest_valid_parentheses(s)
     
     [max, high].max
 end
+
+#   It's evolution, baby
+#   https://leetcode.com/submissions/detail/57809539/
+#
+#   Submission Details
+#   229 / 229 test cases passed.
+#       Status: Accepted
+#       Runtime: 144 ms
+#           
+#           Submitted: 3 minutes ago
+def longest_valid_parentheses(s)
+    stack = [-1]
+    (0...s.size).each { |i|
+        if s[i] == ')' && stack[-1] != -1 && s[stack[-1]] == '('
+            stack.pop
+        else
+            stack.push(i)
+        end
+    }
+    
+    stack.push(s.size)
+    stack.each_cons(2).map { |x, y| y - x - 1 }.max
+end
