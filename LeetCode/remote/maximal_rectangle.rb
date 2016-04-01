@@ -3,6 +3,15 @@
 require 'test/unit'
 extend Test::Unit::Assertions
 
+#   https://leetcode.com/submissions/detail/57854174/
+#
+#   Submission Details
+#   65 / 65 test cases passed.
+#       Status: Accepted
+#       Runtime: 232 ms
+#           
+#           Submitted: 0 minutes ago
+#
 # @param {Character[][]} matrix
 # # @return {Integer}
 def maximal_rectangle(matrix)
@@ -21,9 +30,9 @@ def maximal_rectangle(matrix)
                          0
                      end
 
-            while stack.any? && top[j] < top[stack[-1]]
+            while stack.any? && top[stack[-1]] >= top[j]
                 last = stack.pop
-                max_kek = [max_kek, top[i][last] * (stack.empty? ? j : j - stack[-1] - 1)].max
+                max_kek = [max_kek, top[last] * (stack.empty? ? j : j - stack[-1] - 1)].max
             end
 
             stack.push(j)
