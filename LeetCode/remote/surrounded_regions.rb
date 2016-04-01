@@ -29,3 +29,22 @@ def dfs(board, line, column)
     board[line][column] = 'O' unless good
     return good
 end
+
+# It's evolution baby
+def solve(board)
+    (0...board.size).each { |i|
+        (0...board[0].size).each { |j|
+            fill(board, i, j)
+        }
+    }
+end
+
+def fill(board, i, j)
+    return false if !i.between?(0, board.size - 1) || !j.between?(0, board[0].size - 1)
+    return true if board[i][j] == 'X'
+    board[i][j] = 'X'
+    board[i][j] = '0' if !fill(board, i - 1, j) ||
+                         !fill(board, i + 1, j) ||
+                         !fill(board, i, j - 1) ||
+                         !fill(board, i, j + 1)
+end
