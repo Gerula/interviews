@@ -13,31 +13,23 @@ def maximal_rectangle(matrix)
     top = []
     max_kek = 0
     (0...n).each { |i|
-        top[i] = {}
-        stack = [-1]
-        top[i][-1] = 0
+        stack = []
         (0..m).each { |j|
-            if matrix[i][j] == '0'
-                top[i][j] = 0
-                next
-            end
+            top[j] = if j < m && matrix[i][j] == '1'
+                         (top[j] || 0) + 1
+                     else
+                         0
+                     end
 
-            top[i][j] = matrix[i][j].nil? ?
-                0 : 
-                (top[i - 1][j] || 0) + 1 
-
-            puts "#{stack}"
-            while stack.any? && top[i][j] < top[i][stack[-1]]
+            while stack.any? && top[j] < top[stack[-1]]
                 last = stack.pop
-                puts "#{stack}"
-                max_kek = [max_kek, top[i][last] * (j - stack[-1] - 1)].max
+                max_kek = [max_kek, top[i][last] * (stack.empty? ? j : j - stack[-1] - 1)].max
             end
 
             stack.push(j)
-            puts "#{stack}"
         }
     }
-    puts "#{top}"
+
     max_kek
 end
 
