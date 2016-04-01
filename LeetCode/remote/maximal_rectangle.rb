@@ -10,20 +10,34 @@ def maximal_rectangle(matrix)
     return 0 if n == 0
     m = matrix[0].size
     return 0 if m == 0
-    left = []
     top = []
     max_kek = 0
     (0...n).each { |i|
-        top[i], left[i] = [], []
-        (0...m).each { |j|
-            next if matrix[i][j] == '0'
-            top[i][j] = i > 0 && matrix[i - 1][j] == '1' ? top[i - 1][j] + 1 : 1
-            left[i][j] = j > 0 && matrix[i][j - 1] == '1' ? left[i][j - 1] + 1 : 1
-            top[i][j] = [top[i][j], top[i][j - 1] || top[i][j]].min
-            max_kek = [max_kek, left[i][j] * top[i][j]].max
+        top[i] = {}
+        stack = [-1]
+        top[i][-1] = 0
+        (0..m).each { |j|
+            if matrix[i][j] == '0'
+                top[i][j] = 0
+                next
+            end
+
+            top[i][j] = matrix[i][j].nil? ?
+                0 : 
+                (top[i - 1][j] || 0) + 1 
+
+            puts "#{stack}"
+            while stack.any? && top[i][j] < top[i][stack[-1]]
+                last = stack.pop
+                puts "#{stack}"
+                max_kek = [max_kek, top[i][last] * (j - stack[-1] - 1)].max
+            end
+
+            stack.push(j)
+            puts "#{stack}"
         }
     }
-
+    puts "#{top}"
     max_kek
 end
 
