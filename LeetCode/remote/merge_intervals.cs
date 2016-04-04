@@ -74,4 +74,39 @@ public class Solution {
     }
 }
 
+//  https://leetcode.com/submissions/detail/58130029/
+//  
+//  Submission Details
+//  168 / 168 test cases passed.
+//      Status: Accepted
+//      Runtime: 572 ms
+//          
+//          Submitted: 0 minutes ago
+//  It's evolution, baby!
+public class Solution {
+    public IList<Interval> Merge(IList<Interval> intervals) {
+        return intervals
+               .OrderBy(x => x.start)
+               .Aggregate(
+                   new List<Interval>(), 
+                   (acc, b) => {
+                       if (acc.Count == 0 || !Overlaps(b, acc.Last()))
+                       {
+                           acc.Add(b);
+                           return acc;
+                       }
+                       
+                       acc[acc.Count - 1] = new Interval(
+                           Math.Min(acc.Last().start, b.start),
+                           Math.Max(acc.Last().end, b.end));
+                       return acc;
+                   });
+    }
+    
+    public bool Overlaps(Interval a, Interval b)
+    {
+        return b.start <= a.start && a.start <= b.end ||
+               b.start <= a.end && a.end <= b.end;
+    }
+}
 
