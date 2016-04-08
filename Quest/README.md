@@ -16,7 +16,7 @@ Let's get this ball rolling
 10. Explain open-closed principle
 11. Explain the Law of Demeter
 12. Explain Single responsibility principle
-13. Explain Liskov substitution principle
+13. [Explain Liskov substitution principle](OOP/liskov_substitution.md)
 14. [Explain Interface segregation principle](OOP/interface_segregation.md)
 15. Explain covariance and contravariance
 16. Explain dependency inversion
@@ -41,6 +41,7 @@ Let's get this ball rolling
 15. Describe lamport timestamp
 16. What is a CRDT
 17. Explain causal consistency
+18. Explain Amdahl's law
 
 ##  C# weirdshit
 
