@@ -17,7 +17,9 @@ Let's get this ball rolling
 11. Explain the Law of Demeter
 12. Explain Single responsibility principle
 13. Explain Liskov substitution principle
-14. Explain Interface segregation principle
+14. [Explain Interface segregation principle](interface_segregation.md)
+15. Explain covariance and contravariance
+16. Explain dependency inversion
 
 ##  Distributed Systems
 
@@ -29,6 +31,16 @@ Let's get this ball rolling
 5.  Explain three-phase commit
 6.  Explain Quorum
 7.  Explain CAP Theorem
+8.  Explain FLP impossibility
+9.  Explain Two Generals Problem
+10. Explain Three Generals Problem
+11. What is consensus
+12. What are properties of conensus
+13. What is byzantine failure
+14. Describe vector clock
+15. Describe lamport timestamp
+16. What is a CRDT
+17. Explain causal consistency
 
 ##  C# weirdshit
 
