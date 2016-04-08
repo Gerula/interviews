@@ -17,7 +17,7 @@ Let's get this ball rolling
 11. Explain the Law of Demeter
 12. Explain Single responsibility principle
 13. Explain Liskov substitution principle
-14. [Explain Interface segregation principle](interface_segregation.md)
+14. [Explain Interface segregation principle](OOP/interface_segregation.md)
 15. Explain covariance and contravariance
 16. Explain dependency inversion
 
