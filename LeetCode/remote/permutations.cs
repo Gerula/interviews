@@ -47,3 +47,35 @@ public class Solution {
         Console.WriteLine(String.Join(Environment.NewLine), Permute(new [] { 1, 2, 3 }).Select(x => String.Join(", ", x)));
     }
 }
+
+//  https://leetcode.com/submissions/detail/58538909/
+//
+//  Submission Details
+//  25 / 25 test cases passed.
+//      Status: Accepted
+//      Runtime: 564 ms
+//          
+//          Submitted: 0 minutes ago
+//
+public class Solution {
+    public IList<IList<int>> Permute(int[] nums) {
+        IList<IList<int>> result = new List<IList<int>>();
+        if (nums.Length == 1)
+        {
+            result.Add(new List<int> { nums[0]});
+            return result;
+        }
+        
+        foreach (var next in nums
+                             .SelectMany(
+                                 x => Permute(nums.Except(new List<int> { x }).ToArray()),
+                                 (x, y) => {
+                                     return new List<int> { x }.Concat(y).ToList();
+                                 }).ToList())
+        {
+            result.Add(next);                             
+        }
+        
+        return result;
+    }
+}
