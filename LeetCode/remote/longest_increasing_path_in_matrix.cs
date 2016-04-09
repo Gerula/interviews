@@ -163,3 +163,68 @@ public class Solution {
         Console.WriteLine(s.LongestIncreasingPath2(new [,] { {1} }));
     }
 }
+
+//  https://leetcode.com/submissions/detail/58528897/
+//
+//  Submission Details
+//  137 / 137 test cases passed.
+//      Status: Accepted
+//      Runtime: 248 ms
+//          
+//          Submitted: 0 minutes ago
+//
+public class Solution {
+    public int LongestIncreasingPath(int[,] matrix) {
+        var n = matrix.GetLength(0);
+        var m = matrix.GetLength(1);
+        var longestPath = new int[n, m];
+        var max = 0;
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < m; j++)
+            {
+                max = Math.Max(max, LongestIncreasingPath(i, j, matrix, longestPath));
+            }
+        }
+        
+        return max;
+    }
+    
+    public int LongestIncreasingPath(int i, int j, int[,] matrix, int[,] maxes)
+    {
+        if (maxes[i, j] != 0)
+        {
+            return maxes[i, j];
+        }
+        
+        var localMax = 0;
+        if (IsIndexValid(i + 1, j, matrix) && matrix[i + 1, j] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i + 1, j, matrix, maxes));
+        }
+        
+        if (IsIndexValid(i - 1, j, matrix) && matrix[i - 1, j] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i - 1, j, matrix, maxes));
+        }
+
+        if (IsIndexValid(i, j + 1, matrix) && matrix[i, j + 1] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i, j + 1, matrix, maxes));
+        }
+        
+        if (IsIndexValid(i, j - 1, matrix) && matrix[i, j - 1] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i, j - 1, matrix, maxes));
+        }
+        
+        maxes[i, j] = localMax + 1;
+        return maxes[i, j];
+    }
+    
+    private bool IsIndexValid(int i, int j, int[,] matrix)
+    {
+        return 0 <= i && i < matrix.GetLength(0) &&
+               0 <= j && j < matrix.GetLength(1);
+    }
+}
