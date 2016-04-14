@@ -4,22 +4,22 @@ Let's get this ball rolling
 ##  OOP and Design Patterns
 
 ### Common trivia
-1.  What is OOP?
-2.  What is a class?
-3.  What is an object?
-4.  Explain the basic features of OOP (four)
-5.  What is the difference between method overloading and method overriding?
-6.  Explain encapsulation
-7.  Explain inheritance
-8.  Explain polymorphism
-9.  Explain abstraction
-10. Explain open-closed principle
-11. Explain the Law of Demeter
-12. Explain Single responsibility principle
+1.  [What is OOP?](OOP/basics.md)
+2.  [What is a class?](OOP/basics.md)
+3.  [What is an object?](OOP/basics.md)
+4.  [What is the difference between method overloading and method overriding?](OOP/method_overloading.md)
+5.  Explain the basic features of OOP (see next 4)
+6.  [Explain encapsulation](OOP/principles.md)
+7.  [Explain inheritance](OOP/principles.md)
+8.  [Explain polymorphism](OOP/principles.md)
+9.  [Explain abstraction](OOP/principles.md)
+10. [Explain open-closed principle](OOP/open_closed.md)
+11. [Explain the Law of Demeter](OOP/law_of_demeter.md)
+12. [Explain Single responsibility principle](OOP/single_responsibility.md)
 13. [Explain Liskov substitution principle](OOP/liskov_substitution.md)
 14. [Explain Interface segregation principle](OOP/interface_segregation.md)
 15. Explain covariance and contravariance
-16. Explain dependency inversion
+16. [Explain dependency inversion](OOP/dependency_inversion.md)
 
 ##  Distributed Systems
 
