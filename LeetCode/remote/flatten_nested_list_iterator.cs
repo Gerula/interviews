@@ -49,3 +49,46 @@ public class NestedIterator {
     }
 }
 
+//  https://leetcode.com/submissions/detail/59217310/
+//
+//  Submission Details
+//  44 / 44 test cases passed.
+//      Status: Accepted
+//      Runtime: 548 ms
+//          
+//          Submitted: 0 minutes ago
+
+public class NestedIterator {
+    Stack<NestedInteger> stack = new Stack<NestedInteger>();
+    NestedInteger current;
+    
+    public NestedIterator(IList<NestedInteger> nestedList) {
+        foreach (var x in nestedList.Reverse())
+        {
+            stack.Push(x);
+        }
+    }
+
+    public bool HasNext() {
+        while (stack.Any())
+        {
+            var x = stack.Pop();
+            if (x.IsInteger())
+            {
+                current = x;
+                return true;
+            }
+            
+            foreach (var nested in x.GetList().Reverse())
+            {
+                stack.Push(nested);
+            }
+        }
+        
+        return false;
+    }
+
+    public int Next() {
+        return current.GetInteger();
+    }
+}
