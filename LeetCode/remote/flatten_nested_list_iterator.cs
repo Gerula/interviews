@@ -92,3 +92,41 @@ public class NestedIterator {
         return current.GetInteger();
     }
 }
+
+//  https://leetcode.com/submissions/detail/59218229/
+//
+//  Submission Details
+//  44 / 44 test cases passed.
+//      Status: Accepted
+//      Runtime: 568 ms
+//          
+//          Submitted: 0 minutes ago
+public class NestedIterator {
+    IList<NestedInteger> flattened = new List<NestedInteger>();
+    int index = 0;
+    
+    public NestedIterator(IList<NestedInteger> nestedList) {
+        flattened = Flatten(nestedList);
+    }
+    
+    IList<NestedInteger> Flatten(IList<NestedInteger> nestedList) {
+        return nestedList.Select(x => {
+            if (x.IsInteger())
+            {
+                return new List<NestedInteger> { x };
+            }
+            
+            return Flatten(x.GetList());
+        })
+        .SelectMany(x => x)
+        .ToList();
+    }
+
+    public bool HasNext() {
+        return index < flattened.Count;
+    }
+
+    public int Next() {
+        return flattened[index++].GetInteger();
+    }
+}
