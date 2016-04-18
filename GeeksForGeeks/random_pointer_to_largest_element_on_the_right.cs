@@ -23,18 +23,15 @@ class ListNode
 
 class Solution
 {
-    static ListNode MaxRandom(ListNode list, ref ListNode rightMax)
+    static ListNode MaxRandom(ListNode list)
     {
         if (list == null || list.Next == null)
         {
-            rightMax = list;
             return list;
         }
 
-        list.Next = MaxRandom(list.Next, ref rightMax);
-        list.Rand = rightMax;
-        rightMax = rightMax.Val > list.Val ? rightMax : list;
-        return list;
+        list.Rand = MaxRandom(list.Next);
+        return list.Val > list.Rand.Val ? list : list.Rand;
     }
 
     static void Main()
@@ -49,8 +46,8 @@ class Solution
                                 return new ListNode { Val = x, Next = acc };
                            });
 
+        Console.WriteLine(list); 
+        MaxRandom(list);
         Console.WriteLine(list);
-        ListNode max = null;
-        Console.WriteLine(MaxRandom(list, ref max));
     }
 }
