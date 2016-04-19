@@ -75,3 +75,31 @@ static class Program
                     }));
     }
 }
+
+//  https://leetcode.com/problems/minimum-path-sum/
+//
+//  Submission Details
+//  61 / 61 test cases passed.
+//      Status: Accepted
+//      Runtime: 180 ms
+//          
+//          Submitted: 0 minutes ago
+//  It's evolution, baby!
+public class Solution {
+    public int MinPathSum(int[,] grid) {
+        for (var i = grid.GetLength(0) - 1; i >= 0; i--)
+        {
+            for (var j = grid.GetLength(1) - 1; j >= 0; j--)
+            {
+                if (i == grid.GetLength(0) - 1 && j == grid.GetLength(1) - 1)
+                {
+                    continue;
+                }
+                
+                grid[i, j] += Math.Min(i == grid.GetLength(0) - 1 ? int.MaxValue : grid[i + 1, j],
+                                       j == grid.GetLength(1) - 1 ? int.MaxValue : grid[i, j + 1]);
+            }
+        }
+        return grid[0, 0];
+    }
+}
