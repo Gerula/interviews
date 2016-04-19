@@ -85,3 +85,71 @@ class Program
         Console.WriteLine(new Program().MinWindow("BABB", "BABA"));
     }
 }
+
+//  Starting off the day with a nice dose of fail
+public class Solution {
+    public string MinWindow(string s, string t) {
+        var set = t.Aggregate(new HashSet<char>(), (acc, x) => {
+           acc.Add(x);
+           return acc;
+        });
+        
+        var inclusionSet = t.Aggregate(new Dictionary<char, int>(), (acc, x) => {
+            if (!acc.ContainsKey(x))
+            {
+                acc[x] = 0;
+            }
+            
+            acc[x]++;
+            return acc;
+        });
+        
+        var minWindow = s;
+        var frequencies = new Dictionary<char, int>();
+        var left = 0;
+        var right = 0;
+        while (right < s.Length)
+        {
+            if (!set.Contains(s[right]))
+            {
+                right++;
+                continue;
+            }
+            
+            if (!frequencies.ContainsKey(s[right]))
+            {
+                frequencies[s[right]] = 0;
+            }
+            
+            frequencies[s[right]]++;
+            if (inclusionSet.ContainsKey(s[right]))
+            {
+                inclusionSet[s[right]]--;
+                if (inclusionSet[s[right]] == 0)
+                {
+                    inclusionSet.Remove(s[right]);    
+                }
+            }
+            
+            while (left < right && 
+                   (!set.Contains(s[left]) || frequencies[s[left]] > 1))
+            {
+                if (set.Contains(s[left]))
+                {
+                    frequencies[s[left]]--;
+                }
+                
+                left++;
+            }
+            
+            if (right - left + 1 < minWindow.Length && !inclusionSet.Any())
+            {
+                minWindow = s.Substring(left, right - left + 1);
+            }
+            
+            right++;
+        }
+        
+        return inclusionSet.Any() ? String.Empty : minWindow;
+    }
+}
