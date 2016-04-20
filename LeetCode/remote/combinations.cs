@@ -67,6 +67,47 @@ static class Program
                             Select(c => new [] { element }.Concat(c)));
     }
 
+    //  It's regression, baby!
+    //  https://leetcode.com/submissions/detail/59555121/
+    //
+    //  Submission Details
+    //  26 / 26 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 516 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public class Solution {
+        public IList<IList<int>> Combine(int n, int k) {
+            return Combinations(Enumerable.Range(1, n).ToList(), k);
+        }
+        
+        public IList<IList<int>> Combinations(IList<int> nums, int k)
+        {
+            var result = new List<IList<int>>();
+            if (k == 0)
+            {
+                return result;
+            }
+            
+            if (k == 1)
+            {
+                return nums
+                    .Select(x => new List<int> { x })
+                    .ToList<IList<int>>();
+            }
+            
+            return nums
+                .SelectMany(
+                    x => Combinations(nums.Skip(nums.IndexOf(x) + 1).ToList(), k - 1),
+                    (x, y) => {
+                        return new List<int> { x }
+                                .Concat(y)
+                                .ToList();
+                    })
+                .ToList<IList<int>>();
+        }
+    }
+
     public static IList<IList<int>> Combine(int n, int k) {
         if (k == 0)
         {
