@@ -33,3 +33,43 @@ public class Solution {
         return dp[0, 0];
     }
 }
+
+//  Poor man's DP but still TLE
+public class Solution {
+    public bool IsMatch(string s, string p, bool[,] hash = null) {
+        if (hash == null)
+        {
+            hash = new bool[s.Length + 1, p.Length + 1];
+        }
+        
+        if (String.IsNullOrWhiteSpace(s))
+        {
+            hash[s.Length, p.Length] = String.IsNullOrWhiteSpace(p) || p == "*";
+            return hash[s.Length, p.Length];
+        }
+        
+        if (String.IsNullOrWhiteSpace(p))
+        {
+            hash[s.Length, p.Length] = p == s;
+            return hash[s.Length, p.Length];
+        }
+        
+        if (p[0] == '?' || s[0] == p[0])
+        {
+            hash[s.Length, p.Length] = IsMatch(s.Substring(1), p.Substring(1), hash);
+            return hash[s.Length, p.Length];
+        }
+        
+        if (p[0] == '*')
+        {
+            hash[s.Length, p.Length] = Enumerable
+                                       .Range(0, s.Length)
+                                       .Select(x => IsMatch(s.Substring(x), p.Substring(1)))
+                                       .Aggregate((acc, x) => acc || x);
+            return hash[s.Length, p.Length];
+        }
+    
+        hash[s.Length, p.Length] = false;
+        return hash[s.Length, p.Length];
+    }
+}
