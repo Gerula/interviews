@@ -41,6 +41,42 @@ public class Solution {
 
         return longest;
     }
+    
+    //  https://leetcode.com/submissions/detail/59848735/
+    //
+    //  Submission Details
+    //  229 / 229 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 152 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  Warm fuzzy feeling that I got this right at the first try. Got it actually almost identical LoL coding olympics
+    public class Solution {
+        public int LongestValidParentheses(string s) {
+            var longest = new int[s.Length];
+            var max = 0;
+            for (var i = 1; i < s.Length; i++)
+            {
+                if (s[i] != ')')
+                {
+                    continue;
+                }
+                
+                if (s[i - 1] == '(')
+                {
+                    longest[i] = 2 + (i >= 2 ? longest[i - 2] : 0); 
+                }
+                else if (i - 1 - longest[i - 1] >= 0 && s[i - 1 - longest[i - 1]] == '(')
+                {
+                    longest[i] = longest[i - 1] + 2 + (i - 2 - longest[i - 1] < 0 ? 0 : longest[i - 2 - longest[i - 1]]);
+                }
+                
+                max = Math.Max(longest[i], max);
+            }
+            
+            return max;
+        }
+    }
 
     static void Main()
     {
