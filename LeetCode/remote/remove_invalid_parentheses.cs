@@ -73,6 +73,80 @@ public class Solution {
         return count == 0;
     }
 
+    //  https://leetcode.com/submissions/detail/60072837/
+    //
+    //  Submission Details
+    //  125 / 125 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 636 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  Why yes, I am getting stupider
+    public class Solution {
+        public IList<string> RemoveInvalidParentheses(string s) {
+            var queue = new Queue<String>();
+            queue.Enqueue(s);
+            var result = new List<String>();
+            var visited = new HashSet<String> { s };
+            while (queue.Any())
+            {
+                var current = queue.Dequeue();
+                if (IsValidParentheses(current))
+                {
+                    if (result.Any() && result.Last().Length > current.Length)
+                    {
+                        break;
+                    }
+                    
+                    result.Add(current);
+                }
+                else
+                {
+                    for (var i = 0; i < current.Length; i++)
+                    {
+                        if (current[i] != '(' && current[i] != ')')
+                        {
+                            continue;
+                        }
+                        
+                        var next = current.Substring(0, i) + current.Substring(i + 1);
+                        if (visited.Contains(next))
+                        {
+                            continue;
+                        }
+                        
+                        visited.Add(next);
+                        queue.Enqueue(next);
+                    }
+                }
+            }
+            
+            return result;
+        }
+        
+        public bool IsValidParentheses(String s)
+        {
+            var acc = 0;
+            foreach (var x in s)
+            {
+                switch (x)
+                {
+                    case ')' : acc--;
+                            if (acc < 0)
+                            {
+                                return false;
+                            }
+                            break;
+                    case '(' : acc++;
+                            break;
+                    default  : break;
+                }
+            }
+            
+            return acc == 0;
+        }
+    }
+
     static void Main()
     {
         var s = new Solution();
