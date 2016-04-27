@@ -96,3 +96,46 @@ public class Solution {
                !String.IsNullOrEmpty(s2) && s2[0] == s3[0] && IsInterleave(s1, s2.Substring(1), s3.Substring(1));
     }
 }
+
+
+//  https://leetcode.com/submissions/detail/60163552/
+//
+//  Submission Details
+//  101 / 101 test cases passed.
+//      Status: Accepted
+//      Runtime: 124 ms
+//          
+//          Submitted: 0 minutes ago
+// Repeating from the last time
+//
+// "So first I assumed (ass == u and me) that s1 and s2 need to have the same 
+// length and afterwards I forgot to hunt down the edge cases. This is what happens
+// when you forget your place."
+//
+// Some people never learn
+public class Solution {
+    public bool IsInterleave(string s1, string s2, string s3) {
+        var isInterleave = new bool[s1.Length + 1, s2.Length + 1];
+        if (s3.Length != s1.Length + s2.Length)
+        {
+            return false;
+        }
+        
+        for (var i = 0; i <= s1.Length; i++)
+        {
+            for (var j = 0; j <= s2.Length; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    isInterleave[i, j] = true;
+                    continue;
+                }
+                
+                isInterleave[i, j] = j > 0 && isInterleave[i, j - 1] && s2[j - 1] == s3[i + j - 1] || 
+                                     i > 0 && isInterleave[i - 1, j] && s1[i - 1] == s3[i + j - 1];
+            }
+        }
+        
+        return isInterleave[s1.Length, s2.Length];
+    }
+}
