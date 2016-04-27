@@ -83,3 +83,16 @@ class Program {
         Console.WriteLine("S1:{0}, S2:{1}, S3:{2}, {3}", s1, s2, s3, !IsInterleave(s1, s2, s3) ? "OK" : "/\\");    
     }
 }
+
+//  TLE Backtracking
+public class Solution {
+    public bool IsInterleave(string s1, string s2, string s3) {
+        if (String.IsNullOrEmpty(s3))
+        {
+            return String.IsNullOrEmpty(s1) && String.IsNullOrEmpty(s2);
+        }
+        
+        return !String.IsNullOrEmpty(s1) && s1[0] == s3[0] && IsInterleave(s1.Substring(1), s2, s3.Substring(1)) ||
+               !String.IsNullOrEmpty(s2) && s2[0] == s3[0] && IsInterleave(s1, s2.Substring(1), s3.Substring(1));
+    }
+}
