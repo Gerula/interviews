@@ -38,6 +38,41 @@ public class Solution {
     }
 }
 
+//  Lol same fucking thing
+//  https://leetcode.com/submissions/detail/60408258/
+//  
+//  Submission Details
+//  12 / 12 test cases passed.
+//      Status: Accepted
+//      Runtime: 404 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public IList<int> GrayCode(int n) {
+        if (n == 0)
+        {
+            return new List<int> { 0 };
+        }
+        
+        return Enumerable
+               .Repeat(1, n)
+               .Aggregate(
+                   new List<String> { String.Empty },
+                   (acc, i) => {
+                       return acc
+                              .Select(x => String.Format("0{0}", x))
+                              .Concat(acc
+                                      .AsEnumerable()
+                                      .Reverse()
+                                      .Select(x => String.Format("1{0}", x)))
+                              .ToList();
+                        
+                   })
+               .Select(x => Convert.ToInt32(x, 2))
+               .ToList();
+    }
+}
+
 //  https://leetcode.com/submissions/detail/53176373/
 //
 //
