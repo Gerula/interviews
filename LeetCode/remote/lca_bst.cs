@@ -27,4 +27,31 @@ public class Solution {
             return LowestCommonAncestor(root.right, p, q);
         }
      }
+
+    //  https://leetcode.com/submissions/detail/60618182/
+    //
+    //  Submission Details
+    //  27 / 27 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 188 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null)
+        {
+            return root;
+        }
+        
+        if (Math.Max(p.val, q.val) < root.val)
+        {
+            return LowestCommonAncestor(root.left, p, q);
+        }
+        
+        if (Math.Min(p.val, q.val) > root.val)
+        {
+            return LowestCommonAncestor(root.right, p, q);
+        }
+        
+        return root;
+    }
 }
