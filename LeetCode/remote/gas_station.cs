@@ -39,6 +39,33 @@ public class Solution {
         return currentGas < 0 ? -1 : minIndex;
     }
 
+    //  https://leetcode.com/submissions/detail/60567624/
+    //
+    //  Submission Details
+    //  16 / 16 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 164 ms
+    //          
+    //          Submitted: 1 minute ago
+    //
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        var total = 0;
+        var local = 0;
+        var index = 0;
+        for (var i = 0; i < gas.Length; i++)
+        {
+            local += gas[i] - cost[i];
+            total += local;
+            if (local < 0)
+            {
+                local = 0;
+                index = i + 1;
+            }
+        }
+        
+        return total < 0 ? -1 : index;
+    }
+
     static void Main()
     {
         var r = new Random();
