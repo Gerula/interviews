@@ -66,6 +66,34 @@ public class Solution {
         return total < 0 ? -1 : index;
     }
 
+    //  https://leetcode.com/submissions/detail/60576653/
+    //
+    //  Submission Details
+    //  16 / 16 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 168 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        if (gas.Zip(cost, (x, y) => x - y).Sum() < 0)
+        {
+            return -1;
+        }
+        
+        var total = 0;
+        return Enumerable
+               .Range(0, gas.Length)
+               .Aggregate(0, (acc, x) => {
+                   if ((total += gas[x] - cost[x]) < 0)
+                   {
+                       total = 0;
+                       return x + 1;
+                   }
+                   
+                   return acc;
+               });
+    }
+
     static void Main()
     {
         var r = new Random();
