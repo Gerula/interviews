@@ -7,6 +7,22 @@ class TreeNode
     public int Value { get; set; }
     public TreeNode Left { get; set; }
     public TreeNode Right { get; set; }
+    public TreeNode Parent { get; set; }
+    
+    public IEnumerable<TreeNode> Parents()
+    {
+        yield return this;
+
+        if (Parent == null)
+        {
+            yield break;
+        }
+
+        foreach (var parent in Parent.Parents())
+        {
+            yield return parent;
+        }
+    }
 }
 
 class Solution
@@ -34,6 +50,32 @@ class Solution
         result[level].Add(root.Value);
         Diagonal(root.Left, level + 1, result);
         Diagonal(root.Right, level, result);
+    }
+
+    static IEnumerable<IList<int>> Paths(TreeNode root)
+    {
+        var stack = new Stack<TreeNode>();
+        stack.Push(root);
+        while (stack.Any())
+        {
+            var current = stack.Pop();
+            if (current.Left == null && current.Right == null)
+            {
+                yield return current.Parents().Select(x => x.Value).ToList();
+            }
+            
+            if (current.Left != null)
+            {
+                current.Left.Parent = current;
+                stack.Push(current.Left);
+            }
+
+            if (current.Right != null)
+            {
+                current.Right.Parent = current;
+                stack.Push(current.Right);
+            }
+        }
     }
 
     static void Main()
@@ -67,5 +109,7 @@ class Solution
         };
 
         Console.WriteLine(String.Join(Environment.NewLine, Diagonal(tree).Select(x => String.Join(", ", x))));
+        Console.WriteLine();
+        Console.WriteLine(String.Join(Environment.NewLine, Paths(tree).Select(x => String.Join(", ", x))));
     }
 }
