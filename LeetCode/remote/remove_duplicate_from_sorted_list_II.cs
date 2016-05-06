@@ -39,3 +39,37 @@ public class Solution {
         return dummy.next;
     }
 }
+
+//  https://leetcode.com/submissions/detail/60865948/
+//
+//  Submission Details
+//  166 / 166 test cases passed.
+//      Status: Accepted
+//      Runtime: 164 ms
+//          
+//          Submitted: 0 minutes ago
+    public ListNode DeleteDuplicates(ListNode head) {
+        var dummy = new ListNode(-1) { next = head };
+        var dummyIt = dummy;
+        var it = head;
+        while (it != null)
+        {
+            if (it.next != null && it.val == it.next.val)
+            {
+                while (it.next != null && it.val == it.next.val)
+                {
+                    it = it.next;
+                }
+            }
+            else
+            {
+                dummyIt.next = it;
+                dummyIt = dummyIt.next;
+            }
+            
+            it = it.next;
+        }
+        
+        dummyIt.next = null;
+        return dummy.next;
+    }
