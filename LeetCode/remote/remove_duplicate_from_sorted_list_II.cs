@@ -73,3 +73,35 @@ public class Solution {
         dummyIt.next = null;
         return dummy.next;
     }
+
+//  https://leetcode.com/submissions/detail/60899154/
+//
+//  Submission Details
+//  166 / 166 test cases passed.
+//      Status: Accepted
+//      Runtime: 156 ms
+//          
+//          Submitted: 0 minutes ago
+//  You are here!
+//  Your runtime beats 91.49% of csharpsubmissions.
+public class Solution {
+    public ListNode DeleteDuplicates(ListNode head) {
+        if (head == null)
+        {
+            return head;
+        }
+        
+        if (head.next != null && head.val == head.next.val)
+        {
+            while (head.next != null && head.val == head.next.val)
+            {
+                head = head.next;
+            }
+            
+            return DeleteDuplicates(head.next);
+        }
+        
+        head.next = DeleteDuplicates(head.next);
+        return head;
+    }
+}
