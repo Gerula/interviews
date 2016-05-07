@@ -37,3 +37,21 @@ public class Solution {
                HasPathSum(root.right, sum - root.val);
     }
 }
+
+//  lol@samefuckingthing
+public class Solution {
+    public bool HasPathSum(TreeNode root, int sum) {
+        if (root == null)
+        {
+            return false;
+        }
+        
+        if (root.left == null && root.right == null)
+        {
+            return sum == root.val;
+        }
+        
+        return root.left != null && HasPathSum(root.left, sum - root.val) ||
+               root.right != null && HasPathSum(root.right, sum - root.val);
+    }
+}
