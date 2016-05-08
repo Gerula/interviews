@@ -82,3 +82,31 @@ public class Solution {
         return head;
     }
 }
+
+//  https://leetcode.com/submissions/detail/61025503/
+//
+//  Submission Details
+//  70 / 70 test cases passed.
+//      Status: Accepted
+//      Runtime: 176 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public ListNode OddEvenList(ListNode head) {
+        var evenStart = new ListNode(-1);
+        var oddStart = new ListNode(-1);
+        var even = evenStart;
+        var odd = oddStart;
+        while (head != null)
+        {
+            even.next = head;
+            odd.next = head.next;
+            even = even.next;
+            odd = odd.next;
+            head = head.next == null ? head.next : head.next.next;
+        }
+        
+        even.next = oddStart.next;
+        return evenStart.next;
+    }
+}
