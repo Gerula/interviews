@@ -91,6 +91,42 @@ public class Solution {
                .ToList();
     }
 
+    //  Not TLE but shittier than the above :(
+    //  https://leetcode.com/submissions/detail/61269132/
+    //
+    //  Submission Details
+    //  30 / 30 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 592 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    public IList<string> FindRepeatedDnaSequences(string s) {
+        const int length = 10;
+        if (s.Length < length)
+        {
+            return new List<string>();    
+        }
+        
+        return Enumerable
+               .Range(0, s.Length - length + 1)
+               .Aggregate(
+                   new Dictionary<String, int>(),
+                   (acc, x) => {
+                       var sequence = s.Substring(x, length);
+                       if (!acc.ContainsKey(sequence))
+                       {
+                           acc[sequence] = 0;
+                       }
+                       
+                       acc[sequence]++;
+                       return acc;
+                   })
+               .Where(x => x.Value > 1)
+               .Select(x => x.Key)
+               .ToList();
+    }
+
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().FindRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT")));
@@ -103,3 +139,5 @@ public class Solution {
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().FindRepeatedDnaSequences2("CGACGCAATTTAGAACGGGCCGCACTGCAACCATTGCTCAGACAACGCATGAGTTAAATTTCACAAGTGATAGTGGCTTGCGAGACGTGGGTTGGTGGTAGCGTACGCCCGCTATTCGCCCCTAACGTGACGGGATTATAAGGTCGCTTCCCGGAATGCGCAGACGAGTCTCCGGTTTAGCCTAGACGTCTCACGCGCGCAAGGCGTCAGTTCTCACTATCTCGCACAGGTGTATTCTATTAGTTATGGGTTCTCACTACAGTCGGTTACTTCCTCATCCATTTCTGCATACGGGTCAACTAACAGTGTCATGGGGTATTGGGAAGGATGCGTTTTTAAACCCTCTCAGTAGCGCGAGGATGCCCACAAATACGACGGCGGCCACGGATCTAATGCGAAGCTAGCGACGCTTTCCAGCAACGAGCGCCCCACTTATGACTGCGTGGGGCGCTCCGCTTTCCTAGAGAACATAGATGGTGTTTTCGAATCGTAACCACTTA")));
     }
 }
+
+
