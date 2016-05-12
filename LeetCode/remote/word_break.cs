@@ -60,6 +60,37 @@ public class Solution {
                     (acc, x) => acc || s.StartsWith(x) && WordBreakRec(s.Substring(x.Length), wordDict));
     }
 
+    //  https://leetcode.com/submissions/detail/61354399/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 196 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    public bool WordBreak(string s, ISet<string> wordDict, Dictionary<string, bool> broken = null) {
+        if (broken == null)
+        {
+            broken = new Dictionary<string, bool>();
+        }
+        
+        if (broken.ContainsKey(s))
+        {
+            return broken[s];
+        }
+        
+        if (String.IsNullOrWhiteSpace(s))
+        {
+            return true;
+        }
+        
+        return broken[s] = wordDict
+                           .Where(x => s.StartsWith(x))
+                           .Select(x => WordBreak(s.Substring(x.Length), wordDict, broken))
+                           .Any(x => x);
+    }
+
     static void Main()
     {
         var s = new Solution();
