@@ -47,6 +47,25 @@ public class Solution {
         }
     }
 
+    //  
+    //  Submission Details
+    //  10 / 10 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 540 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  https://leetcode.com/submissions/detail/61304066/
+    public IList<IList<int>> Subsets(int[] nums) {
+        nums = nums.OrderBy(x => x).ToArray();
+        return Enumerable
+               .Range(0, nums.Length)
+               .SelectMany(
+                   x => Subsets(nums.Skip(x + 1).ToArray()),
+                   (a, b) => (IList<int>) new List<int> { nums[a] }.Concat(b).ToList())
+               .Concat(new List<IList<int>> { new List<int>() })
+               .ToList();
+    } 
+
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().SubsetsWithDup(new [] { 1, 2, 2 }).Select(x => String.Join(", ", x))));
