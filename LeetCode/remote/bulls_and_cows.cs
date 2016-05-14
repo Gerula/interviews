@@ -88,6 +88,29 @@ static class Program
         return String.Format("{0}A{1}B", bullshits, cowshits);
     }
 
+    //  https://leetcode.com/submissions/detail/61536065/
+    //
+    //  Submission Details
+    //  151 / 151 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 196 ms
+    //          
+    //          Submitted: 3 minutes ago
+    public string GetHint(string secret, string guess) {
+        var bulls = 0;
+        return String.Format(
+            "{0}A{1}B",
+            bulls = secret
+                    .Zip(guess, (x, y) => x == y ? 1 : 0)
+                    .Sum(),
+            Math.Max(
+                Enumerable
+                .Range(0, 10)
+                .Select(x => (char) x + '0')
+                .Select(x => Math.Min(secret.Count(y => y == x), guess.Count(y => y == x)))
+                .Sum() - bulls, 0));
+    }
+
     static void Main()
     {
         Console.WriteLine("1807".GetHint("7810"));
