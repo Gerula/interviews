@@ -4,41 +4,46 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 class Solution {
-    static long Sequence(long L, long R) {
-        long start = 0;
-        
-        switch((L - 1) % 4) {
-            case 0 : start = L - 1; break;
-            case 1 : start = 1; break;
-            case 2 : start = L; break;
-            case 3 : start = 0; break;
-        }
-               
-        long result = 0;
-        for (var x = L; x <= R; x++) {
-            start ^= x;
-            result ^= start;
+    static long GetSequenceAt(long x) {
+        switch(x % 4) {
+            case 0 : return x; 
+            case 1 : return 1; 
+            case 2 : return x + 1; 
+            case 3 : return 0;
         }
         
-        return result;
+        return 0;
     }
-    //  A(0) = 0        = 0
-    //  A(1) = 1 ^ 0    = 1
-    //  A(2) = 1 ^ 2    = 3
-    //  A(3) = 3 ^ 3    = 0
-    //  A(4) = 0 ^ 4    = 4
-    //  A(5) = 4 ^ 5    = 1
-    //  A(6) = 6 ^ 1    = 7
-    //  A(7) = 7 ^ 7    = 0
-    //  A(8) = 8 ^ 0    = 8
-    //  A(9) = 9 ^ 8    = 1
-    // A(10) = 10 ^ 1   = 11
-    // A(11) = 11 ^ 11  = 0
-    // A(12) = 12 ^ 0   = 12
-    // A(13) = 13 ^ 12  = 1
-    // A(14) = 14 ^ 1   = 15
-    // A(15) = 15 ^ 15  = 0
     
+    static long GetSequenceUntil(long x) {
+        var k = GetSequenceAt(x / 2);
+        if (x % 2 == 0) {
+            return 2 * k;
+        }
+        
+        return 2 * k + (1 - (x / 2) % 2);
+    }
+    
+    static long Sequence(long L, long R) {
+        return GetSequenceUntil(L - 1) ^ GetSequenceUntil(R);
+    }
+    
+    //  A(0) = 0        = 0 - 0 
+    //  A(1) = 1 ^ 0    = 1 - 1
+    //  A(2) = 2 ^ 1    = 3 - 2
+    //  A(3) = 3 ^ 3    = 0 - 2
+    //  A(4) = 4 ^ 0    = 4 - 6
+    //  A(5) = 5 ^ 4    = 1 - 7
+    //  A(6) = 6 ^ 1    = 7 - 0
+    //  A(7) = 7 ^ 7    = 0 - 0
+    //  A(8) = 8 ^ 0    = 8 - 8
+    //  A(9) = 9 ^ 8    = 1 - 9
+    // A(10) = 10 ^ 1   = 11 - 2
+    // A(11) = 11 ^ 11  = 0 - 2
+    // A(12) = 12 ^ 0   = 12 - 14
+    // A(13) = 13 ^ 12  = 1 - 15
+    // A(14) = 14 ^ 1   = 15 - 0
+    // A(15) = 15 ^ 15  = 0 - 0
     static void Main(String[] args) {
         int Q = Convert.ToInt32(Console.ReadLine());
         for(int a0 = 0; a0 < Q; a0++){
