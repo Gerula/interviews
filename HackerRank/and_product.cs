@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 
 class Solution {
-    static int Product(int a, int b) {       
+    static long Product(long a, long b) {       
         return b > a ? Product(a >> 1, b >> 1) << 1 : b;
     }    
 
@@ -30,7 +30,7 @@ class Solution {
             var values = Console
                          .ReadLine()
                          .Split(new [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                         .Select(x => int.Parse(x))
+                         .Select(x => Int64.Parse(x))
                          .ToArray();
 
             Console.WriteLine(Product(values[0], values[1]));
