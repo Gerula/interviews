@@ -5,18 +5,10 @@ using System.IO;
 using System.Linq;
 
 class Solution {
-    static int Product(int a, int b) {
-        if (a == b) {
-            return a;
-        }
-        
-        if (a == 0 || b == 0) {
-            return 0;
-        }
-        
-        return a & b & 1 | Product(a >> 1, b >> 1) << 1;
-    }
-    
+    static int Product(int a, int b) {       
+        return b > a ? Product(a >> 1, b >> 1) << 1 : b;
+    }    
+
     /*
     8  = 01000
     9  = 01001
