@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 
 class Solution {
-    static decimal Fib(decimal a, decimal b, decimal idx) {
+    static BigInteger Fib(BigInteger a, BigInteger b, BigInteger idx) {
         idx -= 2;
-        decimal c = 0;
+        BigInteger c = 0;
         while (idx-- > 0) {
             c = b * b + a;
             a = b;
@@ -22,7 +23,7 @@ class Solution {
         var input = Console
                     .ReadLine()
                     .Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => Decimal.Parse(x))
+                    .Select(x => BigInteger.Parse(x))
                     .ToArray();
         Console.WriteLine(Fib(input[0], input[1], input[2]));
     }
