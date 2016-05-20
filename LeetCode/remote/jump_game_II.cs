@@ -32,3 +32,25 @@ public class Solution {
         return count;
     }
 }
+
+public class Solution {
+    public int Jump(int[] nums) {
+        var reach = 1;
+        var maxReach = nums[0];
+        var steps = 0;
+        for (var i = 0; i < nums.Length; i++) 
+        {
+            reach--;
+            maxReach--;
+            if (reach < 0)
+            {
+                reach = maxReach;
+                steps += 1;
+            }
+            
+            maxReach = Math.Max(maxReach, nums[i]);
+        }
+        
+        return steps;
+    }
+}
