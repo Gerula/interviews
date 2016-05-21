@@ -9,7 +9,20 @@ static class Solution
 {
     static bool IsBleak(this int n)
     {
-        return Enumerable.Range(1, n - 1).All(x => x + x.SetBits() != n);
+        var x = n;
+        var count = 1;
+        while (x != 0)
+        {
+            if ((n - count).SetBits() == count)
+            {
+                return false;
+            }
+
+            count++;
+            x >>= 1;
+        }
+
+        return true;
     }
 
     static int SetBits(this int n)
