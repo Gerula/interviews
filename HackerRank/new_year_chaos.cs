@@ -1,5 +1,5 @@
 //  https://www.hackerrank.com/challenges/new-year-chaos?h_r=next-challenge&h_v=zen
-//  1 out of 11 tests passed. Misleading first test.
+//  3 out of 11 tests passed. Misleading first test.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,30 +35,18 @@ class Solution {
             return a;
         }
         
-        var c = new int[a.Length + b.Length];
-        var i = 0;
-        var j = 0;
-        var k = 0;
-        while (i < a.Length && j < b.Length) {
-            if (a[i] > b[j]) {
-                c[k++] = b[j];
+        var c = new List<int>(a);
+        foreach (var x in b) {
+            c.Add(x);
+            var i = c.Count - 1;
+            while (i > 0 && c[i] < c[i - 1]) {
+                var man = c[i]; c[i] = c[i - 1]; c[i - 1] = man;
+                i--;
                 Result++;
-                j++;
-            } else {
-                c[k++] = a[i];
-                i++;
             }
         }
         
-        for (var l = i; l < a.Length; l++) {
-            c[k++] = a[l];    
-        }
-        
-        for (var l = j; l < b.Length; l++) {
-            c[k++] = b[l];    
-        }
-        
-        return c;
+        return c.ToArray();
     }
     
     static void Main(String[] args) {
