@@ -4,24 +4,61 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-class Solution {
-    static String AlmostSort(int[] a) {
-        var bribes = 0;
-        for (var i = 0; i < a.Length; i++) {
-            while (a[i] != i + 1) {
-                var target = a[i] - 1;
-                if (Math.Abs(target - i) > 2) {
-                    return "Too chaotic"; 
-                }
 
-                var c = a[target];
-                a[target] = a[i];
-                a[i] = c;
-                bribes++;
+class Solution {
+    static int Result;
+    static String AlmostSort(int[] a) {
+        if (a.Select((x, index) => x - index - 1).Any(x => x > 2)) {
+            return "Too chaotic";
+        }
+        
+        Sort(a);
+        return Result.ToString();
+    }
+    
+    static int[] Sort(int[] a) {
+        if (a.Length < 2) {
+            return a;
+        }
+        
+        return Merge(
+                  Sort(a.Take(a.Length / 2).ToArray()),
+                  Sort(a.Skip(a.Length / 2).ToArray()));
+    }
+    
+    static int[] Merge(int[] a, int[] b) {
+        if (!a.Any()) {
+            return b;
+        }
+        
+        if (!b.Any()) {
+            return a;
+        }
+        
+        var c = new int[a.Length + b.Length];
+        var i = 0;
+        var j = 0;
+        var k = 0;
+        while (i < a.Length && j < b.Length) {
+            if (a[i] > b[j]) {
+                c[k++] = b[j];
+                Result++;
+                j++;
+            } else {
+                c[k++] = a[i];
+                i++;
             }
         }
         
-        return bribes.ToString();
+        for (var l = i; l < a.Length; l++) {
+            c[k++] = a[l];    
+        }
+        
+        for (var l = j; l < b.Length; l++) {
+            c[k++] = b[l];    
+        }
+        
+        return c;
     }
     
     static void Main(String[] args) {
