@@ -1,5 +1,5 @@
 //  https://www.hackerrank.com/challenges/sherlock-and-valid-string
-//  15 out of 16 pass
+//  16 out of 16 pass
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,9 +22,8 @@ class Solution {
         
         return groups.Length == 1 || 
                groups.Length == 2 && 
-                        (Math.Abs(groups[0].Count() - groups[1].Count()) == 1 || 
-                         groups[0].Count() == 1 ||
-                         groups[1].Count() == 1);
+                         (groups[0].Count() == 1 ||
+                          groups[1].Count() == 1);
     }
     
     static void Main(String[] args) {
