@@ -55,4 +55,20 @@ public class Solution {
         var c = new Solution();
         Console.WriteLine(c.Rob(new [] { 1, 2, 3, 4, 5, 6 }));
     }
+
+    //  https://leetcode.com/submissions/detail/62518565/
+    //
+    //  Submission Details
+    //  69 / 69 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 168 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int Rob(int[] nums) {
+        return nums.Aggregate(
+                Tuple.Create(0, 0),
+                (acc, x) => {
+                    return Tuple.Create(acc.Item2, Math.Max(x + acc.Item1, acc.Item2));
+                }).Item2;
+    }
 }
