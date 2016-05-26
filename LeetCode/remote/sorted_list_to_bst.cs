@@ -80,4 +80,40 @@ public class Solution {
         for (; head != null; count++, head = head.next) {}
         return count;
     }
+
+    //  https://leetcode.com/submissions/detail/62572654/
+    //
+    //  Submission Details
+    //  32 / 32 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 172 ms
+    //          
+    //          Submitted: 0 minutes ago
+    static int Length(ListNode head) {
+        var count = 0;
+        while (head != null) {
+            count++;
+            head = head.next;
+        }
+        
+        return count;
+    }
+    
+    static TreeNode ListToBST(int low, int high, ref ListNode head) {
+        if (low > high) {
+            return null;
+        }
+        
+        var result = new TreeNode(-1);
+        var mid = low + (high - low) / 2;
+        result.left = ListToBST(low, mid - 1, ref head);
+        result.val = head.val;
+        head = head.next;
+        result.right = ListToBST(mid + 1, high, ref head);
+        return result;
+    }
+    
+    public TreeNode SortedListToBST(ListNode head) {
+        return ListToBST(0, Length(head) - 1, ref head);
+    }    
 }
