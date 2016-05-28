@@ -29,4 +29,26 @@ public class Solution {
         
         return true;
     }
+
+    //  
+    //  Submission Details
+    //  72 / 72 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 164 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  https://leetcode.com/submissions/detail/62751025/
+    public bool CanJump(int[] nums) {
+        var maxReach = 1;
+        for (var i = 0; i < nums.Length; i++) {
+            maxReach--;
+            if (maxReach < 0) {
+                return false;
+            }
+            
+            maxReach = Math.Max(maxReach, nums[i]);
+        }
+        
+        return true;
+    }
 }
