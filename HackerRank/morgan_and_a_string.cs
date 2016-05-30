@@ -14,9 +14,14 @@ class Solution {
             return a;
         }
         
-        return (a[0] < b[0]) ? 
-                     a[0] + Morgan(a.Substring(1), b):
-                     b[0] + Morgan(a, b.Substring(1));
+        var left = a[0] + Morgan(a.Substring(1), b);
+        var right = b[0] + Morgan(a, b.Substring(1));
+        
+        if (a[0] == b[0]) {
+            return (left.CompareTo(right) < 0) ? left : right;
+        }
+        
+        return (a[0] < b[0]) ? left : right;
     }
     
     static void Main(String[] args) {
