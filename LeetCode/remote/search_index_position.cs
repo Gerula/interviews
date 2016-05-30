@@ -27,4 +27,10 @@ public class Solution {
         
         return low;
     }
+    
+    // Trolololololololooo
+    public int SearchInsert(int[] nums, int target) {
+        var index = Array.BinarySearch(nums, target);
+        return index >= 0 ? index : -1 - index;
+    }
 }
