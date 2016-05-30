@@ -33,5 +33,19 @@ public class Solution {
         
         return max;
     }
+
+    public int MaxProduct(string[] words) {
+        var hash = words.Aggregate(
+            new Dictionary<String, int>(),
+            (acc, x) => {
+               acc[x] = x.Aggregate(0, (a, y) => {
+                  return a | (1 << y - 'a'); 
+               });
+               
+               return acc;
+            });
+        
+        return words.Select(x => words.Where(y => (hash[x] & hash[y]) == 0).DefaultIfEmpty(String.Empty).Select(y => y.Length * x.Length).Max()).DefaultIfEmpty(0).Max();
+    }
 }
 
