@@ -1,5 +1,5 @@
 //  https://www.hackerrank.com/challenges/manasa-and-stones
-//  3/12 pass - 5 points - something about garbage collector can't do something something ahahahhahaa
+//  4/12 pass - 8 points 
 
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,20 @@ class Solution {
         }
         
         return Process(current + a, n - 1, a, b).Concat(Process(current + b, n - 1, a, b));
+    }
+
+    static IEnumerable<int> ProcessEnumerable(int n, int a, int b) {
+        if (a == b) {
+            yield return a * (n - 1);
+            yield break;
+        }
+        
+        var start = a * (n - 1);
+        var end = b * (n - 1);
+        while (start <= end) {
+            yield return start;
+            start += Math.Abs(b - a);
+        }
     }
     
     static void Main(String[] args) {
