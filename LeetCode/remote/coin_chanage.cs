@@ -44,6 +44,27 @@ public class Solution {
         return dp[amount];
     }
 
+    // TLE and then Output limit exceeded
+    public int CoinChange(int[] coins, int amount, Dictionary<int, int> cache = null) {
+        if (amount == 0) {
+            return 0;
+        }
+        
+        if (cache == null) {
+            cache = new Dictionary<int, int>();
+        }
+        
+        if (!cache.ContainsKey(amount)) {
+            cache[amount] = coins
+                            .Where(x => x <= amount)
+                            .Select(x => 1 + CoinChange(coins, amount - x, cache))
+                            .DefaultIfEmpty(int.MaxValue)
+                            .Min();
+        }
+        
+        return cache[amount];
+    }
+
     static void Main()
     {
         var s = new Solution();
