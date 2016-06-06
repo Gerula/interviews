@@ -73,6 +73,15 @@ public class Solution {
         return cache[line, col];
     }
 
+    //  https://leetcode.com/submissions/detail/63512040/
+    //
+    //  Submission Details
+    //  137 / 137 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 244 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
     public int LongestIncreasingPath(int[,] matrix) {
         var max = 0;
         var cache = new int[matrix.GetLength(0), matrix.GetLength(1)];
@@ -87,10 +96,11 @@ public class Solution {
     
     public int LongestIncreasingPath(int i, int j, int[,] matrix, int[,] cache) {
         if (cache[i, j] == 0) {
-            var max = Math.Max(0, NextValue(i, j, i + 1, j, matrix, cache));
-            max = Math.Max(0, NextValue(i, j, i - 1, j, matrix, cache));
-            max = Math.Max(0, NextValue(i, j, i, j + 1, matrix, cache));
-            max = Math.Max(0, NextValue(i, j, i, j - 1, matrix, cache));
+            var max = 0;
+            max = Math.Max(max, NextValue(i, j, i + 1, j, matrix, cache));
+            max = Math.Max(max, NextValue(i, j, i - 1, j, matrix, cache));
+            max = Math.Max(max, NextValue(i, j, i, j + 1, matrix, cache));
+            max = Math.Max(max, NextValue(i, j, i, j - 1, matrix, cache));
             cache[i, j] = max + 1;
         }
         
@@ -99,14 +109,10 @@ public class Solution {
     
     public int NextValue(int i, int j, int nexti, int nextj, int[,] matrix, int[,] cache) {
         if (!(0 <= nexti && nexti < matrix.GetLength(0) &&
-              0 <= nextj && nextj < matrix.GetLength(1))) {
+              0 <= nextj && nextj < matrix.GetLength(1)) || 
+              matrix[nexti, nextj] <= matrix[i, j]) {
                   return 0;
               }
-
-        if (matrix[nexti, nextj] < matrix[i, j])
-        { 
-            return 0;
-        }
         
         return LongestIncreasingPath(nexti, nextj, matrix, cache);
     } 
