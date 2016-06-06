@@ -73,6 +73,44 @@ public class Solution {
         return cache[line, col];
     }
 
+    public int LongestIncreasingPath(int[,] matrix) {
+        var max = 0;
+        var cache = new int[matrix.GetLength(0), matrix.GetLength(1)];
+        for (var i = 0; i < matrix.GetLength(0); i++) {
+            for (var j = 0; j < matrix.GetLength(1); j++) {
+                max = Math.Max(max, LongestIncreasingPath(i, j, matrix, cache));
+            }
+        }
+        
+        return max;
+    }
+    
+    public int LongestIncreasingPath(int i, int j, int[,] matrix, int[,] cache) {
+        if (cache[i, j] == 0) {
+            var max = Math.Max(0, NextValue(i, j, i + 1, j, matrix, cache));
+            max = Math.Max(0, NextValue(i, j, i - 1, j, matrix, cache));
+            max = Math.Max(0, NextValue(i, j, i, j + 1, matrix, cache));
+            max = Math.Max(0, NextValue(i, j, i, j - 1, matrix, cache));
+            cache[i, j] = max + 1;
+        }
+        
+        return cache[i, j];
+    }
+    
+    public int NextValue(int i, int j, int nexti, int nextj, int[,] matrix, int[,] cache) {
+        if (!(0 <= nexti && nexti < matrix.GetLength(0) &&
+              0 <= nextj && nextj < matrix.GetLength(1))) {
+                  return 0;
+              }
+
+        if (matrix[nexti, nextj] < matrix[i, j])
+        { 
+            return 0;
+        }
+        
+        return LongestIncreasingPath(nexti, nextj, matrix, cache);
+    } 
+    
     public int LongestIncreasingPath2(int[,] matrix)
     {
         var n = matrix.GetLength(0);
