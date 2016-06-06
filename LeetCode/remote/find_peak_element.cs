@@ -38,6 +38,40 @@ public class Solution {
         return nums[low];
     }
 
+    //  https://leetcode.com/submissions/detail/63551353/
+    //
+    //  Submission Details
+    //  58 / 58 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 148 ms
+    //          
+    //          Submitted: 1 minute ago
+    //
+    public int FindPeakElement(int[] nums) {
+        if (nums.Length == 0) {
+            return 0;
+        }
+        
+        var low = 0;
+        var high = nums.Length;
+        
+        while (low < high) {
+            var mid = low + (high - low) / 2;
+            if ((mid == 0 || nums[mid - 1] < nums[mid]) &&
+               (mid == nums.Length - 1 || nums[mid] > nums[mid + 1])) {
+                   return mid;
+               }
+            
+            if (nums[mid - 1] < nums[mid]) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        
+        return low;
+    }
+
     static void Main()
     {
         var s = new Solution();
