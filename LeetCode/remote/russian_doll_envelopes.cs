@@ -6,7 +6,15 @@
 //  Example:
 //  Given envelopes = [[5,4],[6,4],[6,7],[2,3]], the maximum number of envelopes you can Russian doll is 3 ([2,3] => [5,4] => [6,7]). 
 
-//  TLE Solutionc class Solution {
+//  HA! Accepted. It was the linq part that was holding up the awesomeness
+//  https://leetcode.com/submissions/detail/63692014/
+//  
+//  Submission Details
+//  85 / 85 test cases passed.
+//      Status: Accepted
+//      Runtime: 744 ms
+//          
+//          Submitted: 0 minutes ago
 public int MaxEnvelopes(int[,] envelopes) {
     if (envelopes.GetLength(0) == 0)
     {
@@ -23,15 +31,19 @@ public int MaxEnvelopes(int[,] envelopes) {
     dp[0] = 1;
     var max = 1;
     for (var i = 1; i < dolls.Length; i++) {
-        dp[i] = Enumerable
-                .Range(0, i)
-                .Where(x => dolls[x].Item1 < dolls[i].Item1 && dolls[x].Item2 < dolls[i].Item2)
-                .Select(x => dp[x])
-                .DefaultIfEmpty(0)
-                .Max() + 1;
+        var localMax = 0;
+        for (var j = 0; j < i; j++) {
+            if (dolls[j].Item1 < dolls[i].Item1 && 
+                dolls[j].Item2 < dolls[i].Item2 &&
+                dp[j] > localMax) {
+                    localMax = dp[j];
+                }    
+        }
+        
+        dp[i] = localMax + 1;
         max = Math.Max(max,  dp[i]);
-    }
-    
+    }    
+
     return max;
 }
 
