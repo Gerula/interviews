@@ -91,6 +91,32 @@ public class Solution {
                            .Any(x => x);
     }
 
+    //  https://leetcode.com/submissions/detail/63800796/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 196 ms
+    //          
+    //          Submitted: 1 minute ago
+    //
+    public bool WordBreak(string s, ISet<string> wordDict, Dictionary<String, bool> hash = null) {
+        if (String.IsNullOrWhiteSpace(s)) {
+            return true;
+        }
+        
+        if (hash == null) {
+            hash = new Dictionary<String, bool>();
+        }
+        
+        if (!hash.ContainsKey(s)) {
+            hash[s] = wordDict //   And the below boolean statement is exactly why we can't have nice things
+                      .Any(x => !s.StartsWith(x) ? false : WordBreak(s.Substring(x.Length), wordDict, hash));
+        }
+        
+        return hash[s];
+    }
+
     static void Main()
     {
         var s = new Solution();
