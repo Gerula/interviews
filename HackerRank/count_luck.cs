@@ -1,6 +1,6 @@
 //  https://www.hackerrank.com/challenges/count-luck
 
-//  Work In Progress
+//  2 / 16 passed
 
 using System;
 using System.Collections.Generic;
@@ -33,11 +33,38 @@ class Solution {
         }
         
         a[i][j] = 'X';
+        var optionsCount = Options(a, i, j);
+        var options = optionsCount > 1;
         
-        return Wand(a, guesses + (direction == 1 ? 0 : 1), maxGuesses, i - 1, j, 1) ||
-               Wand(a, guesses + (direction == 2 ? 0 : 1), maxGuesses, i, j + 1, 2) ||
-               Wand(a, guesses + (direction == 3 ? 0 : 1), maxGuesses, i + 1, j, 3) ||
-               Wand(a, guesses + (direction == 4 ? 0 : 1), maxGuesses, i, j - 1, 4);
+        if (optionsCount == 0) {
+            return false;
+        }
+        
+        return Wand(a, guesses + (!options || direction == 1 ? 0 : 1), maxGuesses, i - 1, j, 1) ||
+               Wand(a, guesses + (!options || direction == 2 ? 0 : 1), maxGuesses, i, j + 1, 2) ||
+               Wand(a, guesses + (!options || direction == 3 ? 0 : 1), maxGuesses, i + 1, j, 3) ||
+               Wand(a, guesses + (!options || direction == 4 ? 0 : 1), maxGuesses, i, j - 1, 4);
+    }
+    
+    static int Options(StringBuilder[] m, int a, int b) {
+        var count = 0;
+        if (a - 1 >= 0 && m[a - 1][b] != 'X') {
+            count++;
+        }
+        
+        if (b - 1 >= 0 && m[a][b - 1] != 'X') {
+            count++;
+        }
+        
+        if (a + 1 < m.Length && m[a + 1][b] != 'X') {
+            count++;
+        }
+        
+        if (b + 1 < m[a].Length && m[a][b + 1] != 'X') {
+            count++;
+        }
+        
+        return count;
     }
     
     static void Main(String[] args) {
