@@ -29,6 +29,30 @@ public class Solution {
     }
 }
 
+//  https://leetcode.com/submissions/detail/64406454/
+//
+//  Submission Details
+//  164 / 164 test cases passed.
+//      Status: Accepted
+//      Runtime: 168 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public ListNode DeleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        head.next = DeleteDuplicates(head.next);
+
+        if (head.val == head.next.val) {
+            return head.next;
+        }
+        
+        return head;
+    }
+}
+
 //  
 //  Submission Details
 //  164 / 164 test cases passed.
