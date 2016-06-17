@@ -51,6 +51,26 @@ public class Solution {
                .ToList();
     }
 
+    //  https://leetcode.com/submissions/detail/64513781/
+    //  
+    //  Submission Details
+    //  209 / 209 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 460 ms
+    //          
+    //          Submitted: 2 minutes ago
+    //  Fucking ridiculous
+    public IList<string> BinaryTreePaths(TreeNode root) {
+        return (root == null) ? 
+                new List<string>() :
+                (root.left == root.right) ? 
+                    new List<string> { root.val.ToString() } :
+                    BinaryTreePaths(root.left)
+                    .Concat(BinaryTreePaths(root.right))
+                    .Select(x => String.Format("{0}->{1}", root.val, x))
+                    .ToList();
+    }
+
     //  https://leetcode.com/submissions/detail/58446648/
     //  Lol
     public IList<string> BinaryTreePaths(TreeNode root) {
