@@ -117,6 +117,29 @@ public class Solution {
         return hash[s];
     }
 
+    //  https://leetcode.com/submissions/detail/64501608/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 212 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  This is getting pretty fucking stupid
+    public bool WordBreak(string s, ISet<string> wordDict) {
+        var dp = new bool[s.Length + 1];
+        dp[s.Length] = true;
+        for (var i = s.Length - 1; i >= 0; i--) {
+            var substring = s.Substring(i);
+            foreach (var word in wordDict.Where(x => substring.StartsWith(x) && i + x.Length < dp.Length))
+            {
+                dp[i] = dp[i] || dp[i + word.Length];
+            }
+        }
+        
+        return dp[0];
+    }
+
     static void Main()
     {
         var s = new Solution();
