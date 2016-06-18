@@ -49,6 +49,42 @@ public class NestedIterator {
     }
 }
 
+//  https://leetcode.com/submissions/detail/64653177/
+//
+//  Submission Details
+//  44 / 44 test cases passed.
+//      Status: Accepted
+//      Runtime: 500 ms
+//          
+//          Submitted: 0 minutes ago
+public class NestedIterator {
+    IEnumerator<int> enumerator;
+    
+    public NestedIterator(IList<NestedInteger> nestedList) {
+        enumerator = nestedList.Select(x => Flatten(x)).SelectMany(x => x).GetEnumerator();
+    }
+
+    public bool HasNext() {
+        return enumerator.MoveNext();
+    }
+
+    public int Next() {
+        return enumerator.Current;
+    }
+    
+    private IEnumerable<int> Flatten(NestedInteger integer) {
+        if (integer.IsInteger()) {
+            yield return integer.GetInteger();
+            yield break;
+        }
+        
+        foreach (var x in integer.GetList().Select(x => Flatten(x)).SelectMany(x => x))
+        {
+            yield return x;
+        }
+    }
+}
+
 //  https://leetcode.com/submissions/detail/59217310/
 //
 //  Submission Details
