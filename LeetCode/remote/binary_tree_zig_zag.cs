@@ -63,4 +63,22 @@ public class Solution {
         Traverse(root.right, level, nodes, ref maxLevel);
     }
 
+    // Broken [todo: fix]
+    public IList<IList<int>> ZigzagLevelOrder(TreeNode root, int level = 0) {
+        if (root == null) {
+            return new List<IList<int>>();
+        }
+        
+        var left = ZigzagLevelOrder(root.left, level + 1);
+        var right = ZigzagLevelOrder(root.right, level + 1);
+        var result = new List<IList<int>> { new List<int> { root.val }};
+        for (var i = 0; i < Math.Max(left.Count, right.Count); i++) {
+            var l = (i < left.Count) ? left[i] : new List<int>();
+            var r = (i < right.Count) ? right[i] : new List<int>();
+            result.Add((level % 2 == 1) ? l.Concat(r).ToList() : r.Concat(l).ToList());
+        }
+        
+        return result;
+    }
+
 }
