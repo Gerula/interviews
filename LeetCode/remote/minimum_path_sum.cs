@@ -61,6 +61,43 @@ static class Program
         return grid[0, 0];
     }
 
+    //  https://leetcode.com/submissions/detail/64906703/
+    //
+    //  Submission Details
+    //  61 / 61 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 192 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int MinPathSum(int[,] grid) {
+        for (var i = 0; i < grid.GetLength(0); i++)
+        {
+            for (var j = 0; j < grid.GetLength(1); j++)
+            {
+                if (i == 0 && j == 0) 
+                {
+                    continue;
+                }
+                
+                if (i == 0)
+                {
+                    grid[i, j] += grid[i, j - 1];
+                    continue;
+                }
+                
+                if (j == 0)
+                {
+                    grid[i, j] += grid[i - 1, j];
+                    continue;
+                }
+                
+                grid[i, j] += Math.Min(grid[i - 1, j], grid[i, j - 1]);
+            }
+        }
+        
+        return grid[grid.GetLength(0) - 1, grid.GetLength(1) - 1];
+    }
+
     static void Main()
     {
         Console.
