@@ -49,6 +49,42 @@ public class Solution {
         return a;
     }
 
+    //  https://leetcode.com/submissions/detail/64964176/
+    //
+    //  Submission Details
+    //  21 / 21 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 60 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int[,] GenerateMatrix(int n) {
+        var result = new int[n, n];
+        var value = 0;
+        for (var layer = 0; layer < n / 2; layer++) {
+            for (var i = layer; i < n - layer; i++) {
+                result[layer, i] = ++value;
+            }
+            
+            for (var i = layer + 1; i < n - layer; i++) {
+                result[i, n - layer - 1] = ++value;
+            }
+            
+            for (var i = n - layer - 2; i >= layer; i--) {
+                result[n - layer - 1, i] = ++value;
+            }
+            
+            for (var i = n - layer - 2; i > layer; i--) {
+                result[i, layer] = ++value;
+            }
+        }
+        
+        if (n % 2 == 1) {
+            result[n / 2, n / 2] = ++value;
+        }
+        
+        return result;
+    }
+
     public static void Print(int [,] a)
     {
         for (var i = 0; i < a.GetLength(0); i++)
