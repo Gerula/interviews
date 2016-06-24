@@ -37,4 +37,26 @@ public class Solution {
     
         return result;        
     }
+
+    //  https://leetcode.com/submissions/detail/65154004/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 544 ms
+    //          
+    //          Submitted: 1 minute ago
+    public IList<IList<int>> LevelOrder(TreeNode root) {
+        if (root == null) {
+            return new List<IList<int>>();
+        }
+        
+        var left = LevelOrder(root.left);
+        var right = LevelOrder(root.right);
+        return new List<IList<int>> { new [] { root.val }.ToList() }
+               .Concat(left.Zip(right, (x, y) => x.Concat(y).ToList()))
+               .Concat(left.Skip(right.Count()))
+               .Concat(right.Skip(left.Count()))
+               .ToList<IList<int>>();
+    }
 }
