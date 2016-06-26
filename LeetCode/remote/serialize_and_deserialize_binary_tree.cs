@@ -51,7 +51,15 @@ public class Codec {
                  }).Pop();
     }
 
-    // Recursive descent parser - TLE - probably from all the string replacements..
+    //  Recursive descent parser 
+    //  https://leetcode.com/submissions/detail/65327867/
+    //
+    //  Submission Details
+    //  47 / 47 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 208 ms
+    //          
+    //          Submitted: 0 minutes ago
     // (1(2)(3(4)(5)))
     // Encodes a tree to a single string.
     public string serialize(TreeNode root) {
@@ -68,31 +76,32 @@ public class Codec {
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(string data) {
-        return deserialize(ref data);
+        var n = 0;
+        return deserialize(data, ref n);
     }
 
-    public TreeNode deserialize(ref string data) {
-        if (String.IsNullOrWhiteSpace(data))
+    public TreeNode deserialize(string data, ref int i) {
+        if (i >= data.Length)
         {
             return null;
         }
         
-        if (data.StartsWith("()"))
+        if (data[i] == '(' && data[i + 1] == ')')
         {
-            data = data.Substring(2);
+            i += 2;
             return null;
         }
         
-        var i = 1;
-        while (i++ < data.Length && data[i] != '(') {}
-        var val = int.Parse(data.Substring(1, i - 1));
-        data = data.Substring(i);
+        var pos = i;
+        while (pos++ < data.Length && data[pos] != '(') {}
+        var val = int.Parse(data.Substring(i + 1, pos - i - 1));
+        i = pos;
         var result = new TreeNode(val) {
-            left = deserialize(ref data),
-            right = deserialize(ref data)
+            left = deserialize(data, ref i),
+            right = deserialize(data, ref i)
         };
         
-        data = data.Substring(1);
+        i++;
         return result;
     }
 }
