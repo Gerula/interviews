@@ -38,3 +38,37 @@ public class Solution {
         return root;
     }
 }
+
+//  https://leetcode.com/submissions/detail/65861224/
+//
+//  Submission Details
+//  225 / 225 test cases passed.
+//      Status: Accepted
+//      Runtime: 164 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public void Flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        
+        var prev = new TreeNode(-1);
+        var stack = new Stack<TreeNode>();
+        stack.Push(root);
+        while (stack.Any()) {
+            var current = stack.Pop();
+            if (current.right != null) {
+                stack.Push(current.right);
+            }
+            
+            if (current.left != null) {
+                stack.Push(current.left);
+                current.left = null;
+            }
+            
+            prev.right = current;
+            prev = prev.right;
+        }
+    }
+}
