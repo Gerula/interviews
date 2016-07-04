@@ -44,6 +44,20 @@ public class Solution {
         }
     }
 
+    //  TLE
+    public IList<IList<int>> CombinationSum(int[] candidates, int target) {
+        if (target <= 0) {
+            return new List<IList<int>>();
+        }
+
+        var result = new List<IList<int>>();
+        result.AddRange(candidates.Where(x => x == target).Select(x => new List<int> { x }).ToList());
+        result.AddRange(candidates.SelectMany(x => CombinationSum(candidates, target - x), (x, y) => {
+            return new List<int> { x }.Concat(y).OrderBy(z => z).ToList();
+        }));
+        return result.GroupBy(x => String.Join(",", x)).Select(x => x.First()).ToList();
+    }
+
     static void Main()
     {
         Console.WriteLine(String.Join(Environment.NewLine, new Solution().CombinationSum(new [] { 2, 3, 6, 7 }, 7).Select(x => String.Join(", ", x))));
