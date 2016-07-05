@@ -79,3 +79,26 @@ public class Solution {
         return result;
     }
 }
+
+//  Do the evolution
+//  https://leetcode.com/submissions/detail/66209409/
+//
+//  Submission Details
+//  25 / 25 test cases passed.
+//      Status: Accepted
+//      Runtime: 472 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public IList<IList<int>> Permute(int[] nums) {
+        if (nums.Length < 2)
+        {
+            return new List<IList<int>> { nums.ToList() };
+        }
+        
+        return nums.SelectMany(
+            x => Permute(nums.Except(new int[] { x }).ToArray()),
+            (x, y) => new List<int> { x }.Concat(y).ToList())
+            .ToList<IList<int>>();
+    }
+}
