@@ -94,6 +94,32 @@ public class Solution {
                });
     }
 
+    //  https://leetcode.com/submissions/detail/66152243/
+    //
+    //  Submission Details
+    //  16 / 16 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 140 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  You are here!
+    //  Your runtime beats 100.00% of csharpsubmissions.
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        var total = 0;
+        var current = 0;
+        var index = 0;
+        for (var i = 0; i < gas.Length; i++) {
+            total += gas[i] - cost[i];
+            current += gas[i] - cost[i];
+            if (current < 0) {
+                index = i + 1;
+                current = 0;
+            }
+        }
+        
+        return total >= 0 ? index : -1;
+    }
+
     static void Main()
     {
         var r = new Random();
