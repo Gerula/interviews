@@ -26,3 +26,23 @@ public class Solution {
     }
 }
 
+//  Stupid solution based on list merge
+public class Solution {
+    public IList<int[]> KSmallestPairs(int[] nums1, int[] nums2, int k) {
+        var result = new List<int[]>();
+        
+        var i = 0;
+        var j = 0;
+        while (result.Count < k && i < nums1.Length && j < nums2.Length) {
+            result.Add(new [] { nums1[i], nums2[j] });
+            if (nums1[i] < nums2[j] && j < nums2.Length) {
+                j++;
+            } else if (i < nums1.Length){
+                i++;
+            }
+        }
+        
+        return result;
+    }
+}
+
