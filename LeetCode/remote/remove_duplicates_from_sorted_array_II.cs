@@ -70,3 +70,24 @@ public class Solution {
         return write;
     }
 }
+
+//  https://leetcode.com/submissions/detail/66656225/
+//
+//  Submission Details
+//  164 / 164 test cases passed.
+//      Status: Accepted
+//      Runtime: 508 ms
+//          
+//          Submitted: 1 minute ago
+public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        var last = 0;
+        for (var i = 0; i < nums.Length; i++) {
+            if (last < 2 || nums[last - 2] != nums[i]) {
+                nums[last++] = nums[i];
+            }
+        }
+        
+        return last;
+    }
+}
