@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 static class Solution {
+    static Dictionary<String, int[]> jump;
+
     static IEnumerable<String> Search(this IEnumerable<String> words, String pattern) {
         return words.Where(x => x.Matches(pattern));
     }
@@ -21,19 +23,39 @@ static class Solution {
     static bool Matches(this String word, String pattern) {
         var p = 0;
         var w = 0;
-        while (p < pattern.Length && w < word.Length && 
-                (char.IsUpper(pattern[p]) && pattern[p] != word[w] ||
-                 pattern[p] == word[w]))
+        while (p < pattern.Length && w < word.Length)
         {
-            p += pattern[p] == word[w] ? 1 : 0;
-            w += 1;
+            if (pattern[p] == word[w]) {
+                p++;
+                w++;
+            } else if (Char.IsUpper(pattern[p]) && !Char.IsUpper(word[w])) {
+                w = jump[word][w];
+            } else {
+                break;
+            }
         }
 
         return p == pattern.Length;
     }
 
+    static int[] Jump(this String s)
+    {
+        var last = s.Length;
+        var result = new int[s.Length];
+        for (var i = s.Length - 1; i >= 0; i--) {
+            if (Char.IsUpper(s[i])) {
+                last = i;
+            } 
+
+            result[i] = last;
+        }
+
+        return result;
+    }
+
     static void Main() {
         var array = new [] { "HelloMars", "HelloWorld", "HelloWorldMars", "HiHo" };
+        jump = array.Select(x => new { key = x, val = Jump(x) }).ToDictionary(x => x.key, x => x.val );
         Console.WriteLine(
                 String.Join(
                     Environment.NewLine,
