@@ -109,4 +109,29 @@ public class Solution {
         return dp[n];
     }
 }
+
+//  This is bullshit
+//  https://leetcode.com/submissions/detail/66957547/
+//
+//  Submission Details
+//  600 / 600 test cases passed.
+//      Status: Accepted
+//      Runtime: 180 ms
+//          
+//          Submitted: 1 minute ago
+public class Solution {
+    public int NumSquares(int n) {
+        var minSquares = Enumerable.Repeat(int.MaxValue, n + 1).ToArray();
+        minSquares[0] = 0;
+        minSquares[1] = 1;
+        
+        for (var i = 2; i <= n; i++) {
+            for (var j = 1; j * j <= i; j++) {
+                minSquares[i] = Math.Min(minSquares[i], 1 + minSquares[i - j * j]);
+            }
+        }
+        
+        return minSquares[n];
+    }
+}
     
