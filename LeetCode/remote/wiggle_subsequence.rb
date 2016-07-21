@@ -6,6 +6,15 @@
 #   Given a sequence of integers, return the length of the longest subsequence that is a wiggle sequence. A subsequence is obtained by deleting some number of elements (eventually, also zero) from the original sequence, leaving the remaining elements in their original order.
 
 #   Wrong answer on some stupid test case. Solution looks ok..
+#   Heh.. forgot about duplicates.. and corner cases.. damn
+#   https://leetcode.com/submissions/detail/67804443/
+#
+#   Submission Details
+#   20 / 20 test cases passed.
+#       Status: Accepted
+#       Runtime: 392 ms
+#           
+#           Submitted: 0 minutes ago
 def wiggle_max_length(nums)
     return 0 if nums.empty?
     smaller, larger = Array.new(nums.size) { 1 }, Array.new(nums.size) { 1 }
@@ -14,7 +23,7 @@ def wiggle_max_length(nums)
         0.upto(i - 1).each { |j|
             if (nums[i] > nums[j])
                 smaller[i] = [larger[j] + 1, smaller[i]].max
-            else
+            elsif (nums[i] < nums[j])
                 larger[i] = [smaller[j] + 1, larger[i]].max
             end
         }
