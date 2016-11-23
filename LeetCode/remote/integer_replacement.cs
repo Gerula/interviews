@@ -41,3 +41,36 @@ public class Solution {
         return setBits;
     }
 }
+
+//  https://leetcode.com/submissions/detail/83565020/
+//
+//  Submission Details
+//  47 / 47 test cases passed.
+//      Status: Accepted
+//      Runtime: 49 ms
+//          Submitted: 8 hours, 5 minutes ago
+
+public class Solution {
+    public int IntegerReplacement(int n, Dictionary<int, int> cache = null) {
+        if (cache == null) {
+            cache = new Dictionary<int, int>();
+        }
+
+        if (cache.ContainsKey(n)) {
+            return cache[n];
+        }
+
+        if (n < 2) {
+            cache[n] = 0;
+            return cache[n];
+        }
+
+        if (n == int.MaxValue || (n & 1) == 0) {
+            cache[n] = 1 + IntegerReplacement(n / 2, cache);
+            return cache[n];
+        }
+
+        cache[n] = 1 + Math.Min(IntegerReplacement(n - 1, cache), IntegerReplacement(n + 1, cache));
+        return cache[n];
+    }
+}
