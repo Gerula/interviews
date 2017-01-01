@@ -12,4 +12,14 @@ public class Solution {
 
         return result;
     }
+
+    public int MinMoves2(int[] nums) {
+        Array.Sort(nums);
+        return nums
+               .Take(nums.Length / 2)
+               .Zip(
+                   nums.Skip(nums.Length / 2).Reverse(),
+                   (x, y) => y - x)
+               .Sum();
+    }
 }
