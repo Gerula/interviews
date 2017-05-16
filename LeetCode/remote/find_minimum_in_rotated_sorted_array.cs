@@ -43,6 +43,33 @@ public class Solution {
         return nums[low];
     }
 
+    //  https://leetcode.com/submissions/detail/60246275/
+    //
+    //  Submission Details
+    //  146 / 146 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 188 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int FindMin(int[] nums) {
+        var low = 0;
+        var high = nums.Length - 1;
+        while (low < high)
+        {
+            var mid = low + (high - low) / 2;
+            if (nums[mid] > nums[high])
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
+            }
+        }
+        
+        return nums[low];
+    }  
+
     static void Main()
     {
         Console.WriteLine(new Solution().FindMin(new [] { 1, 2, 3, 4, 5, 6 }));

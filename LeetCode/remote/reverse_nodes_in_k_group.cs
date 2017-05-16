@@ -108,6 +108,37 @@ public class Solution {
         return head;
     }
 
+    // Attempt
+    public ListNode ReverseKGroup(ListNode head, int k) {
+        var prevHead = new ListNode(0) { next = head };
+        var prev = prevHead;
+        while (head != null) 
+        {
+            var steps = k;
+            while (--steps >= 0 && head != null) {
+                head = head.next;
+            }
+            
+            if (steps >= 0)
+            {
+                break;
+            }
+
+            var start = prev.next;
+            var newNext = head;
+            while (start != head)
+            {
+                var next = start.next;
+                start.next = newNext;
+                newNext = start;
+                start = next;
+            }
+
+            prev = prev.next;
+        }
+        
+        return prevHead.next;
+    }
     static void Main()
     {
         var head = Generate(5);

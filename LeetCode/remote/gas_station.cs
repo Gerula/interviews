@@ -39,6 +39,87 @@ public class Solution {
         return currentGas < 0 ? -1 : minIndex;
     }
 
+    //  https://leetcode.com/submissions/detail/60567624/
+    //
+    //  Submission Details
+    //  16 / 16 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 164 ms
+    //          
+    //          Submitted: 1 minute ago
+    //
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        var total = 0;
+        var local = 0;
+        var index = 0;
+        for (var i = 0; i < gas.Length; i++)
+        {
+            local += gas[i] - cost[i];
+            total += local;
+            if (local < 0)
+            {
+                local = 0;
+                index = i + 1;
+            }
+        }
+        
+        return total < 0 ? -1 : index;
+    }
+
+    //  https://leetcode.com/submissions/detail/60576653/
+    //
+    //  Submission Details
+    //  16 / 16 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 168 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        if (gas.Zip(cost, (x, y) => x - y).Sum() < 0)
+        {
+            return -1;
+        }
+        
+        var total = 0;
+        return Enumerable
+               .Range(0, gas.Length)
+               .Aggregate(0, (acc, x) => {
+                   if ((total += gas[x] - cost[x]) < 0)
+                   {
+                       total = 0;
+                       return x + 1;
+                   }
+                   
+                   return acc;
+               });
+    }
+
+    //  https://leetcode.com/submissions/detail/66152243/
+    //
+    //  Submission Details
+    //  16 / 16 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 140 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  You are here!
+    //  Your runtime beats 100.00% of csharpsubmissions.
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        var total = 0;
+        var current = 0;
+        var index = 0;
+        for (var i = 0; i < gas.Length; i++) {
+            total += gas[i] - cost[i];
+            current += gas[i] - cost[i];
+            if (current < 0) {
+                index = i + 1;
+                current = 0;
+            }
+        }
+        
+        return total >= 0 ? index : -1;
+    }
+
     static void Main()
     {
         var r = new Random();

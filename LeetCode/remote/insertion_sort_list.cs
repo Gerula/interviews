@@ -28,6 +28,34 @@ class Program {
         return moq.next;
     }
 
+    //  https://leetcode.com/submissions/detail/62752162/
+    //  
+    //  Submission Details
+    //  21 / 21 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 216 ms
+    //          
+    //          Submitted: 7 minutes ago
+    public ListNode InsertionSortList(ListNode head) {
+        var preStart = new ListNode(-1);
+        
+        var it = head;
+        while (it != null) {
+            var next = it.next;
+            var insert = preStart;
+            while (insert.next != null && insert.next.val < it.val)
+            {
+                insert = insert.next;
+            }
+            
+            it.next = insert.next;
+            insert.next = it;
+            it = next;
+        }
+        
+        return preStart.next;
+    }
+
     static void Main() {
         Random rand = new Random();
         for (int k = 0; k < 10; k++) {

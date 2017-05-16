@@ -50,6 +50,37 @@ public class Solution {
         b = c;
     }
 
+    //  https://leetcode.com/submissions/detail/60401124/
+    //  
+    //  Submission Details
+    //  86 / 86 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 488 ms
+    //          
+    //          Submitted: 1 minute ago
+    public void SortColors(int[] nums) {
+        var red = 0;
+        var undecided = 0;
+        var blue = nums.Length;
+        while (undecided < blue)
+        {
+            switch (nums[undecided])
+            {
+                case 2: Swap(ref nums[--blue], ref nums[undecided]);
+                        break;
+                case 1: undecided++;
+                        break;
+                case 0: Swap(ref nums[red++], ref nums[undecided++]);
+                        break;
+            }
+        }
+    }
+    
+    public void Swap(ref int a, ref int b)
+    {
+        var c = a; a = b; b = c;
+    }
+
     static void Main()
     {
         var rand = new Random();

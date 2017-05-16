@@ -64,4 +64,29 @@ public class Solution {
         
         return i;
     }
+
+    //  https://leetcode.com/submissions/detail/65670291/
+    //
+    //  Submission Details
+    //  18 / 18 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 524 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int CountNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        var leftHeight = Height(root, true);
+        var rightHeight = Height(root, false);
+        return leftHeight == rightHeight ? 
+                    (1 << leftHeight) - 1 :
+                    1 + CountNodes(root.left) + CountNodes(root.right);
+    }
+    
+    public int Height(TreeNode root, bool left) {
+        return root == null ? 0 :
+                    1 + Height(left ? root.left : root.right, left);
+    }
 }

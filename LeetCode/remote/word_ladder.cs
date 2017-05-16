@@ -101,6 +101,79 @@ public class Solution {
         }
     }
     
+    //  It's regression, baby!
+    //  https://leetcode.com/submissions/detail/61670477/
+    //
+    //  Submission Details
+    //  37 / 37 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 439 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public class Solution {
+        public IEnumerable<String> Neighbors(string word, ISet<string> wordList) 
+        {
+            var sb = new StringBuilder(word);
+            for (var i = 0; i < word.Length; i++)
+            {
+                for (var k = 'a'; k <= 'z'; k++)
+                {
+                    var aux = sb[i];
+                    sb[i] = k;
+                    if (wordList.Contains(sb.ToString()))
+                    {
+                        yield return sb.ToString();
+                    }
+                    
+                    sb[i] = aux;
+                }
+            }
+            
+            yield break;
+        }
+    
+        public int Unfold(string start, Dictionary<String, String> parents)
+        {
+            var count = 1;
+            while (parents.ContainsKey(start)) 
+            {
+                count++;
+                start = parents[start];
+            }
+            
+            return count;
+        }
+    
+        public int LadderLength(string beginWord, string endWord, ISet<string> wordList) {
+            var visited = new HashSet<String>();
+            var queue = new Queue<String>();
+            var parent = new Dictionary<String, String>();
+            visited.Add(beginWord);
+            wordList.Add(endWord);
+            queue.Enqueue(beginWord);
+            
+            while (queue.Count != 0)
+            {
+                var current = queue.Dequeue();
+                if (current == endWord)
+                {
+                    return Unfold(current, parent);
+                    break;
+                }
+                
+                foreach (var x in Neighbors(current, wordList).Where(y => !visited.Contains(y)))
+                {
+                    Console.WriteLine("{0} {1}", current, x);
+                    parent[x] = current;
+                    visited.Add(x);
+                    queue.Enqueue(x);
+                }
+            }
+            
+            return 0;
+        }
+    } 
+
     static void Main()
     {
         var solution = new Solution();

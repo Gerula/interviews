@@ -56,6 +56,48 @@ public class Solution {
         return result;
     }
 
+    //  https://leetcode.com/submissions/detail/66520579/
+    //
+    //  Submission Details
+    //  87 / 87 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 172 ms
+    //          
+    //          Submitted: 1 minute ago
+    public bool Exist(char[,] board, string word) {
+        for (var i = 0; i < board.GetLength(0); i++) {
+            for (var j = 0; j < board.GetLength(1); j++) {
+                if (Search(board, i, j, word, 0)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private bool Search(char[,] board, int i, int j, string word, int index) {
+        if (index == word.Length || 
+            0 > i || i >= board.GetLength(0) ||
+            0 > j || j >= board.GetLength(1) ||
+            board[i, j] != word[index]) {
+                return false;
+            }
+        
+            if (index == word.Length - 1) {
+                return true;
+            }
+            
+            var c = board[i, j];
+            board[i, j] = char.MinValue;
+            var result = Search(board, i + 1, j, word, index + 1) ||
+                         Search(board, i, j + 1, word, index + 1) ||
+                         Search(board, i - 1, j, word, index + 1) ||
+                         Search(board, i, j - 1, word, index + 1);
+            board[i, j] = c;
+            return result;
+    }
+
     static void Main()
     {
         var s = new Solution();

@@ -30,3 +30,34 @@ public class Solution {
         return String.Join("", strings);
     }
 }
+
+//  https://leetcode.com/submissions/detail/58177018/
+//
+//  Submission Details
+//  221 / 221 test cases passed.
+//      Status: Accepted
+//      Runtime: 240 ms
+//          
+//          Submitted: 0 minutes ago
+//
+using System.Text.RegularExpressions;
+
+public class Solution {
+    public class NumComparer : IComparer<String>
+    {
+        public int Compare(String a, String b)
+        {
+            return (b + a).CompareTo(a + b);
+        }
+    }
+    
+    public string LargestNumber(int[] nums) {
+        return Regex.Replace(String.Join(
+            String.Empty,
+            nums
+            .Select(x => x.ToString())
+            .OrderBy(a => a, new NumComparer())),
+            "^0+", "0"
+            );
+    }
+}

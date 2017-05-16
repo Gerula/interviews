@@ -51,4 +51,35 @@ public class Solution {
         prev.next = null;
         return head;
     }
+
+    // https://leetcode.com/submissions/detail/63745841/
+    //
+    // Submission Details
+    // 230 / 230 test cases passed.
+    //  Status: Accepted
+    //  Runtime: 176 ms
+    //      
+    //      Submitted: 0 minutes ago
+    public ListNode RotateRight(ListNode head, int k) {
+        if (head == null || head.next == null || k == 0) {
+            return head;
+        }
+        
+        var length = 1;
+        var it = head;
+        while (it.next != null) {
+            it = it.next;
+            length++;
+        }
+        
+        it.next = head;
+        it = head;
+        for (var i = 0; i < length - k % length - 1; i++) {
+            it = it.next;
+        }
+        
+        var result = it.next;
+        it.next = null;
+        return result;
+    }
 }

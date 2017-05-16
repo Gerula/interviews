@@ -41,3 +41,30 @@ def can_complete_circuit(gas, cost)
     
     total < 0 ? - 1 : start
 end
+
+#   https://leetcode.com/submissions/detail/57622677/
+#
+#   Submission Details
+#   16 / 16 test cases passed.
+#       Status: Accepted
+#       Runtime: 77 ms
+#           
+#           Submitted: 0 minutes ago
+#   You are here!
+#   Your runtime beats 100.00% of rubysubmissions.
+def can_complete_circuit(gas, cost)
+    return -1 if gas.size != cost.size
+    local_trip = 0
+    total_trip = 0
+    idx = 0
+    (0...gas.size).each { |i|
+        local_trip += gas[i] - cost[i]
+        total_trip += local_trip
+        if local_trip < 0
+            local_trip = 0
+            idx = (i + 1) % gas.size
+        end
+    }
+    
+    return total_trip < 0 ? -1 : idx
+end

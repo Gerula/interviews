@@ -52,6 +52,50 @@ public class Solution {
         return result;
     }
 
+    //  https://leetcode.com/submissions/detail/63909746/
+    //
+    //  Submission Details
+    //  114 / 114 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 604 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public IList<IList<int>> PathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return new List<IList<int>>();
+        }
+        
+        if (root.left == null && root.right == null) {
+            return root.val == sum ? 
+                    new List<IList<int>> { new List<int> { root.val }} :
+                    new List<IList<int>>();
+        }
+        
+        return PathSum(root.left, sum - root.val)
+               .Concat(PathSum(root.right, sum - root.val))
+               .Select(x => new [] { root.val }.Concat(x).ToList<int>())
+               .ToList<IList<int>>();
+    }  
+
+    // This is getting ridiculous
+    public IList<IList<int>> PathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return new List<IList<int>>();
+        }
+        
+        if (root.left == null && root.right == null)
+        {
+            return root.val == sum ? 
+                    new List<IList<int>> { new List<int> { root.val }}:
+                    new List<IList<int>>();
+        }
+        
+        return PathSum(root.left, sum - root.val)
+               .Concat(PathSum(root.right, sum - root.val))
+               .Select(x => new List<int> { root.val }.Concat(x).ToList())
+               .ToList<IList<int>>();
+    }
+
     static void Main()
     {
         var root = new TreeNode(1) {

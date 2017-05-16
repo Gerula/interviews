@@ -106,3 +106,61 @@ public class Solution {
         Console.WriteLine(String.Join(", ", new Solution().MaxSlidingWindow2(new [] { 7, 2, 4 }, 2)));
     }
 }
+
+// Small regression while processing the array
+//  https://leetcode.com/submissions/detail/63100557/
+//
+//  Submission Details
+//  18 / 18 test cases passed.
+//      Status: Accepted
+//      Runtime: 552 ms
+//          
+//          Submitted: 1 minute ago
+public class Solution {
+    public class Dequeue {
+        private LinkedList<int> _data = new LinkedList<int>();
+        
+        public void Add(int x)
+        {
+            while (_data.Count != 0 && _data.Last() < x) {
+                _data.RemoveLast();
+            }
+            
+            _data.AddLast(x);
+        }
+        
+        public void Remove(int x)
+        {
+            if (_data.Count != 0 && _data.First() == x) {
+                _data.RemoveFirst();
+            }
+        }
+        
+        public int Top()
+        {
+            return _data.First();
+        }
+    }
+    
+    public int[] MaxSlidingWindow(int[] nums, int k) {
+        if (nums.Length == 0 || k == 0) {
+            return new int[0];
+        }
+        
+        var dequeue = new Dequeue();
+        var result = new int[nums.Length - k + 1];
+        for (var i = 0; i < k; i++) {
+            dequeue.Add(nums[i]);
+        }
+        
+        result[0] = dequeue.Top();
+        
+        for (var i = k; i < nums.Length; i++) {
+            dequeue.Add(nums[i]);
+            dequeue.Remove(nums[i - k]);
+            result[i - k + 1] = dequeue.Top();
+        }
+        
+        return result;
+    }
+}

@@ -39,3 +39,55 @@ public class Solution {
         return write;
     }
 }
+
+//  https://leetcode.com/submissions/detail/59906831/
+//  
+//  Submission Details
+//  164 / 164 test cases passed.
+//      Status: Accepted
+//      Runtime: 516 ms
+//          
+//          Submitted: 0 minutes ago
+//
+public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        if (nums.Length < 3)
+        {
+            return nums.Length;
+        }
+        
+        var write = 0;
+        foreach (var x in nums)
+        {
+            if (write > 1 && nums[write - 2] == x)
+            {
+                continue;
+            }
+            
+            nums[write++] = x;
+        }
+        
+        return write;
+    }
+}
+
+//  https://leetcode.com/submissions/detail/66656225/
+//
+//  Submission Details
+//  164 / 164 test cases passed.
+//      Status: Accepted
+//      Runtime: 508 ms
+//          
+//          Submitted: 1 minute ago
+public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        var last = 0;
+        for (var i = 0; i < nums.Length; i++) {
+            if (last < 2 || nums[last - 2] != nums[i]) {
+                nums[last++] = nums[i];
+            }
+        }
+        
+        return last;
+    }
+}

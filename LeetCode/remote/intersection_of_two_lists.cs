@@ -69,4 +69,25 @@ public class Solution {
         
         return first;
     }
+
+    //  https://leetcode.com/submissions/detail/58987032/
+    //
+    //  Submission Details
+    //  42 / 42 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 812 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    public ListNode GetIntersectionNode(ListNode headA, ListNode headB) {
+        var itA = headA;
+        var itB = headB;
+        while (itA != itB)
+        {
+            itA = itA == null ? headA : itA.next;
+            itB = itB == null ? headB : itB.next;
+        }
+        
+        return itA;
+    }
 }

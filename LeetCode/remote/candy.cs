@@ -54,3 +54,41 @@ public class Solution {
         Console.WriteLine(new Solution().Candy(new [] { 2, 2 }));
     }
 }
+
+//  https://leetcode.com/submissions/detail/61179312/
+//
+//  Submission Details
+//  28 / 28 test cases passed.
+//      Status: Accepted
+//      Runtime: 216 ms
+//          
+//          Submitted: 0 minutes ago
+//  It's regression, baby!
+
+public class Solution {
+    public int Candy(int[] ratings) {
+        if (ratings.Length < 2)
+        {
+            return ratings.Length;
+        }
+        
+        var candies = Enumerable.Repeat(1, ratings.Length).ToArray();
+        for (var i = 1; i < ratings.Length; i++)
+        {
+            if (ratings[i] > ratings[i - 1] && candies[i] <= candies[i - 1])
+            {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+
+        for (var i = ratings.Length - 2; i >= 0; i--)
+        {
+            if (ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1])
+            {
+                candies[i] = candies[i + 1] + 1;
+            }            
+        }
+
+        return candies.Sum();
+    }
+}

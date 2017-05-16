@@ -20,3 +20,4 @@ def count_bits(num)
 
     counts[0..num]
 end
+

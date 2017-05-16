@@ -52,6 +52,38 @@ public class Solution {
         return dp[0];
     }
 
+    //  https://leetcode.com/submissions/detail/64023392/
+    //
+    //  Submission Details
+    //  259 / 259 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 128 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int NumDecodings(string s) {
+        if (String.IsNullOrWhiteSpace(s)) {
+            return 0;
+        }
+        
+        var ways = new int[s.Length + 1];
+        ways[s.Length] = 1;
+        
+        for (var i = s.Length - 1; i >= 0; i--) {
+            if (s[i] == '0') {
+                continue;
+            }
+            
+            ways[i] = ways[i + 1];
+            
+            if (i < s.Length - 1 && int.Parse(s.Substring(i, 2)) < 27)
+            {
+                ways[i] += ways[i + 2];
+            }
+        }
+        
+        return ways[0];
+    }
+
     static void Main()
     {
         var s = new Solution();

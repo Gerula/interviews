@@ -112,6 +112,36 @@ public class Solution {
         Console.WriteLine();
     }
 
+    // Bull!Shit!
+    public void Solve(char[,] board) {
+        var n = board.GetLength(0);
+        var m = board.GetLength(1);
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < m; j++) {
+                Solve(i, j, n, m, board);
+            }
+        }
+    }
+    
+    private bool Solve(int i, int j, int n, int m, char[,] board) {
+        if (0 > i || i >= n ||
+            0 > j || j >= m) {
+                return false;
+            }
+        
+        if (board[i, j] == 'X') {
+            return true;
+        }
+        
+        board[i, j] = 'X';
+        var result = Solve(i + 1, j, n, m, board) &&
+                     Solve(i, j + 1, n, m, board) &&
+                     Solve(i - 1, j, n, m, board) &&
+                     Solve(i, j - 1, n, m, board);
+        board[i, j] = result ? 'X' : 'O';
+        return result;
+    }
+
     static void Main()
     {
         var s = new Solution();

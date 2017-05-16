@@ -38,6 +38,71 @@ public class Solution {
     }
 }
 
+//  Lol regression
+//  https://leetcode.com/submissions/detail/65770834/
+//
+//  Submission Details
+//  12 / 12 test cases passed.
+//      Status: Accepted
+//      Runtime: 429 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public IList<int> GrayCode(int n) {
+        if (n == 0) {
+            return new List<int> { 0 };
+        }
+        
+        return Gray(n).Select(x => x.Take(n).Aggregate(0, (acc, y) => (acc << 1) | y)).ToList();
+    }
+    
+    public IList<IList<int>> Gray(int n) {
+        if (n == 0) {
+            return new List<IList<int>> { new List<int> { 0 } };
+        }
+        
+        var previous = Gray(n - 1);
+        return previous.Select(x => new List<int> { 0 }.Concat(x).ToList())
+               .Concat(previous.Reverse().Select(x => new List<int> { 1 }.Concat(x).ToList()))
+               .ToList<IList<int>>();
+    }
+}
+
+//  Lol same fucking thing
+//  https://leetcode.com/submissions/detail/60408258/
+//  
+//  Submission Details
+//  12 / 12 test cases passed.
+//      Status: Accepted
+//      Runtime: 404 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public IList<int> GrayCode(int n) {
+        if (n == 0)
+        {
+            return new List<int> { 0 };
+        }
+        
+        return Enumerable
+               .Repeat(1, n)
+               .Aggregate(
+                   new List<String> { String.Empty },
+                   (acc, i) => {
+                       return acc
+                              .Select(x => String.Format("0{0}", x))
+                              .Concat(acc
+                                      .AsEnumerable()
+                                      .Reverse()
+                                      .Select(x => String.Format("1{0}", x)))
+                              .ToList();
+                        
+                   })
+               .Select(x => Convert.ToInt32(x, 2))
+               .ToList();
+    }
+}
+
 //  https://leetcode.com/submissions/detail/53176373/
 //
 //

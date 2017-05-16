@@ -61,6 +61,43 @@ static class Program
         return grid[0, 0];
     }
 
+    //  https://leetcode.com/submissions/detail/64906703/
+    //
+    //  Submission Details
+    //  61 / 61 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 192 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int MinPathSum(int[,] grid) {
+        for (var i = 0; i < grid.GetLength(0); i++)
+        {
+            for (var j = 0; j < grid.GetLength(1); j++)
+            {
+                if (i == 0 && j == 0) 
+                {
+                    continue;
+                }
+                
+                if (i == 0)
+                {
+                    grid[i, j] += grid[i, j - 1];
+                    continue;
+                }
+                
+                if (j == 0)
+                {
+                    grid[i, j] += grid[i - 1, j];
+                    continue;
+                }
+                
+                grid[i, j] += Math.Min(grid[i - 1, j], grid[i, j - 1]);
+            }
+        }
+        
+        return grid[grid.GetLength(0) - 1, grid.GetLength(1) - 1];
+    }
+
     static void Main()
     {
         Console.
@@ -73,5 +110,33 @@ static class Program
                     { 1, 1, 2, 4, 6 },
                     { 5, 4, 3, 2, 1 }
                     }));
+    }
+}
+
+//  https://leetcode.com/problems/minimum-path-sum/
+//
+//  Submission Details
+//  61 / 61 test cases passed.
+//      Status: Accepted
+//      Runtime: 180 ms
+//          
+//          Submitted: 0 minutes ago
+//  It's evolution, baby!
+public class Solution {
+    public int MinPathSum(int[,] grid) {
+        for (var i = grid.GetLength(0) - 1; i >= 0; i--)
+        {
+            for (var j = grid.GetLength(1) - 1; j >= 0; j--)
+            {
+                if (i == grid.GetLength(0) - 1 && j == grid.GetLength(1) - 1)
+                {
+                    continue;
+                }
+                
+                grid[i, j] += Math.Min(i == grid.GetLength(0) - 1 ? int.MaxValue : grid[i + 1, j],
+                                       j == grid.GetLength(1) - 1 ? int.MaxValue : grid[i, j + 1]);
+            }
+        }
+        return grid[0, 0];
     }
 }

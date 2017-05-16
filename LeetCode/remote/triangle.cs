@@ -36,3 +36,36 @@ public class Solution {
                .First();
     }
 }
+
+//  LOL
+public class Solution {
+    public int MinimumTotal(IList<IList<int>> triangle) {
+        return triangle
+               .Reverse()
+               .Aggregate((acc, x) => {
+                   return x
+                          .Zip(acc
+                              .Zip(acc.Skip(1),
+                                    (a, b) => Math.Min(a, b)),
+                              (a, b) => a + b)
+                          .ToList();
+               })
+               .First();
+    }
+}
+
+//  Kekekeke
+public class Solution {
+    public int MinimumTotal(IList<IList<int>> triangle) {
+        return triangle
+               .Reverse()
+               .Aggregate((acc, x) => {
+                   return x.Zip(
+                       acc.Zip(
+                           acc.Skip(1), 
+                           (a, b) => Math.Min(a, b)),
+                       (y, z) => y + z).ToList();
+               })
+               .First();
+    }
+}

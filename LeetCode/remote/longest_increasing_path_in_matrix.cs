@@ -73,6 +73,50 @@ public class Solution {
         return cache[line, col];
     }
 
+    //  https://leetcode.com/submissions/detail/63512040/
+    //
+    //  Submission Details
+    //  137 / 137 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 244 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    public int LongestIncreasingPath(int[,] matrix) {
+        var max = 0;
+        var cache = new int[matrix.GetLength(0), matrix.GetLength(1)];
+        for (var i = 0; i < matrix.GetLength(0); i++) {
+            for (var j = 0; j < matrix.GetLength(1); j++) {
+                max = Math.Max(max, LongestIncreasingPath(i, j, matrix, cache));
+            }
+        }
+        
+        return max;
+    }
+    
+    public int LongestIncreasingPath(int i, int j, int[,] matrix, int[,] cache) {
+        if (cache[i, j] == 0) {
+            var max = 0;
+            max = Math.Max(max, NextValue(i, j, i + 1, j, matrix, cache));
+            max = Math.Max(max, NextValue(i, j, i - 1, j, matrix, cache));
+            max = Math.Max(max, NextValue(i, j, i, j + 1, matrix, cache));
+            max = Math.Max(max, NextValue(i, j, i, j - 1, matrix, cache));
+            cache[i, j] = max + 1;
+        }
+        
+        return cache[i, j];
+    }
+    
+    public int NextValue(int i, int j, int nexti, int nextj, int[,] matrix, int[,] cache) {
+        if (!(0 <= nexti && nexti < matrix.GetLength(0) &&
+              0 <= nextj && nextj < matrix.GetLength(1)) || 
+              matrix[nexti, nextj] <= matrix[i, j]) {
+                  return 0;
+              }
+        
+        return LongestIncreasingPath(nexti, nextj, matrix, cache);
+    } 
+    
     public int LongestIncreasingPath2(int[,] matrix)
     {
         var n = matrix.GetLength(0);
@@ -161,5 +205,70 @@ public class Solution {
         Console.WriteLine(s.LongestIncreasingPath2(new [,] { {9, 9, 4}, {6, 6, 8}, {2, 1, 1} }));
         Console.WriteLine(s.LongestIncreasingPath2(new [,] { {3, 4, 5}, {3, 2, 6}, {2, 2, 1} }));
         Console.WriteLine(s.LongestIncreasingPath2(new [,] { {1} }));
+    }
+}
+
+//  https://leetcode.com/submissions/detail/58528897/
+//
+//  Submission Details
+//  137 / 137 test cases passed.
+//      Status: Accepted
+//      Runtime: 248 ms
+//          
+//          Submitted: 0 minutes ago
+//
+public class Solution {
+    public int LongestIncreasingPath(int[,] matrix) {
+        var n = matrix.GetLength(0);
+        var m = matrix.GetLength(1);
+        var longestPath = new int[n, m];
+        var max = 0;
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < m; j++)
+            {
+                max = Math.Max(max, LongestIncreasingPath(i, j, matrix, longestPath));
+            }
+        }
+        
+        return max;
+    }
+    
+    public int LongestIncreasingPath(int i, int j, int[,] matrix, int[,] maxes)
+    {
+        if (maxes[i, j] != 0)
+        {
+            return maxes[i, j];
+        }
+        
+        var localMax = 0;
+        if (IsIndexValid(i + 1, j, matrix) && matrix[i + 1, j] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i + 1, j, matrix, maxes));
+        }
+        
+        if (IsIndexValid(i - 1, j, matrix) && matrix[i - 1, j] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i - 1, j, matrix, maxes));
+        }
+
+        if (IsIndexValid(i, j + 1, matrix) && matrix[i, j + 1] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i, j + 1, matrix, maxes));
+        }
+        
+        if (IsIndexValid(i, j - 1, matrix) && matrix[i, j - 1] > matrix[i, j])
+        {
+            localMax = Math.Max(localMax, LongestIncreasingPath(i, j - 1, matrix, maxes));
+        }
+        
+        maxes[i, j] = localMax + 1;
+        return maxes[i, j];
+    }
+    
+    private bool IsIndexValid(int i, int j, int[,] matrix)
+    {
+        return 0 <= i && i < matrix.GetLength(0) &&
+               0 <= j && j < matrix.GetLength(1);
     }
 }

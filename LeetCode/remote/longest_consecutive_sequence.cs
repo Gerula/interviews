@@ -53,6 +53,43 @@ public class Solution {
         return maxLen;
     }
 
+    //  https://leetcode.com/submissions/detail/67124592/
+    //
+    //  Submission Details
+    //  67 / 67 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 180 ms
+    //          
+    //          Submitted: 1 minute ago
+    public int LongestConsecutive(int[] nums) {
+        var presence = new HashSet<int>(nums);
+        return nums.Aggregate(
+            0,
+            (max, x) => {
+               if (!presence.Contains(x)) {
+                   return max;
+               }
+               
+               var length = 1;
+               presence.Remove(x);
+               var low = x - 1;
+               while (presence.Contains(low)) {
+                   presence.Remove(low);
+                   length++;
+                   low--;
+               }
+               
+               var high = x + 1;
+               while (presence.Contains(high)) {
+                   presence.Remove(high);
+                   length++;
+                   high++;
+               }
+               
+               return Math.Max(length, max);
+            });
+    }
+
     static void Main()
     {
         Console.WriteLine(new Solution().LongestConsecutive(new [] { 100, 4, 200, 1, 3, 2 }));

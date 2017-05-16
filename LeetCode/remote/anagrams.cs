@@ -15,3 +15,13 @@ public class Solution {
         return result.Values.Where(x => x.Count > 1).SelectMany(x => x).ToList();
     }
 }
+
+//  TLE
+public class Solution {
+    public IList<IList<string>> GroupAnagrams(string[] strs) {
+        return strs
+               .GroupBy(x => new String(x.OrderBy(y => y).ToArray()))
+               .Select(x => x.ToList<string>())
+               .ToList<IList<string>>();
+    }
+}

@@ -58,3 +58,31 @@ public class Solution {
         RightSide(root.left, level + 1, result);
     }
 }
+
+//  https://leetcode.com/submissions/detail/61213838/
+//
+//  Submission Details
+//  210 / 210 test cases passed.
+//      Status: Accepted
+//      Runtime: 514 ms
+//          
+//          Submitted: 0 minutes ago
+//  It's evolution, baby!
+public class Solution {
+    public IList<int> RightSideView(TreeNode root) {
+        if (root == null)
+        {
+            return new List<int>();
+        }
+        
+        var left = RightSideView(root.left);
+        var right = RightSideView(root.right);
+        
+        return new List<int> { root.val }
+               .Concat(
+                   Enumerable
+                   .Range(0, Math.Max(left.Count, right.Count))
+                   .Select(x => x < right.Count ? right[x] : left[x]))
+               .ToList();
+    }
+}

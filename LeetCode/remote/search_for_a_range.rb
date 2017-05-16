@@ -74,3 +74,32 @@ def search(value, nums, direction)
     
     low
 end
+
+#   It's evolution baby!
+#   
+#   Submission Details
+#   81 / 81 test cases passed.
+#       Status: Accepted
+#       Runtime: 92 ms
+#           
+#           Submitted: 0 minutes ago
+#
+def search_range(nums, target)
+    low = search(nums, target)
+    nums[low] == target ? [low, search(nums, target + 1) - 1] : [-1, -1] 
+end
+
+def search(nums, target)
+    low = 0
+    high = nums.size
+    while low < high
+        mid = low + (high - low) / 2
+        if nums[mid] < target
+            low = mid + 1
+        else
+            high = mid
+        end
+    end
+    
+    return low
+end

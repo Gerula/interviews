@@ -60,6 +60,86 @@ public class Solution {
                     (acc, x) => acc || s.StartsWith(x) && WordBreakRec(s.Substring(x.Length), wordDict));
     }
 
+    //  https://leetcode.com/submissions/detail/61354399/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 196 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //
+    public bool WordBreak(string s, ISet<string> wordDict, Dictionary<string, bool> broken = null) {
+        if (broken == null)
+        {
+            broken = new Dictionary<string, bool>();
+        }
+        
+        if (broken.ContainsKey(s))
+        {
+            return broken[s];
+        }
+        
+        if (String.IsNullOrWhiteSpace(s))
+        {
+            return true;
+        }
+        
+        return broken[s] = wordDict
+                           .Where(x => s.StartsWith(x))
+                           .Select(x => WordBreak(s.Substring(x.Length), wordDict, broken))
+                           .Any(x => x);
+    }
+
+    //  https://leetcode.com/submissions/detail/63800796/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 196 ms
+    //          
+    //          Submitted: 1 minute ago
+    //
+    public bool WordBreak(string s, ISet<string> wordDict, Dictionary<String, bool> hash = null) {
+        if (String.IsNullOrWhiteSpace(s)) {
+            return true;
+        }
+        
+        if (hash == null) {
+            hash = new Dictionary<String, bool>();
+        }
+        
+        if (!hash.ContainsKey(s)) {
+            hash[s] = wordDict //   And the below boolean statement is exactly why we can't have nice things
+                      .Any(x => !s.StartsWith(x) ? false : WordBreak(s.Substring(x.Length), wordDict, hash));
+        }
+        
+        return hash[s];
+    }
+
+    //  https://leetcode.com/submissions/detail/64501608/
+    //
+    //  Submission Details
+    //  34 / 34 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 212 ms
+    //          
+    //          Submitted: 0 minutes ago
+    //  This is getting pretty fucking stupid
+    public bool WordBreak(string s, ISet<string> wordDict) {
+        var dp = new bool[s.Length + 1];
+        dp[s.Length] = true;
+        for (var i = s.Length - 1; i >= 0; i--) {
+            var substring = s.Substring(i);
+            foreach (var word in wordDict.Where(x => substring.StartsWith(x) && i + x.Length < dp.Length))
+            {
+                dp[i] = dp[i] || dp[i + word.Length];
+            }
+        }
+        
+        return dp[0];
+    }
+
     static void Main()
     {
         var s = new Solution();

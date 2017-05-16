@@ -17,7 +17,7 @@
 //      Runtime: 152 ms
 //          
 //          Submitted: 1 minute ago
-//  What a fucking weird problem..
+//  What a weird fucking problem..
 
 public class Solution {
     public bool IncreasingTriplet(int[] nums) {
@@ -35,6 +35,33 @@ public class Solution {
             }
             else 
             {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
+
+// LOL
+//  https://leetcode.com/submissions/detail/64165074/
+//
+//  Submission Details
+//  61 / 61 test cases passed.
+//      Status: Accepted
+//      Runtime: 192 ms
+//          
+//          Submitted: 0 minutes ago
+public class Solution {
+    public bool IncreasingTriplet(int[] nums) {
+        var one = int.MaxValue;
+        var two = int.MaxValue;
+        foreach (var x in nums) {
+            if (x <= one) {
+                one = x;
+            } else if (x <= two) {
+                two = x;
+            } else {
                 return true;
             }
         }

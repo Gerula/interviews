@@ -69,6 +69,22 @@ class Program
         return true;
     }
 
+    //  https://leetcode.com/submissions/detail/63407331/
+    //
+    //  Submission Details
+    //  29 / 29 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 144 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public IEnumerable<int> Positions(IEnumerable<String> str) {
+        return str.Select(x => str.TakeWhile(y => y != x).Count());
+    }
+    
+    public bool WordPattern(string pattern, string str) {
+        return Positions(pattern.Select(x => x.ToString())).SequenceEqual(Positions(str.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries)));
+    }
+
     static void Main()
     {
         if (!WordPatternFast("abba", "dog cat cat dog"))

@@ -34,3 +34,36 @@ public class Solution {
                 .ToList();
     }
 }
+
+//  All hail to the coding olympics. Same exact fucking thing
+//  
+//  Submission Details
+//  27 / 27 test cases passed.
+//      Status: Accepted
+//      Runtime: 516 ms
+//          
+//          Submitted: 0 minutes ago
+//  Only slower.. actually either they are cheaping out on compute capacity (highly unlikely) or there are many more people doing this.
+public class Solution {
+    public IList<string> SummaryRanges(int[] nums) {
+        return nums
+               .Aggregate(
+                   new List<Tuple<int, int>>(),
+                   (acc, x) => {
+                        if (!acc.Any() || acc.Last().Item2 + 1 != x)
+                        {
+                            acc.Add(Tuple.Create(x, x));
+                        }
+                        else
+                        {
+                            acc[acc.Count - 1] = Tuple.Create(acc[acc.Count - 1].Item1, x);
+                        }
+                        
+                        return acc;
+                   })
+               .Select(x => x.Item1 == x.Item2 ? 
+                                x.Item1.ToString() :
+                                String.Format("{0}->{1}", x.Item1, x.Item2))
+               .ToList();
+    }
+}

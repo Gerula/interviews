@@ -55,4 +55,43 @@ public class Solution {
         var c = new Solution();
         Console.WriteLine(c.Rob(new [] { 1, 2, 3, 4, 5, 6 }));
     }
+
+    //  https://leetcode.com/submissions/detail/62518565/
+    //
+    //  Submission Details
+    //  69 / 69 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 168 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public int Rob(int[] nums) {
+        return nums.Aggregate(
+                Tuple.Create(0, 0),
+                (acc, x) => {
+                    return Tuple.Create(acc.Item2, Math.Max(x + acc.Item1, acc.Item2));
+                }).Item2;
+    }
+
+    //  Better version
+    //  https://leetcode.com/submissions/detail/65151604/
+    //
+    //  Submission Details
+    //  69 / 69 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 156 ms
+    //          
+    //          Submitted: 2 minutes ago
+    public int Rob(int[] nums) {
+        //  2   b:2 d:0
+        //  1   b:1 d:2
+        //  1   b:2 d:2
+        //  2   b:4 d:2
+        var last = nums.Aggregate(
+            new { buy = 0, dontBuy = 0},
+            (acc, x) => {
+                return new { buy = acc.dontBuy + x, dontBuy = Math.Max(acc.dontBuy, acc.buy) };    
+            });
+            
+        return Math.Max(last.buy, last.dontBuy);
+    }
 }

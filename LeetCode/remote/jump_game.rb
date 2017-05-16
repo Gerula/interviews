@@ -31,3 +31,21 @@ def can_jump(nums)
     
     return true
 end
+
+#   https://leetcode.com/submissions/detail/58061413/
+#
+#   Submission Details
+#   72 / 72 test cases passed.
+#       Status: Accepted
+#       Runtime: 116 ms
+#           
+#           Submitted: 0 minutes ago
+def can_jump(nums)
+    max = nums.first
+    nums.drop(1).each { |x|
+        return false if (max -= 1) < 0
+        max = [max, x].max
+    }
+
+    return true
+end

@@ -44,6 +44,34 @@ public class Solution {
         return clones[node];
     }
 
+    //  https://leetcode.com/submissions/detail/64023838/
+    //
+    //  Submission Details
+    //  12 / 12 test cases passed.
+    //      Status: Accepted
+    //      Runtime: 120 ms
+    //          
+    //          Submitted: 0 minutes ago
+    public UndirectedGraphNode CloneGraph(
+        UndirectedGraphNode node, 
+        Dictionary<UndirectedGraphNode, UndirectedGraphNode> hash = null) 
+    {
+        if (node == null) {
+            return null;
+        }
+            
+        if (hash == null) {
+            hash = new Dictionary<UndirectedGraphNode, UndirectedGraphNode>();
+        }
+        
+        if (!hash.ContainsKey(node)) {
+            hash[node] = new UndirectedGraphNode(node.label);
+            hash[node].neighbors = node.neighbors.Select(x => CloneGraph(x, hash)).ToList();
+        }
+        
+        return hash[node];
+    }
+
     //  
     //  Submission Details
     //  12 / 12 test cases passed.

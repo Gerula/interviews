@@ -52,3 +52,30 @@ public class Solution {
                .Concat(SumNumbers(root.right, parent * 10 + root.val));
     }
 }
+
+//  https://leetcode.com/submissions/detail/60822399/
+//
+//  Submission Details
+//  109 / 109 test cases passed.
+//      Status: Accepted
+//      Runtime: 170 ms
+//          
+//          Submitted: 0 minutes ago
+//
+public class Solution {
+    public int SumNumbers(TreeNode root, int parent = 0) {
+        if (root == null)
+        {
+            return 0;
+        }
+        
+        var current = parent + root.val;
+        if (root.left == null && root.right == null)
+        {
+            return current;
+        }
+        
+        return SumNumbers(root.left, current * 10) +
+               SumNumbers(root.right, current * 10);
+    }
+}

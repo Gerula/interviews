@@ -44,3 +44,40 @@ def exist(board, word, line = 0, col = 0, pos = 0, start = true)
     board[line][col] = word[pos]
     return result
 end
+
+#   https://leetcode.com/submissions/detail/60788361/
+#
+#   Submission Details
+#   87 / 87 test cases passed.
+#       Status: Accepted
+#       Runtime: 541 ms
+#           
+#           Submitted: 0 minutes ago
+# @param {Character[][]} board
+# @param {String} word
+# @return {Boolean}
+def exist(board, word)
+    return false if board.size == 0
+    (0...board.size).each { |i|
+        (0...board[0].size).each { |j|
+            return true if (exists(board, i, j, word, 0))
+        }
+    }
+    
+    return false
+end
+
+def exists(board, i, j, word, pos)
+    return false if !i.between?(0, board.size - 1) ||
+                    !j.between?(0, board[0].size - 1) ||
+                    word[pos] != board[i][j]
+    
+    marker, board[i][j] = board[i][j], 0
+    result = pos == word.size - 1 ||
+             exists(board, i + 1, j, word, pos + 1) ||
+             exists(board, i - 1, j, word, pos + 1) ||
+             exists(board, i, j + 1, word, pos + 1) ||
+             exists(board, i, j - 1, word, pos + 1)
+    board[i][j] = marker
+    return result
+end

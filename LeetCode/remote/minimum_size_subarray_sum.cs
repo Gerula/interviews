@@ -47,3 +47,36 @@ public class Solution {
         Console.WriteLine(s.MinSubArrayLen(7, new [] { 2,3,1,2,4,3 }));
     }
 }
+
+//  https://leetcode.com/submissions/detail/58672848/
+//  
+//  Submission Details
+//  14 / 14 test cases passed.
+//      Status: Accepted
+//      Runtime: 152 ms
+//          
+//          Submitted: 0 minutes ago
+//  You are here!
+//  Your runtime beats 80.43% of csharpsubmissions.
+public class Solution {
+    public int MinSubArrayLen(int s, int[] nums) {
+        var sum = 0;
+        var left = 0;
+        var minLength = int.MaxValue;
+        for (var right = 0; right < nums.Length; right++)
+        {
+            sum += nums[right];
+            while (sum >= s && left <= right)
+            {
+                minLength = right - left + 1 < minLength ? 
+                                right - left + 1 : 
+                                minLength;
+                                
+                sum -= nums[left];
+                left++;
+            }
+        }
+        
+        return minLength == int.MaxValue ? 0 : minLength;
+    }
+}

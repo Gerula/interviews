@@ -27,3 +27,46 @@ public class Solution {
                                .ToList());
     }
 }
+
+//  https://leetcode.com/submissions/detail/57181885/
+//
+//  Submission Details
+//  34 / 34 test cases passed.
+//      Status: Accepted
+//      Runtime: 440 ms
+//          
+//          Submitted: 0 minutes ago
+//  Meh, this should be really fucking fast and efficient :(
+
+public class Solution {
+    public IList<int> GetRow(int rowIndex) {
+        if (rowIndex == 0)
+        {
+            return new List<int> { 1 };
+        }
+        
+        var list = new LinkedList<int>();
+        
+        return
+        Enumerable
+        .Range(1, rowIndex)
+        .Aggregate(list, (acc, x) => {
+            var it = list.First;
+            while (it != null)
+            {
+                var next = it.Next;
+                if (it.Next != null)
+                {
+                    list.AddAfter(it, new LinkedListNode<int>(it.Value + it.Next.Value));
+                }
+                
+                list.Remove(it);
+                it = next;
+            }
+            
+            list.AddFirst(1);
+            list.AddLast(1);
+            return list;
+        }).ToList();
+    }
+}

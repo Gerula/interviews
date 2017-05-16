@@ -35,3 +35,18 @@ public class Solution {
         return new [] { first, second };
     }
 }
+
+//  https://leetcode.com/submissions/detail/58787219/
+public class Solution {
+    public int[] SingleNumber(int[] nums) {
+        var xor = nums.Aggregate((acc, x) => acc ^ x);
+        xor &= 1 - xor;
+        return nums.Aggregate(
+            new int[2],
+            (acc, x) => {
+                acc[(x & xor) == 0 ? 0 : 1] ^= x;
+                return acc;
+            }
+            );
+    }
+}
